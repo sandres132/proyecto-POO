@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganguitas</title>
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/estiloCompany.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-default bg-dark fixed-top">
+                <a class="navbar-brand img-fluid"><img src="../img/logo.png" alt="imagen logo"></a>
+                <button type="button" class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="fa fa-navicon fa-2x fa-align-center"
+                            aria-hidden="true"></i></span>
+                </button>
+                <div id="my-nav" class="collapse navbar-collapse">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <a class="dropdown-item" href="#">Action 1</a>
+                                <a class="dropdown-item" href="#">Action 2</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="../index.html" class="nav-link text-white logOut"><i
+                                    class="fa fa-sign-out fa-2x"></i> Log Out</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0 ">
+                        <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+                        <button type="submit" class="btn btn-secondary my-2 my-sm-2">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="d-inline-block">
+        <div class="container-fluid my-3">
+            <div class="col-12 media">
+                <a href="#">
+                    <img src="../img/banner-technocom.jpg" id="banner">
+                </a>
+            </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#myPublications" role="tab" data-toggle="tab">My Publications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#profile" role="tab" data-toggle="tab">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#editEmpresa" role="tab" data-toggle="tab">Edit Profile</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" role="tabpanel" id="myPublications">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="row" id="publicaciones">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="profile">
+                <div class="inner">
+                    <img class="card-QR" src="../img/QR.png" alt="">
+                    <img class="card-QR" src="../img/comboHamburger1.jpg" alt="">
+                </div>
+                <div class="card-body">
+                    <div class="form-control">
+                        <h4 class="form-control"><b>Titulo:</b> Combo #1</h4>
+                        <h4 class="form-control"><b>Descripción:</b> ¡Rico combo familiar de Burguer King!</h4>
+                        <h4 class="form-control"><b>Fecha Max:</b> 05/06/20</h4>
+                        <h4 class="form-control"><b>Empresa:</b> Burger King</h4>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <input class="btn btn-info" type="button" value="Guardar Tarjeta">
+                </div>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="editEmpresa">
+                <div class="card-body">
+                    <div class="form-control py-0">
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-image"> Company Image</i>
+                                <input class="form-control" type="file" accept="image/*" id="imgGanga">
+                                <small id="institutionImageHelp" class="text-muted">Company Logo</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-institution"> Company Name</i>
+                                <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp">
+                                <small id="institutionNameHelp" class="text-muted">Ganguitas</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">Type of company</label>
+                                    </div>
+                                    <select class="custom-select" id="inputGroupSelect01">
+                                        <option selected>Choose...</option>
+                                        <option value="1">Fast Food</option>
+                                        <option value="2">Comercial</option>
+                                        <option value="3">Individual</option>
+                                        <option value="4">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-envelope"> User name</i>
+                                <input type="text" id="usuario" class="form-control" aria-describedby="usuarioHelp">
+                                <small id="emailHelp" class="text-muted">
+                                    put the name you want as a user
+                                </small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-lock"> Password</i>
+                                <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
+                                <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-lock"> Confirm your password</i>
+                                <input type="email" id="confirmPass" class="form-control" aria-describedby="confirmHelp">
+                                <small id="confirmHelp" class="text-muted">Must be 8-20 characters long.</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-facebook"> Facebook</i>
+                                <input type="text" id="facebook" class="form-control" aria-describedby="faceHelp">
+                                <small id="faceHelp" class="text-muted">Put your facebook address</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-instagram"> Instagram</i>
+                                <input type="text" id="instagram" class="form-control" aria-describedby="instaHelp">
+                                <small id="instaHelp" class="text-muted">Put your instagram address</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-twitter"> Twitter</i>
+                                <input type="text" id="twitter" class="form-control" aria-describedby="twitHelp">
+                                <small id="twitHelp" class="text-muted">Put your twitter address</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-twitch"> Twitch</i>
+                                <input type="text" id="twitch" class="form-control" aria-describedby="twitchHelp">
+                                <small id="twitchHelp" class="text-muted">Put your twitch address</small>
+                            </div>
+                        </form>
+                        <form class="form-control">
+                            <div class="form-group">
+                                <i class="fa fa-address-card"> Soport Address</i>
+                                <input type="email" id="soport" class="form-control" aria-describedby="soportHelp">
+                                <small id="soportHelp" class="text-muted">Put your soport address</small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/swiper.min.js"></script>
+    <script src="../js/jquery.slim.js"></script>
+    <script src="../js/popper.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/landingcontrol.js"></script>
+</body>
+
+</html>

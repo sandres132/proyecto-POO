@@ -1,0 +1,155 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+
+.navbar {
+    height: 75px;
+    padding: .0rem 3rem;
+}
+
+.navbar-brand img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        display: block;
+    }
+    .navbar-collapse {
+        background-color: rgba(36, 35, 33, 0.718);
+        padding: 15px;
+        border-radius: 15px;
+        font: status-bar;
+    }
+}
+
+@media (max-width: 371px) {
+    .navbar-nav .dropdown-menu {
+        width: auto;
+        margin: auto;
+    }
+}
+
+.log,
+#signIn {
+    font-weight: 900 !important;
+    font-size: larger;
+}
+
+.fa {
+    vertical-align: middle;
+}
+
+.dropdown,
+.dropup {
+    align-self: center;
+}
+
+.bg-dark.scrolled {
+    background: rgba(36, 35, 33, 0.718) !important;
+}
+
+.dropdown-menu input {
+    border-radius: 5px;
+    border-width: thin;
+    padding: 5px;
+}
+
+.slide {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.carousel-item img {
+    max-height: 625px;
+    width: 100%;
+}
+
+.carousel-item h1 {
+    font-weight: 900;
+    font-size: -webkit-xxx-large;
+    -webkit-text-stroke: 2px black;
+    color: rgb(255, 238, 0);
+    text-shadow: 2px 2px 2px black;
+}
+
+#head .btn-primary {
+    margin-bottom: 10px;
+}
+
+#head {
+    display: inline-block;
+}
+
+#middle {
+    background-color: whitesmoke;
+}
+
+.container .card {
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin: 20px;
+    text-align: center;
+    transition: all 0.25s;
+    max-width: 330px !important;
+    min-width: 284px !important;
+    max-height: 450px !important;
+}
+
+.info {
+    max-width: 100%;
+    height: auto;
+}
+
+.inner {
+    overflow: hidden;
+}
+
+.inner img {
+    transition: all 1.5s ease;
+}
+
+.inner:hover img {
+    transform: scale(1.1);
+}
+
+.container .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+}
+
+.container .card img {
+    max-width: 330px;
+    min-width: 284px;
+    height: auto;
+}
+
+.container .card p {
+    padding: 0 1rem;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.container .card a {
+    font-weight: 500;
+    text-decoration: none;
+    color: #3498db;
+}
+
+.fa-5x {
+    font-size: 12em;
+}
+
+#logIn {
+    background: rgba(0, 0, 0, 0.469);
+}
+
+.modal-content {
+    border-radius: .7rem;
+}
