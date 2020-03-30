@@ -51,6 +51,8 @@ if (localStorage.getItem("clientes") == null) {
 
 
 function actual() {
+    var verifUser = false;
+    var verifPass = false;
     for (let i = 0; i < clientes.length; i++) {
         if (clientes[i].usuarioCliente == document.getElementById("userName").value) {
             if (clientes[i].passwordCliente == document.getElementById("password").value) {
@@ -58,14 +60,20 @@ function actual() {
                 clienteSeleccionado = clientes[i].usuarioCliente;
                 localStorage.setItem("clientes", JSON.stringify(clientes));
 
-            } else {
-                alert("Contraseña invalida");
+                verifPass = false;
+                verifUser = false;
                 break;
+            } else {
+                verifPass = true
             }
         } else {
-            alert("Usuario inexistente");
-            break;
+            verifUser = true;
         }
+    }
+    if (verifUser) {
+        alert("Usuario Invalido");
+    } else if (verifPass) {
+        alert("Contraseña Invalida");
     }
 }
 
