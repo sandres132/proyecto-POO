@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Ganguitas-Users</title>
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/estiloUsuario.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-default bg-dark fixed-top">
+                <a class="navbar-brand img-fluid"><img src="../img/logo.png" alt="imagen logo"></a>
+                <button type="button" class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="fa fa-navicon fa-2x fa-align-center"
+                            aria-hidden="true"></i></span>
+                </button>
+                <div id="my-nav" class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-white superText"><i class="fa fa-shopping-cart fa-2x"></i>
+                                Buy</a>
+                        </li>
+                        <li class="nav-item" id="nombreUsuario">
+
+                        </li>
+                        <li class="nav-item">
+                            <a href="../index.html" class="nav-link text-white superText"><i
+                                    class="fa fa-sign-out fa-2x"></i> Log Out</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0 ">
+                        <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+                        <button type="submit" class="btn btn-secondary my-2 my-sm-2">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="container-fluid mt-5">
+        <h4 class="text-center tituloSlider">GANGUITAS del Dia</h4>
+        <div class="swiper-container px-0">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image:url(../img/samsung1.png)"></div>
+                <div class="swiper-slide" style="background-image:url(../img/comboHamburger.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(../img/diunsa3.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(../img/diunsa1.jpg)"></div>
+                <div class="swiper-slide" style="background-image:url(../img/ladylee.jpg)"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+    <section id="middle">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="row" id="publicaciones">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="profile" class="modal fade " data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header style">
+                    <ul class="nav nav-tabs modal-header-tabs">
+                        <li class="nav-item card-header-tabs">
+                            <a class="nav-link" href="#userProfile" role="tab" data-toggle="tab">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#edit" role="tab" data-toggle="tab">Edit Profile</a>
+                        </li>
+                    </ul>
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" role="tabpanel" id="userProfile">
+                            <div class="inner">
+                                <img class="card-img-top" src="../img/comboHamburger1.jpg" alt="">
+                            </div>
+                            <div class="card-body">
+                                <div class="form-control">
+                                    <h4 class="form-control"><b>First Name:</b> Andres Julian</h4>
+                                    <h4 class="form-control"><b>Last Name:</b> Alvares Mendoza</h4>
+                                    <h4 class="form-control"><b>Email Address:</b> andresjulian@yahoo.es</h4>
+                                    <h4 class="form-control"><b>Password:</b> Juliand123</h4>
+                                    <h4 class="form-control"><b>User Name:</b> mendozita45</h4>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-info" id="favCompanies" type="button" data-toggle="collapse" data-target="#contCompanies" aria-expanded="false" aria-controls="contCompanies"><i class="fa fa-institution"></i> Favorites
+                                    Companies</button>
+                                <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts">
+                                    <i class="fa fa-eye"> Favorite Products</i>
+                                </button>
+                                <div class="collapse" id="contProducts">
+                                    <div class="card-body m-0">
+                                        <hr>
+                                        <h4 class="form-group"><b>Favorite Products</b></h4>
+                                        <hr>
+                                        <h4 class="form-group"><b>Combo #1</b></h4>
+                                        <h4 class="form-group"><b>¿Aburrido de tu celular?</b></h4>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="contCompanies">
+                                    <div class="card-body m-0">
+                                        <hr>
+                                        <h4 class="form-group"><b>Favorite Companies</b></h4>
+                                        <hr>
+                                        <h4 class="form-group"><b>Diunsa</b></h4>
+                                        <h4 class="form-group"><b>Samsumg</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="edit">
+                            <div class="inner">
+                                <img class="card-QR justify-content-center" src="../img/comboHamburger1.jpg" alt="">
+                            </div>
+                            <div class="card-body py-0">
+                                <div class="form-control py-0">
+                                    <form class="form-control">
+                                        <div class="form-group py-0">
+                                            <i class="fa fa-edit"> First Name</i>
+                                            <input type="text" id="firstName" class="form-control" aria-describedby="firstNameHelp">
+                                            <small id="firstNameHelp" class="text-muted">Andres Julian</small>
+                                        </div>
+                                    </form>
+                                    <form class="form-control">
+                                        <div class="form-group py-0">
+                                            <i class="fa fa-edit"> Last Name</i>
+                                            <input type="text" id="lastName" class="form-control" aria-describedby="lastNameHelp">
+                                            <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
+                                        </div>
+                                    </form>
+                                    <form class="form-control">
+                                        <div class="form-group py-0">
+                                            <i class="fa fa-user"> User Name</i>
+                                            <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
+                                            <small id="passwordHelp" class="text-muted">Must be 8-20 characters
+                                                long.</small>
+                                        </div>
+                                    </form>
+                                    <form class="form-control">
+                                        <div class="form-group py-0">
+                                            <i class="fa fa-envelope"> Email</i>
+                                            <input type="email" id="email" class="form-control" aria-describedby="emailHelp">
+                                            <small id="emailHelp" class="text-muted">andresjulian@yahoo.es</small>
+                                        </div>
+                                    </form>
+                                    <form class="form-control">
+                                        <div class="form-group py-0">
+                                            <i class="fa fa-lock"> New Password</i>
+                                            <input type="password" id="newPassword" class="form-control" aria-describedby="newPasswordHelp">
+                                            <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters
+                                                long.</small>
+                                        </div>
+                                    </form>
+                                    <form class="form-control">
+                                        <div class="form-group py-0">
+                                            <i class="fa fa-lock"> Confirm New Password</i>
+                                            <input type="password" id="confNewPassword" class="form-control" aria-describedby="confPasswordHelp">
+                                            <small id="confPasswordHelp" class="text-muted">Must be the same as new
+                                                password.</small>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <input class="btn btn-info" type="button" value="Save Changes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-static fixed-bottom">
+        <footer class="bg-dark py-5">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="accordion d-lg-flex w-100" id="accordion">
+                            <div class="col-lg-4 col-md-12">
+                                <a href="#links" class="text-white h5 text-uppercase nav-link p-0 d-block d-lg-none d-xl-none" data-toggle="collapse">Useful Links</a>
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                    Useful Links
+                                </div>
+                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="links">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="../index.html" class="nav-link p-0 text-white">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="nav-link p-0 text-white">menu</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <a href="#aboutUs" data-toggle="collapse" class="text-white h5 text-uppercase p-0 nav-link d-block d-lg-none d-xl-none">About
+                                    Us</a>
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                    About Us
+                                </div>
+                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="aboutUs">
+                                    <p>
+                                        Somos una pagina web responsable con sus clientes, nuestro objetivo es poder brindar el mejor servicio para todos los tipos de clientes que visitan nuestra pagina.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <a href="#redesSociales" data-toggle="collapse" class="text-white h5 text-uppercase nav-link p-0 d-block d-lg-none d-xl-none">Encuentranos
+                                    En:</a>
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                    Encuentranos En:
+                                </div>
+                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="redesSociales">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <a href="#" class="icon"><i class="fa fa-facebook fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-twitter fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-instagram fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-youtube fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-linkedin fa-2x"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="container-fluid">
+            <div class="row bg-danger">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="p-3 text-white">GANGUITAS.COM &copy; Copyright 2020</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/swiper.min.js"></script>
+    <script src="../js/jquery.slim.js"></script>
+    <script src="../js/popper.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/usuariosController.js"></script>
+    <script src="../js/companyController.js"></script>
+</body>
+
+</html>

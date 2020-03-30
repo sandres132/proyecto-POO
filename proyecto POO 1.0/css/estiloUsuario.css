@@ -1,0 +1,226 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+
+.navbar {
+    height: 75px;
+    padding: .0rem 3rem;
+}
+
+.navbar-brand img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        display: block;
+    }
+    .navbar-collapse {
+        background-color: rgba(36, 35, 33, 0.718);
+        padding: 15px;
+        border-radius: 15px;
+        font: status-bar;
+    }
+}
+
+@media (max-width: 371px) {
+    .navbar-nav .dropdown-menu {
+        width: auto;
+        margin: auto;
+    }
+}
+
+.superText {
+    font-weight: 900 !important;
+    font-size: larger;
+}
+
+.fa {
+    vertical-align: middle;
+}
+
+.fa-1x {
+    font-size: 1.5em;
+}
+
+.dropdown,
+.dropup {
+    align-self: center;
+}
+
+.bg-dark.scrolled {
+    background: rgba(36, 35, 33, 0.718) !important;
+}
+
+.dropdown-menu input {
+    border-radius: 5px;
+    border-width: thin;
+    padding: 5px;
+}
+
+.swiper-container {
+    width: 90%;
+    padding-top: 5px;
+    padding-bottom: 50px;
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+}
+
+#head .btn-primary {
+    margin-bottom: 10px;
+}
+
+#head {
+    display: inline-block;
+}
+
+#middle {
+    background-color: whitesmoke;
+}
+
+.container .card {
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin: 20px;
+    text-align: center;
+    transition: all 0.25s;
+    max-width: 330px !important;
+    min-width: 284px !important;
+}
+
+.info {
+    max-width: 100%;
+    height: auto;
+}
+
+.inner {
+    overflow: hidden;
+}
+
+.inner img {
+    transition: all 1.5s ease;
+}
+
+.inner:hover img {
+    transform: scale(1.1);
+}
+
+.container .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-top-img {
+    max-width: 330px;
+    min-width: 284px;
+    height: auto;
+}
+
+.card-adv,
+.card-QR {
+    max-width: 100px;
+    min-width: 70px;
+    height: auto;
+}
+
+.rating {
+    display: inline-flex;
+    transform: translate(0%, -50%) rotate(180deg);
+    line-height: normal;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    display: block;
+    cursor: pointer;
+    width: 20px;
+}
+
+.rating label:before {
+    content: '\f005';
+    font-family: fontAwesome;
+    font-size: 20px;
+    position: relative;
+    display: block;
+    color: #101010;
+}
+
+.rating label:after {
+    content: '\f005';
+    font-family: fontAwesome;
+    font-size: 20px;
+    position: absolute;
+    display: block;
+    color: yellow;
+    top: 0;
+    opacity: 0;
+    transition: .5s;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.rating label:hover:after,
+.rating label:hover~label:after,
+.rating input:checked~label:after {
+    opacity: 1;
+}
+
+.container .card p {
+    padding: 0 1rem;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.container .card a {
+    font-weight: 500;
+    text-decoration: none;
+    color: #3498db;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.card-footer {
+    padding-right: 0;
+    padding-left: 0;
+    border-top: 1px solid rgba(0, 0, 0, .125);
+}
+
+.fa-5x {
+    font-size: 12em;
+}
+
+#logIn {
+    background: rgba(0, 0, 0, 0.469);
+}
+
+.modal-content {
+    border-radius: .7rem;
+    padding: 15px;
+}
+
+.mt-5 {
+    margin-top: 5rem!important;
+}
+
+.tituloSlider {
+    font-weight: 900;
+    font-size: -webkit-xxx-large;
+    -webkit-text-stroke: 2px black;
+    color: rgb(255, 238, 0);
+    text-shadow: 2px 2px 2px black;
+}

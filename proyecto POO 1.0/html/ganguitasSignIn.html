@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganguitas-Sign-In</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/estiloSignIn.css">
+
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-default bg-dark fixed-top position-absolute py-0">
+                <a class="nav-link img-fluid" href="../index.html"><img src="../img/logo.png" alt="imagen logo"></a>
+                <button type="button" class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="fa fa-navicon fa-2x fa-align-center"
+                            aria-hidden="true"></i></span>
+                </button>
+                <div id="my-nav" class="collapse navbar-collapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle text-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-sign-in"></i> Sign In As:
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalUser"><i class="fa fa-user"></i> user</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalAdvertiser"><i class="fa fa-user-plus"></i> Advertiser</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div>
+        <div class="modal fade" id="modalUser" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="contentUser" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content py-1">
+                    <div class="modal-header align-content-center">
+                        <i class="fa fa-user-circle-o fa-2x"></i>
+                        <h5 class="modal-title" id="contentUser">Sign In</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body py-0">
+                        <div class="form-control py-0">
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-edit"> First Name</i>
+                                    <input type="text" id="firstName" class="form-control" aria-describedby="firstNameHelp">
+                                    <small id="firstNameHelp" class="text-muted">Andres Julian</small>
+                                </div>
+                            </form>
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-edit"> Last Name</i>
+                                    <input type="text" id="lastName" class="form-control" aria-describedby="lastNameHelp">
+                                    <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
+                                </div>
+                            </form>
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-envelope"> Email</i>
+                                    <input type="email" id="email" class="form-control" aria-describedby="emailHelp">
+                                    <small id="emailHelp" class="text-muted">andresjulian@yahoo.es</small>
+                                </div>
+                            </form>
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-user"> User Name</i>
+                                    <input type="text" id="user" class="form-control" aria-describedby="userHelp">
+                                    <small id="userHelp" class="text-muted">Put the name you want as a user</small>
+                                </div>
+                            </form>
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-lock"> Password</i>
+                                    <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
+                                    <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                                </div>
+                            </form>
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-lock"> Confirm your password</i>
+                                    <input type="email" id="confirmPass" class="form-control" aria-describedby="confirmHelp">
+                                    <small id="confirmHelp" class="text-muted">Must be 8-20 characters long.</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer py-0">
+                        <a class="mr-auto" href="">
+                            <a href="#logIn">You alredy has an account?</a>
+                        </a>
+                        <a href="../html/ganguitasUsuario.html"><input type="button" class="btn btn-info" value="Sign In"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div class="modal fade" id="modalAdvertiser" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="contentAdvertiser" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header align-content-center">
+                        <i class="fa fa-user-circle-o fa-2x"></i>
+                        <h5 class="modal-title" id="contentAdvertiser">Sign In</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body py-0">
+                        <div class="modal-body py-0">
+                            <div class="form-control py-0">
+                                <form class="form-control">
+                                    <div class="form-group">
+                                        <i class="fa fa-institution"> Company Name</i>
+                                        <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp">
+                                        <small id="institutionNameHelp" class="text-muted">Ganguitas</small>
+                                    </div>
+                                </form>
+                                <form class="form-control">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text" for="inputGroupSelect01">Type of company</label>
+                                            </div>
+                                            <select class="custom-select" id="inputGroupSelect01">
+                                              <option selected>Choose...</option>
+                                              <option value="1">Fast Food</option>
+                                              <option value="2">Comercial</option>
+                                              <option value="3">Individual</option>
+                                              <option value="4">Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form class="form-control">
+                                    <div class="form-group">
+                                        <i class="fa fa-envelope"> Email</i>
+                                        <input type="email" id="email" class="form-control" aria-describedby="emailHelp">
+                                        <small id="emailHelp" class="text-muted">ganguitas@gmail.com</small>
+                                    </div>
+                                </form>
+                                <form class="form-control">
+                                    <div class="form-group">
+                                        <i class="fa fa-user"> User Name</i>
+                                        <input type="text" id="user" class="form-control" aria-describedby="userHelp">
+                                        <small id="userHelp" class="text-muted">
+                                            Put the name you want as a user</small>
+                                    </div>
+                                </form>
+                                <form class="form-control">
+                                    <div class="form-group">
+                                        <i class="fa fa-lock"> Password</i>
+                                        <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
+                                        <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                                    </div>
+                                </form>
+                                <form class="form-control">
+                                    <div class="form-group">
+                                        <i class="fa fa-lock"> Confirm your password</i>
+                                        <input type="email" id="confirmPass" class="form-control" aria-describedby="confirmHelp">
+                                        <small id="confirmHelp" class="text-muted">Must be 8-20 characters long.</small>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer py-0">
+                            <a class="mr-auto" href="">
+                                <a href="#logIn">You alredy has an account?</a>
+                            </a>
+                            <a href="../html/ganguitasCompany.html"><input type="button" class="btn btn-info" value="Sign In"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div id="logIn" class="modal fade " data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header style">
+                        <h5 class="modal-title" id="contentForm"><i class="fa fa-sign-in fa-2x"></i> Log In</h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-control ">
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-envelope"> User Name</i>
+                                    <input type="text" id="userName" class="form-control" aria-describedby="userNameHelp">
+                                    <small id="userNameHelp" class="text-muted">andresjulian@yahoo.es</small>
+                                </div>
+                            </form>
+                            <form class="form-control">
+                                <div class="form-group">
+                                    <i class="fa fa-lock"> Password</i>
+                                    <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
+                                    <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="mr-auto" href="">
+                            <p>Forgot your password?</p>
+                        </a>
+                        <a href="html/ganguitasUsuario.html"><input type="button" class="btn btn-info" value="Log In"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid position-absolute fixed-bottom">
+        <div class="row bg-danger">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center align-items-center">
+                    <span class="p-3 text-white">GANGUITAS.COM &copy; Copyright 2020</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="../js/jquery.slim.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/landingcontrol.js"></script>
+</body>
+
+</html>

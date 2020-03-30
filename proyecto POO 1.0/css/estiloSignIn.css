@@ -1,0 +1,69 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+}
+
+body {
+    background-color: black;
+    background-image: url(../img/bg-registrar.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 100vh;
+}
+
+.navbar {
+    height: 75px;
+    padding: .0rem 3rem;
+}
+
+.navbar-brand img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        display: block;
+    }
+    .navbar-collapse {
+        background-color: rgba(36, 35, 33, 0.718);
+        padding: 15px;
+        border-radius: 15px;
+        font: status-bar;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+        flex-flow: row-reverse;
+        margin: 150px;
+    }
+}
+
+.log,
+#signIn {
+    font-weight: 900 !important;
+    font-size: larger;
+}
+
+.fa {
+    vertical-align: middle;
+}
+
+.dropdown,
+.dropup {
+    align-self: center;
+}
+
+.dropdown-menu input {
+    border-radius: 5px;
+    border-width: thin;
+    padding: 5px;
+}
+
+.modifInput input[type=text] {
+    padding-left: 40px;
+}
