@@ -255,10 +255,10 @@ $(window).scroll(function() {
     if ($(this).scrollTop() > 50) {
         $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
         document.getElementById("logoGanguitas").innerHTML =
-            `<img src="img/logo.png" alt="imagen logo">`;
+            `<img src="../img/logo.png" alt="imagen logo">`;
     } else {
         document.getElementById("logoGanguitas").innerHTML =
-            `<img src="img/logo-blanco-y-negro.png" alt="imagen logo">`;
+            `<img src="../img/logo-blanco-y-negro.png" alt="imagen logo">`;
     }
 
 })

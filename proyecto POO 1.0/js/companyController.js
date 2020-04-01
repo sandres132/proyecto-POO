@@ -1,7 +1,5 @@
 var localStorage = window.localStorage;
 var empresaSeleccionada;
-var publicacionSeleccionada;
-var clienteSeleccionado;
 var fecha;
 var empresas;
 
@@ -12,7 +10,7 @@ function fechaActual() {
 if (localStorage.getItem("empresas") == null) {
     empresas = [{
             nombreEmpresa: 'Diunsa',
-            logoEmpresa: 'Diunsa-logo.png',
+            logoEmpresa: '../img/Diunsa-logo.png',
             tipoEmpresa: 'Comercial',
             nombreUsuario: 'diunsahn',
             password: 'password',
@@ -21,6 +19,7 @@ if (localStorage.getItem("empresas") == null) {
             twitter: 'diunsatwitter@yahoo.com',
             twitch: 'diunsatwitch@yahoo.com',
             email: 'diunsahn@gmail.hn',
+            actual: false,
             publicaciones: [{
                     imagenGanga: '../img/diunsa3.jpg',
                     nombreGanga: 'Camisa Deportiva',
@@ -43,7 +42,7 @@ if (localStorage.getItem("empresas") == null) {
         },
         {
             nombreEmpresa: 'Samsung',
-            logoEmpresa: 'logo-samsung.jpg',
+            logoEmpresa: '../img/logo-samsung.jpg',
             tipoEmpresa: 'Tecnologia',
             nombreUsuario: 'samsunghn',
             password: 'password',
@@ -52,6 +51,7 @@ if (localStorage.getItem("empresas") == null) {
             twitter: 'samsungtwitter@yahoo.com',
             twitch: 'samsungtwitch@yahoo.com',
             email: 'samsunghn@gmail.hn',
+            actual: false,
             publicaciones: [{
                     imagenGanga: '../img/samsung.png',
                     nombreGanga: 'Samsung A30 O A30s',
@@ -74,7 +74,7 @@ if (localStorage.getItem("empresas") == null) {
         },
         {
             nombreEmpresa: 'Lady Lee',
-            logoEmpresa: 'logo-lady-lee.jpg',
+            logoEmpresa: '../img/logo-lady-lee.jpg',
             tipoEmpresa: 'Electrodomesticos',
             nombreUsuario: 'ladyLeehn',
             password: 'password',
@@ -83,6 +83,7 @@ if (localStorage.getItem("empresas") == null) {
             twitter: 'ladyleetwitter@yahoo.com',
             twitch: 'ladyleetwitch@yahoo.com',
             email: 'ladyleehn@gmail.hn',
+            actual: false,
             publicaciones: [{
                     imagenGanga: '../img/ladylee1.jpg',
                     nombreGanga: 'Televisor Samsung',
@@ -105,7 +106,7 @@ if (localStorage.getItem("empresas") == null) {
         },
         {
             nombreEmpresa: 'Burger King',
-            logoEmpresa: 'Burger-King-Logo.png',
+            logoEmpresa: '../img/Burger-King-Logo.png',
             tipoEmpresa: 'Comidas Rapidas',
             nombreUsuario: 'burgerkinghn',
             password: 'password',
@@ -114,6 +115,7 @@ if (localStorage.getItem("empresas") == null) {
             twitter: 'burgerkingtwitter@yahoo.com',
             twitch: 'burgerkingtwitch@yahoo.com',
             email: 'burgerkinghn@gmail.hn',
+            actual: false,
             publicaciones: [{
                     imagenGanga: '../img/comboHamburger2.jpg',
                     nombreGanga: 'Combo #2',
@@ -140,99 +142,282 @@ if (localStorage.getItem("empresas") == null) {
     empresas = JSON.parse(localStorage.getItem('empresas'));
 }
 
+for (let i = 0; i < empresas.length; i++) {
+    if (empresas[i].actual == true) {
+        empresaSeleccionada = empresas[i];
+        generarNombre();
+        generarPerfil();
+        generarEditPerfil();
+    }
+}
+
+function generarNombre() {
+    document.getElementById("nombreDeEmpresa").innerHTML = "";
+    document.getElementById("nombreDeEmpresa").innerHTML =
+        `<a class="nav-link" href="#profile" role="tab" data-toggle="tab"><i class="fa fa-institution"></i>${empresaSeleccionada.nombreEmpresa}</a>`;
+}
+
 function generarPublicaciones() {
     let cont = 0;
     document.getElementById("publicaciones").innerHTML = '';
-    for (let i = 0; i < empresas.length; i++) {
-        for (let j = 0; j < empresas[i].publicaciones.length; j++) {
-            document.getElementById("publicaciones").innerHTML +=
-                `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#ganga${cont}" role="tab" data-toggle="tab">Ganga</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Detalles</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Empresa</a>
-                                </li>
-                            </ul>
+    for (let i = 0; i < empresaSeleccionada.publicaciones.length; i++) {
+        document.getElementById("publicaciones").innerHTML +=
+            `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#ganga${cont}" role="tab" data-toggle="tab">Ganga</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Detalles</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Empresa</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" role="tabpanel" id="ganga${cont}">
+                            <div class="inner">
+                                <img class="card-img-top" src="${empresaSeleccionada.publicaciones[i].imagenGanga}" alt="">
+                            </div>
+                            <div class="card-body">
+                                <h4>${empresaSeleccionada.publicaciones[i].nombreGanga}</h4>
+                                <p>${empresaSeleccionada.publicaciones[i].descripcionGanga}</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-info"><i
+                                        class="fa fa-heart fa-1x"></i></button>
+                                <button class="btn btn-sm btn-info"><i
+                                        class="fa fa-cart-plus fa-1x"></i></button>
+                                <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
+                                    <i class="fa fa-eye">Ver Mas</i>
+                                </button>
+                                <div class="collapse" id="contCard${cont}">
+                                    <div class="card-body m-0">
+                                        <h4 class="form-control "><b>Tiempo restante:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
+                                        <h4 class="form-control "><b>Ofertas Disponibles:</b> ${empresaSeleccionada.publicaciones[i].ofertasDisponibles}</h4>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tab-content">
-                            <div class="tab-pane active" role="tabpanel" id="ganga${cont}">
-                                <div class="inner">
-                                    <img class="card-img-top" src="${empresas[i].publicaciones[j].imagenGanga}" alt="">
-                                </div>
-                                <div class="card-body">
-                                    <h4>${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                    <p>${empresas[i].publicaciones[j].descripcionGanga}</p><br> Calificar: <br>
-                                    <div class="rw-ui-container" data-title="product rating"></div>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="btn btn-sm btn-info"><i
-                                            class="fa fa-heart fa-1x"></i></button>
-                                    <button class="btn btn-sm btn-info"><i
-                                            class="fa fa-cart-plus fa-1x"></i></button>
-                                    <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
-                                        <i class="fa fa-eye">Ver Mas</i>
-                                    </button>
-                                    <div class="collapse" id="contCard${cont}">
-                                        <div class="card-body m-0">
-                                            <h4 class="form-control "><b>Tiempo restante:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                            <h4 class="form-control "><b>Ofertas Disponibles:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
-                                        </div>
-                                    </div>
+                        <div class="tab-pane" role="tabpanel" id="detalles${cont}">
+                            <div class="inner">
+                                <img class="card-QR" src="../img/QR.png" alt="">
+                                <img class="card-QR" src="${empresaSeleccionada.publicaciones[i].imagenGanga}" alt="">
+                            </div>
+                            <div class="card-body">
+                                <div class="form-control">
+                                    <h4 class="form-control"><b>Titulo:</b> ${empresaSeleccionada.publicaciones[i].nombreGanga}</h4>
+                                    <h4 class="form-control"><b>Descripción:</b> ${empresaSeleccionada.publicaciones[i].descripcionGanga}</h4>
+                                    <h4 class="form-control"><b>Fecha Inicio:</b> ${empresaSeleccionada.publicaciones[i].fechaInicio}</h4>
+                                    <h4 class="form-control"><b>Fecha Max:</b> ${empresaSeleccionada.publicaciones[i].fechaMax}</h4>
+                                    <h4 class="form-control"><b>Hora Max:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
+                                    <h4 class="form-control"><b>Empresa:</b> ${empresaSeleccionada.publicaciones[i].nombreEmpresa}</h4>
                                 </div>
                             </div>
-                            <div class="tab-pane" role="tabpanel" id="detalles${cont}">
-                                <div class="inner">
-                                    <img class="card-QR" src="../img/QR.png" alt="">
-                                    <img class="card-QR" src="${empresas[i].publicaciones[j].imagenGanga}" alt="">
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-control">
-                                        <h4 class="form-control"><b>Titulo:</b> ${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                        <h4 class="form-control"><b>Descripción:</b> ${empresas[i].publicaciones[j].descripcionGanga}</h4>
-                                        <h4 class="form-control"><b>Fecha Inicio:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
-                                        <h4 class="form-control"><b>Fecha Max:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
-                                        <h4 class="form-control"><b>Hora Max:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                        <h4 class="form-control"><b>Empresa:</b> ${empresas[i].publicaciones[j].nombreEmpresa}</h4>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <input class="btn btn-info" type="button" value="Guardar Tarjeta">
+                            <div class="card-footer">
+                                <input class="btn btn-info" type="button" value="Guardar Tarjeta">
+                            </div>
+                        </div>
+                        <div class="tab-pane" role="tabpanel" id="empresa${cont}">
+                            <div class="inner">
+                                <img class="card-img-top" src="${empresaSeleccionada.logoEmpresa}" alt="">
+                            </div>
+                            <div class="card-body">
+                                <div class="form-control">
+                                    <h4 class="form-control"><i class="fa fa-institution"></i><b>Nombre:</b> ${empresaSeleccionada.nombreEmpresa}</h4>
+                                    <h4 class="form-control"><i class="fa fa-institution"></i><b>Descripción:</b> ${empresaSeleccionada.tipoEmpresa}</h4>
+                                    <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publicaciones:</b> ${empresaSeleccionada.publicaciones.length}</h4>
+                                    <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresaSeleccionada.facebook}</h4>
+                                    <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresaSeleccionada.instagram}</h4>
+                                    <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresaSeleccionada.twitter}</h4>
+                                    <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresaSeleccionada.twitch}</h4>
+                                    <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresaSeleccionada.email}</h4>
                                 </div>
                             </div>
-                            <div class="tab-pane" role="tabpanel" id="empresa${cont}">
-                                <div class="inner">
-                                    <img class="card-img-top" src="${empresas[i].logoEmpresa}" alt="">
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-control">
-                                        <h4 class="form-control"><b>Nombre:</b> ${empresas[i].nombreEmpresa}</h4>
-                                        <h4 class="form-control"><b>Descripción:</b> ${empresas[i].tipoEmpresa}</h4>
-                                        <h4 class="form-control"><b>Publicaciones:</b> ${empresas[i].publicaciones.length}</h4>
-                                        <div class="rw-ui-container" data-title="company rating"></div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Locales
-                                        Cercanos</a>
-                                </div>
+                            <div class="card-footer">
+                                <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Locales
+                                    Cercanos</a>
                             </div>
                         </div>
                     </div>
-                </div>`;
-            cont++;
-        }
+                </div>
+            </div>`;
+        cont++;
 
     }
 }
 generarPublicaciones();
 
+function generarPerfil() {
+    document.getElementById("profile").innerHTML = "";
+    document.getElementById("profile").innerHTML =
+        `<div class="card-top-img">
+            <img src="${empresaSeleccionada.logoEmpresa}" alt="Imagen Empresa">           
+        </div>
+        <div class="card-body">
+            <div class="form-control py-0">
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Nombre:</b> ${empresaSeleccionada.nombreEmpresa}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Descripción:</b> ${empresaSeleccionada.tipoEmpresa}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-user-o"></i><b>Nombre de Usuario:</b> ${empresaSeleccionada.nombreUsuario}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publicaciones:</b> ${empresaSeleccionada.publicaciones.length}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresaSeleccionada.facebook}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresaSeleccionada.instagram}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresaSeleccionada.twitter}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresaSeleccionada.twitch}</h4>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresaSeleccionada.email}</h4>
+                    </div>
+                </form>
+            </div>
+        </div>`;
+}
+
+function generarEditPerfil() {
+    document.getElementById("editEmpresa").innerHTML = "";
+    document.getElementById("editEmpresa").innerHTML +=
+        `<div class="card-body">
+            <div class="form-control py-0">
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-image"> Company Image</i>
+                        <input class="form-control" type="file" accept="image/*" id="imgGanga">
+                        <small id="institutionImageHelp" class="text-muted">Company Logo</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-institution"> Company Name</i>
+                        <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp">
+                        <small id="institutionNameHelp" class="text-muted">Ganguitas</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Type of company</label>
+                            </div>
+                            <select class="custom-select" id="inputGroupSelect01">
+                                <option selected>Choose...</option>
+                                <option value="1">Fast Food</option>
+                                <option value="2">Comercial</option>
+                                <option value="3">Individual</option>
+                                <option value="4">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-envelope"> User name</i>
+                        <input type="text" id="usuario" class="form-control" aria-describedby="usuarioHelp">
+                        <small id="emailHelp" class="text-muted">
+                            put the name you want as a user
+                        </small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-lock"> Password</i>
+                        <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
+                        <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-lock"> Confirm your password</i>
+                        <input type="email" id="confirmPass" class="form-control" aria-describedby="confirmHelp">
+                        <small id="confirmHelp" class="text-muted">Must be 8-20 characters long.</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-facebook"> Facebook</i>
+                        <input type="text" id="facebook" class="form-control" aria-describedby="faceHelp">
+                        <small id="faceHelp" class="text-muted">Put your facebook address</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-instagram"> Instagram</i>
+                        <input type="text" id="instagram" class="form-control" aria-describedby="instaHelp">
+                        <small id="instaHelp" class="text-muted">Put your instagram address</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-twitter"> Twitter</i>
+                        <input type="text" id="twitter" class="form-control" aria-describedby="twitHelp">
+                        <small id="twitHelp" class="text-muted">Put your twitter address</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-twitch"> Twitch</i>
+                        <input type="text" id="twitch" class="form-control" aria-describedby="twitchHelp">
+                        <small id="twitchHelp" class="text-muted">Put your twitch address</small>
+                    </div>
+                </form>
+                <form class="form-control">
+                    <div class="form-group">
+                        <i class="fa fa-address-card"> Soport Address</i>
+                        <input type="email" id="soport" class="form-control" aria-describedby="soportHelp">
+                        <small id="soportHelp" class="text-muted">Put your soport address</small>
+                    </div>
+                </form>
+            </div>
+        </div>`;
+}
+
+function logOut() {
+    empresaSeleccionada.actual = false;
+    localStorage.setItem("empresas", JSON.stringify(empresas));
+}
+
 $(window).scroll(function() {
-    $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
+    if ($(this).scrollTop() > 50) {
+        $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
+        document.getElementById("logoGanguitas").innerHTML =
+            `<img src="../img/logo.png" alt="imagen logo">`;
+    } else {
+        document.getElementById("logoGanguitas").innerHTML =
+            `<img src="../img/logo-blanco-y-negro.png" alt="imagen logo">`;
+    }
+
 })

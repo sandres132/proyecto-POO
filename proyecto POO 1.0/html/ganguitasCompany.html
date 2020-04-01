@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ganguitas</title>
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/estiloCompany.css">
@@ -14,7 +15,9 @@
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-default bg-dark fixed-top">
-                <a class="navbar-brand img-fluid"><img src="../img/logo.png" alt="imagen logo"></a>
+                <a class="navbar-brand" id="logoGanguitas">
+                    <img src="../img/logo.png" alt="imagen logo">
+                </a>
                 <button type="button" class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"><i class="fa fa-navicon fa-2x fa-align-center"
                             aria-hidden="true"></i></span>
@@ -34,7 +37,7 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a href="../index.html" class="nav-link text-white logOut"><i
+                            <a onclick="logOut();" href="../index.html" class="nav-link text-white logOut"><i
                                     class="fa fa-sign-out fa-2x"></i> Log Out</a>
                         </li>
                     </ul>
@@ -60,13 +63,13 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#myPublications" role="tab" data-toggle="tab">My Publications</a>
+                    <a class="nav-link active" href="#myPublications" role="tab" data-toggle="tab"><i class="fa fa-handshake-o"></i>My Publications</a>
+                </li>
+                <li class="nav-item" id="nombreDeEmpresa">
+
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#profile" role="tab" data-toggle="tab">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#editEmpresa" role="tab" data-toggle="tab">Edit Profile</a>
+                    <a class="nav-link" href="#editEmpresa" role="tab" data-toggle="tab"><i class="fa fa-id-card"></i>Edit Profile</a>
                 </li>
             </ul>
         </div>
@@ -83,118 +86,72 @@
                 </div>
             </div>
             <div class="tab-pane" role="tabpanel" id="profile">
-                <div class="inner">
-                    <img class="card-QR" src="../img/QR.png" alt="">
-                    <img class="card-QR" src="../img/comboHamburger1.jpg" alt="">
-                </div>
-                <div class="card-body">
-                    <div class="form-control">
-                        <h4 class="form-control"><b>Titulo:</b> Combo #1</h4>
-                        <h4 class="form-control"><b>Descripción:</b> ¡Rico combo familiar de Burguer King!</h4>
-                        <h4 class="form-control"><b>Fecha Max:</b> 05/06/20</h4>
-                        <h4 class="form-control"><b>Empresa:</b> Burger King</h4>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <input class="btn btn-info" type="button" value="Guardar Tarjeta">
-                </div>
+
             </div>
             <div class="tab-pane" role="tabpanel" id="editEmpresa">
-                <div class="card-body">
-                    <div class="form-control py-0">
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-image"> Company Image</i>
-                                <input class="form-control" type="file" accept="image/*" id="imgGanga">
-                                <small id="institutionImageHelp" class="text-muted">Company Logo</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-institution"> Company Name</i>
-                                <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp">
-                                <small id="institutionNameHelp" class="text-muted">Ganguitas</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">Type of company</label>
-                                    </div>
-                                    <select class="custom-select" id="inputGroupSelect01">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Fast Food</option>
-                                        <option value="2">Comercial</option>
-                                        <option value="3">Individual</option>
-                                        <option value="4">Others</option>
-                                    </select>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="position-static fixed-bottom">
+        <footer class="bg-dark py-5">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="accordion d-lg-flex w-100" id="accordion">
+                            <div class="col-lg-4 col-md-12">
+                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="links">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a onclick="logOut();" href="../index.html" class="nav-link p-0 text-white">Log Out</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-envelope"> User name</i>
-                                <input type="text" id="usuario" class="form-control" aria-describedby="usuarioHelp">
-                                <small id="emailHelp" class="text-muted">
-                                    put the name you want as a user
-                                </small>
+                            <div class="col-lg-4 col-md-12">
+                                <a href="#aboutUs" data-toggle="collapse" class="text-white h5 text-uppercase p-0 nav-link d-block d-lg-none d-xl-none">About
+                                    Us</a>
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                    About Us
+                                </div>
+                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="aboutUs">
+                                    <p>
+                                        Somos una pagina web responsable con sus clientes, nuestro objetivo es poder brindar el mejor servicio para todos los tipos de clientes que visitan nuestra pagina.
+                                    </p>
+                                </div>
                             </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-lock"> Password</i>
-                                <input type="password" id="Password" class="form-control" aria-describedby="passwordHelp">
-                                <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                            <div class="col-lg-4 col-md-12">
+                                <a href="#redesSociales" data-toggle="collapse" class="text-white h5 text-uppercase nav-link p-0 d-block d-lg-none d-xl-none">Encuentranos
+                                    En:</a>
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                    Encuentranos En:
+                                </div>
+                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="redesSociales">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <a href="#" class="icon"><i class="fa fa-facebook fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-twitter fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-instagram fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-youtube fa-2x"></i></a>
+                                        <a href="#" class="icon"><i class="fa fa-linkedin fa-2x"></i></a>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-lock"> Confirm your password</i>
-                                <input type="email" id="confirmPass" class="form-control" aria-describedby="confirmHelp">
-                                <small id="confirmHelp" class="text-muted">Must be 8-20 characters long.</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-facebook"> Facebook</i>
-                                <input type="text" id="facebook" class="form-control" aria-describedby="faceHelp">
-                                <small id="faceHelp" class="text-muted">Put your facebook address</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-instagram"> Instagram</i>
-                                <input type="text" id="instagram" class="form-control" aria-describedby="instaHelp">
-                                <small id="instaHelp" class="text-muted">Put your instagram address</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-twitter"> Twitter</i>
-                                <input type="text" id="twitter" class="form-control" aria-describedby="twitHelp">
-                                <small id="twitHelp" class="text-muted">Put your twitter address</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-twitch"> Twitch</i>
-                                <input type="text" id="twitch" class="form-control" aria-describedby="twitchHelp">
-                                <small id="twitchHelp" class="text-muted">Put your twitch address</small>
-                            </div>
-                        </form>
-                        <form class="form-control">
-                            <div class="form-group">
-                                <i class="fa fa-address-card"> Soport Address</i>
-                                <input type="email" id="soport" class="form-control" aria-describedby="soportHelp">
-                                <small id="soportHelp" class="text-muted">Put your soport address</small>
-                            </div>
-                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="container-fluid">
+            <div class="row bg-danger">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="p-3 text-white">GANGUITAS.COM &copy; Copyright 2020</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <script src="../js/swiper.min.js"></script>
     <script src="../js/jquery.slim.js"></script>

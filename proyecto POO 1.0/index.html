@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Ganguitas-Home</title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/estiloLanding.css">
@@ -15,7 +16,9 @@
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-default bg-dark fixed-top py-0">
-                <a class="navbar-brand img-fluid"><img src="img/logo.png" alt="imagen logo"></a>
+                <a class="navbar-brand" id="logoGanguitas">
+                    <img src="img/logo-blanco-y-negro.png" alt="imagen logo">
+                </a>
                 <button type="button" class="navbar-toggler" data-target="#my-nav" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"><i class="fa fa-navicon fa-2x fa-align-center"
                             aria-hidden="true"></i></span>
@@ -223,7 +226,7 @@
                         <form class="form-control">
                             <div class="form-group">
                                 <i class="fa fa-lock"> Password</i>
-                                <input type="password" id="password" class="form-control" aria-describedby="passwordHelp">
+                                <input type="password" id="password" class="form-control" aria-describedby="passwordHelp" autocomplete="on">
                                 <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
                             </div>
                         </form>
