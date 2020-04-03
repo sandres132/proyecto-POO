@@ -3,6 +3,8 @@ var empresaSeleccionada;
 var publicacionSeleccionada;
 var clienteSeleccionado;
 var clientes;
+var verifUser = false;
+var verifPass = false;
 
 if (localStorage.getItem("clientes") == null) {
     clientes = [{
@@ -12,9 +14,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'hugoamador@gmail.com',
             passwordCliente: 'Barca1234',
             actual: false,
+            fechaNacimiento: "02/08/1999",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
         {
             nombreCliente: 'Cristian Alejandro',
@@ -23,9 +28,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'kikansama@gmail.com',
             passwordCliente: 'kirito145',
             actual: false,
+            fechaNacimiento: "02/08/1997",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
         {
             nombreCliente: 'Sarol Michel',
@@ -34,9 +42,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'solrodriguez@gmail.com',
             passwordCliente: 'solecito',
             actual: false,
+            fechaNacimiento: "22/01/2000",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
         {
             nombreCliente: 'Fany Julisa',
@@ -45,9 +56,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'flacamil@gmail.com',
             passwordCliente: 'instagram',
             actual: false,
+            fechaNacimiento: "02/08/2001",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
     ];
     localStorage.setItem("clientes", JSON.stringify(clientes));
@@ -59,6 +73,11 @@ if (localStorage.getItem("empresas") == null) {
     empresas = [{
             nombreEmpresa: 'Diunsa',
             logoEmpresa: '../img/Diunsa-logo.png',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Comercial',
             nombreUsuario: 'diunsahn',
             password: 'password',
@@ -74,23 +93,40 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Vamos a apoyar al Motagua por la compra de una camiseta deportiva del Motagua te regalamos un pase doble en localidad sombra sur!',
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
-                    ofertasDisponibles: '5',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 5,
+                    fechaInicio: '7:00',
+                    precio: 999.99,
+                    venta: [{
+                        cantidad: 1,
+                        fechaCompra: '20/06/20'
+                    }],
+                    comentarios: [{
+                        nomCliente: 'ache',
+                        comentCliente: '¡Se ve super la promocion!'
+                    }]
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
                     nombreGanga: '¡Hyper Mega Oferta!',
                     descripcionGanga: 'Por la compra de un celular Huawei Nova 5T ¡Te regalamos un televisor LED de 24" GRATIS!',
-                    fechaMax: '05/16/20',
+                    fechaMax: '28/06/20',
                     horaMax: '20:50',
-                    ofertasDisponibles: '45',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 45,
+                    fechaInicio: '7:00',
+                    precio: 9000.00,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Samsung',
             logoEmpresa: '../img/logo-samsung.jpg',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Tecnologia',
             nombreUsuario: 'samsunghn',
             password: 'password',
@@ -106,8 +142,17 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Aprovecha y lleva a tu persona querida al cine por la compra de un Samsung A30 o A30s te regalamos entradas al cine!',
                     fechaMax: '',
                     horaMax: '16:50',
-                    ofertasDisponibles: '15',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 15,
+                    fechaInicio: '7:00',
+                    precio: 6300.00,
+                    venta: [{
+                        cantidad: 1,
+                        fechaCompra: '12/06/20'
+                    }],
+                    comentarios: [{
+                        nomCliente: 'kikin',
+                        comentCliente: '¡A tiempo llego la promocion!'
+                    }]
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -115,14 +160,22 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Es tiempo de innovar! Por la compra de tu celular Samsung te llevas gratis hasta $200 en productos Samsung',
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
-                    ofertasDisponibles: '205',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 205,
+                    fechaInicio: '7:00',
+                    precio: 3500.00,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Lady Lee',
             logoEmpresa: '../img/logo-lady-lee.jpg',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Electrodomesticos',
             nombreUsuario: 'ladyLeehn',
             password: 'password',
@@ -138,8 +191,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¿Aburrido de ver televisión en pantalla pequena? ¡Ven y aprovecha esta súper oferta!, televisor SMART Samsung de 65"',
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
-                    ofertasDisponibles: '5',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 5,
+                    fechaInicio: '7:00',
+                    precio: 15000.00,
+                    venta: [],
+                    comentarios: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -147,14 +203,22 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Muebles super comodos super baratos! ¡Ven y aprovecha esta súper oferta!',
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
-                    ofertasDisponibles: '15',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 15,
+                    fechaInicio: '7:00',
+                    precio: 9999.99,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Burger King',
             logoEmpresa: '../img/Burger-King-Logo.png',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '6.17403',
             tipoEmpresa: 'Comidas Rapidas',
             nombreUsuario: 'burgerkinghn',
             password: 'password',
@@ -170,8 +234,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¿Deseas comer en familia? Llego el combo #2 de Burguer King para que disfrutes en familia.',
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
-                    ofertasDisponibles: '255',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 255,
+                    fechaInicio: '7:00',
+                    precio: 249.99,
+                    venta: [],
+                    comentarios: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -179,8 +246,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Un refresco, orden de papitas, un sundae, y una hamburguesa Danés!',
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
-                    ofertasDisponibles: '405',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 405,
+                    fechaInicio: '7:00',
+                    precio: 79.99,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
@@ -206,11 +276,28 @@ function generarNombre() {
 
 function generarPublicaciones() {
     let cont = 0;
+
     document.getElementById("publicaciones").innerHTML = '';
     for (let i = 0; i < empresas.length; i++) {
         for (let j = 0; j < empresas[i].publicaciones.length; j++) {
+            let coments = "";
+            for (let k = 0; k < empresas[i].publicaciones[j].comentarios.length; k++) {
+                coments +=
+                    `
+                    <div class="form-control py-1">
+                        <div>
+                            <h4><b><i class="fa fa-user-circle-o">${empresas[i].publicaciones[j].comentarios[k].nomCliente}</i></b></h4>
+                        </div>
+                        <hr>
+                        <div>
+                            <h4><i class="fa fa-comments-o"> ${empresas[i].publicaciones[j].comentarios[k].comentCliente}</i></h4>
+                        </div>
+                    </div>`;
+
+            }
+
             document.getElementById("publicaciones").innerHTML +=
-                `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-header">
                             <ul class="nav nav-tabs card-header-tabs">
@@ -237,7 +324,7 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-footer">
                                     <button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>
-                                    <button class="btn btn-sm btn-info"><i class="fa fa-cart-plus fa-1x"></i></button>
+                                    <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#compCant${cont}" aria-expanded="false" aria-controls="comprarPub"><i class="fa fa-cart-arrow-down fa-1x"></i></button>
                                     <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
                                         <i class="fa fa-eye">Ver Mas</i>
                                     </button>
@@ -245,6 +332,36 @@ function generarPublicaciones() {
                                         <div class="card-body m-0">
                                             <h4 class="form-control "><b>Tiempo restante:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
                                             <h4 class="form-control "><b>Ofertas Disponibles:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
+                                            <h4 class="form-control "><b>Precio:</b> ${empresas[i].publicaciones[j].precio}</h4>
+                                            <hr>
+                                            <h4><b><i class="fa fa-comment-o"></i>Comentarios</b></h4>
+                                            <button id="commentPub${cont}" onclick="comentPub(" comPub${cont} ",${j},${i});" class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comPub${cont}" aria-expanded="false" aria-controls="commentPub"><i class="fa fa-commenting-o"> Comment</i></button>
+                                            <div class="collapse" id="comPub${cont}">
+                                                <div class="card-body m-0">
+                                                    <div class="form-row py-1">
+                                                        <label for="comPub"><b><i class="fa fa-commenting-o"> Post</i></b></label>
+                                                        <input type="text" id="comPub${cont}" style="height:80px;" class="form-control" aria-describedby="comPubHelp" oninput="validacion('comPub${cont}')" required>
+                                                        <small id="comPubHelp" class="text-muted">Post your opinion</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr> ${coments}
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="compCant${cont}">
+                                        <div class="card-body m-0">
+                                            <div class="form-group py-1">
+                                                <label for="cantComprar" class="float-left"><b><i class="fa fa-cart-arrow-down"> Quantity to buy</i></b></label>
+                                                <input type="number" value="0" min="0" id="cantComprar${cont}" class="form-control" aria-describedby="cantComprarHelp" required>
+                                                <small id="cantComprarHelp" class="text-muted float-left">Put the quantity you are going to buy</small><br>
+                                                <div id="alertaComprar${cont}">
+
+                                                </div>
+                                                <div class="container mb-3">
+                                                    <button onclick="aComprar(" cantComprar${cont} ", "alertaComprar${cont} " ,${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-cart-plus fa-1x"> Add</i></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -265,7 +382,7 @@ function generarPublicaciones() {
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <input class="btn btn-info" type="button" value="Guardar Tarjeta">
+                                    <button type="button" class="btn btn-info"><i class="fa fa-save"> Guardar Tarjeta</i></button>
                                 </div>
                             </div>
                             <div class="tab-pane" role="tabpanel" id="empresa${cont}">
@@ -282,9 +399,9 @@ function generarPublicaciones() {
                                         <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresas[i].twitter}</h4>
                                         <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresas[i].twitch}</h4>
                                         <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresas[i].email}</h4>
-                                    <div class="form-control">
-                                    <div class="rw-ui-container" data-title="company rating"></div>
-                                </div>
+                                        <div class="form-control">
+                                            <div class="rw-ui-container" data-title="company rating"></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
@@ -306,6 +423,7 @@ generarPublicaciones();
 function generarModalPerfil() {
     let publicacionesFavoritas = "";
     let empresasFavoritas = "";
+    let historialComp = "";
 
     for (let i = 0; i < clienteSeleccionado.publicacionesFav.length; i++) {
         publicacionesFavoritas +=
@@ -324,6 +442,19 @@ function generarModalPerfil() {
             <form class="form-control">
                 <div class="form-group">
                     <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Empresa:</b> ${clienteSeleccionado.companiasFav[i].nombreEmp}</h4>
+                </div>
+            </form>`;
+
+    }
+
+    for (let i = 0; i < clienteSeleccionado.comprasHechas.length; i++) {
+        historialComp +=
+            `
+            <form class="form-control">
+                <div class="form-group">
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Nombre del articulo:</b> ${clienteSeleccionado.comprasHechas[i].nomCompra}</h4>
+                    <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Fecha de compra ${i}:</b> ${clienteSeleccionado.comprasHechas[i].fechaCompra}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Cantidad:</b> ${clienteSeleccionado.comprasHechas[i].cant}</h4>
                 </div>
             </form>`;
 
@@ -375,6 +506,9 @@ function generarModalPerfil() {
                                     <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts">
                                         <i class="fa fa-eye"> Favorite Products</i>
                                     </button>
+                                    <button class="btn btn-sm btn-info" id="histoDeComp" type="button" data-toggle="collapse" data-target="#histComp" aria-expanded="false" aria-controls="histComp">
+                                        <i class="fa fa-eye"> Historial de compras</i>
+                                    </button>
                                     <div class="collapse" id="contProducts">
                                         <div class="card-body m-0">
                                             <hr>
@@ -395,68 +529,72 @@ function generarModalPerfil() {
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="collapse" id="histComp">
+                                        <div class="card-body m-0">
+                                            <hr>
+                                            <h4 class="form-group"><b>Favorite Products</b></h4>
+                                            <hr>
+                                            <div id="verHistComp">
+                                                ${historialComp}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane" role="tabpanel" id="edit">
-                                <div class="card-body py-0">
-                                    <div class="form-control py-0">
-                                        <form class="form-control">
-                                            <div class="form-group">
-                                                <i class="fa fa-image"> User Image</i>
-                                                <input class="form-control" type="file" accept="image/*" id="imgGanga">
-                                                <small id="institutionImageHelp" class="text-muted">User Photo</small>
+                                <div class="card-body mb-0 pb-0">
+                                    <form class="form-control py-0">
+                                        <fieldset>
+                                            <form class="form-control">
+                                                <div class="form-group">
+                                                    <i class="fa fa-image"> User Image</i>
+                                                    <input class="form-control" type="file" accept="image/*" id="imgGanga">
+                                                    <small id="institutionImageHelp" class="text-muted">User Photo</small>
+                                                </div>
+                                            </form>
+                                            <div class="form-row py-1">
+                                                <label for="firstName"><b><i class="fa fa-edit"> First Name</i></b></label>
+                                                <input type="text" id="firstName" class="form-control" aria-describedby="firstNameHelp" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
+                                                <small id="firstNameHelp" class="text-muted"> Julian Andres</small>
                                             </div>
-                                        </form>
-                                        <form class="form-control">
-                                            <div class="form-group py-0">
-                                                <i class="fa fa-edit"> First Name</i>
-                                                <input type="text" id="firstName" class="form-control" aria-describedby="firstNameHelp">
-                                                <small id="firstNameHelp" class="text-muted">Andres Julian</small>
-                                            </div>
-                                        </form>
-                                        <form class="form-control">
-                                            <div class="form-group py-0">
-                                                <i class="fa fa-edit"> Last Name</i>
-                                                <input type="text" id="lastName" class="form-control" aria-describedby="lastNameHelp">
+                                            <div class="form-row py-1">
+                                                <label for="lastName"><b><i class="fa fa-edit"> Last Name</i></b></label>
+                                                <input type="text" id="lastName" class="form-control" aria-describedby="lastNameHelp" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
                                                 <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
                                             </div>
-                                        </form>
-                                        <form class="form-control">
-                                            <div class="form-group">
-                                                <i class="fa fa-envelope"> User name</i>
-                                                <input type="text" id="usuario" class="form-control" aria-describedby="usuarioHelp">
-                                                <small id="emailHelp" class="text-muted">
-                                                    put the name you want as a user
-                                                </small>
+                                            <div class="form-row py-1">
+                                                <label for="emailUser"><b><i class=" fa fa-envelope"> Email</i></b></label>
+                                                <input type="email" id="emailUser" class="form-control" aria-describedby="emailHelp" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                                <small id="emailHelp" class="text-muted ">andresjulian@yahoo.es</small>
                                             </div>
-                                        </form>
-                                        <form class="form-control">
-                                            <div class="form-group py-0">
-                                                <i class="fa fa-lock"> New Password</i>
-                                                <input type="password" id="newPassword" class="form-control" aria-describedby="newPasswordHelp" autocomplete="on">
-                                                <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters
-                                                    long.</small>
+                                            <div class="form-row py-1 ">
+                                                <label for="dateUser"><b><i class="fa fa-calendar-times-o"> Date of Birth</i></b></label>
+                                                <input type="date" min="1920-01-01" max="2008-12-31" value="1980-01-01" id="dateUser" class="form-control " aria-describedby="datelHelp" onfocus="validacion('dateUser')" required>
+                                                <small id="dateHelp" class="text-muted">Put your birth date here</small>
                                             </div>
-                                        </form>
-                                        <form class="form-control">
-                                            <div class="form-group py-0">
-                                                <i class="fa fa-lock"> Confirm New Password</i>
-                                                <input type="password" id="confNewPassword" class="form-control" aria-describedby="confPasswordHelp" autocomplete="on">
-                                                <small id="confPasswordHelp" class="text-muted">Must be the same as new
-                                                    password.</small>
+                                            <div class="form-row py-1">
+                                                <label for="usName"><b><i class="fa fa-user"> User Name</i></b></label>
+                                                <input type="text" id="usName" class="form-control" aria-describedby="userHelp" oninput="validarUser('usName')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                                <small id="userHelp" class="text-muted">Put the name you want as a user</small>
                                             </div>
-                                        </form>
-                                        <form class="form-control">
-                                            <div class="form-group py-0">
-                                                <i class="fa fa-envelope"> Email</i>
-                                                <input type="email" id="email" class="form-control" aria-describedby="emailHelp">
-                                                <small id="emailHelp" class="text-muted">andresjulian@yahoo.es</small>
+                                            <div class="form-row py-1 ">
+                                                <label for="passwordUser"><b><i class="fa fa-lock "> Password</i></b></label>
+                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" oninput="validacion('passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <small id="passwordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
                                             </div>
-                                        </form>
-                                    </div>
+                                            <div class="form-row py-1 ">
+                                                <label for="confirmPassUser"><b><i class="fa fa-lock "> Confirm your password</i></b></label>
+                                                <input type="password" id="confirmPassUser" class="form-control" aria-describedby="confirmHelp" oninput="alertar('passwordUser','confirmPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <small id="confirmHelp" class="text-muted ">Repeat your password.</small>
+                                            </div>
+                                        </fieldset>
+                                        <div id="alert">
+                                        
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="card-footer">
-                                    <input onClick="guardarCambios();" class="btn btn-info" type="button" value="Save Changes">
+                                    <button type="submit" onclick="modifUser();" class="btn btn-info">Saves Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -466,31 +604,83 @@ function generarModalPerfil() {
         </div>`;
 }
 
-function guardarCambios() {
-    var verif = true;
-    if (document.getElementById("firstName").value != null) {
-        clienteSeleccionado.nombreCliente = document.getElementById("firstName").value;
-    }
-    if (document.getElementById("lastName").value != null) {
-        clienteSeleccionado.apellidoCliente = document.getElementById("lastName").value;
-    }
-    if (document.getElementById("usuario").value != null) {
-        clienteSeleccionado.usuarioCliente = document.getElementById("usuario").value;
-    }
-    if (document.getElementById("newPassword").value != null) {
-        if (document.getElementById("confNewPassword").value == document.getElementById("newPassword").value) {
-            clienteSeleccionado.passwordCliente = document.getElementById("confNewPassword").value;
-        } else {
-            alert("Put the same password");
-            verif = false;
+function modifUser() {
+    if (verifUser && verifPass && document.getElementById("lastName").value.length != 0 && document.getElementById("emailUser").value.length != 0 && document.getElementById("firstName").value.length != 0) {
+        var nuevoCliente = {
+            nombreCliente: document.getElementById("firstName").value,
+            apellidoCliente: document.getElementById("lastName").value,
+            usuarioCliente: document.getElementById("usName").value,
+            emailCliente: document.getElementById("emailUser").value,
+            passwordCliente: document.getElementById("passwordUser").value,
+            actual: true,
+            fechaNacimiento: document.getElementById("dateUser").value,
+            fotoCliente: "../img/user-logo-png-4.png",
+            companiasFav: [],
+            publicacionesFav: []
         }
-    }
-    if (document.getElementById("email").value != null) {
-        clienteSeleccionado.emailCliente = document.getElementById("email").value;
-    }
-    if (verif) {
-        localStorage.setItem("clientes", JSON.stringify(clientes));
+        clientes.push(nuevoCliente);
+        localStorage.setItem('clientes', JSON.stringify(clientes));
         top.location.reload();
+    } else if (verifUser == false || verifPass == false || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("firstName").value.length == 0) {
+        document.getElementById("alert").innerHTML = "";
+        document.getElementById("alert").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Incomplete! , </strong>Please fill all the fields.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    }
+}
+
+function validacion(id) {
+    var elem = document.getElementById(id);
+    if (elem.checkValidity()) {
+        elem.style.borderColor = "green";
+        elem.style.color = "green";
+    } else {
+        elem.style.borderColor = "red";
+        elem.style.color = "red";
+    }
+}
+
+function alertar(id1, id2) {
+    var elem1 = document.getElementById(id1);
+    var elem2 = document.getElementById(id2);
+    if (elem1.value == elem2.value) {
+        if (elem2.checkValidity()) {
+            verifPass = true;
+            elem2.style.borderColor = "green";
+            elem2.style.color = "green";
+        } else {
+            elem2.style.borderColor = "red";
+            elem2.style.color = "red";
+        }
+    } else {
+        elem2.style.borderColor = "red";
+        elem2.style.color = "red";
+    }
+
+}
+
+function validarUser(id) {
+    var elem = document.getElementById(id);
+
+    for (let i = 0; i < clientes.length; i++) {
+        if (clientes[i].usuarioCliente == elem.value) {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+            verifUser = true;
+            break;
+        } else {
+            if (elem.checkValidity()) {
+                elem.style.borderColor = "green";
+                elem.style.color = "green";
+            } else {
+                elem.style.borderColor = "red";
+                elem.style.color = "red";
+            }
+        }
     }
 }
 
@@ -571,6 +761,77 @@ function empFavorita(cont, indiceEmp) {
     }
 }
 
+function aComprar(idInput, idAlert, indiceEmp, indicePub) {
+    let elem = document.getElementById(idInput).value;
+    let pub = empresas[indiceEmp].publicaciones[indicePub];
+    console.log(elem);
+    if (elem != 0) {
+        let porComprar = {
+            aComprar: pub.nombreGanga,
+            fechaCompra: '20/06/20',
+            cant: elem
+        }
+        clienteSeleccionado.comprar.push(porComprar);
+        localStorage.setItem('empresas', JSON.stringify(clientes));
+        elem = 0;
+    } else {
+        document.getElementById(idAlert).innerHTML = "";
+        document.getElementById(idAlert).innerHTML +=
+            `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Choose another quantity!</strong> You should check in on the input field.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    }
+}
+
+function comprarPub(id, indiceEmp, indicePub) {
+    let elem = document.getElementById(id).value;
+    let pub = empresas[indiceEmp].publicaciones[indicePub];
+    if (elem != 0) {
+        let nuevaVenta = {
+            cantidad: elem,
+            fechaCompra: '20/06/20'
+        }
+        let nuevaCompra = {
+            comprasHechas: pub.nombreGanga,
+            fechaCompra: '20/06/20',
+            cant: elem
+        }
+        let porComprar = {
+            aComprar: pub.nombreGanga,
+            fechaCompra: '20/06/20',
+            cant: elem
+        }
+        pub.venta.push(nuevaVenta);
+        clienteSeleccionado.comprasHechas.push(nuevaCompra);
+        localStorage.setItem('empresas', JSON.stringify(empresas));
+        elem = 0;
+    }
+}
+
+function generarModalTarjeta() {
+    document.getElementById("modalTarjeta").innerHTML = "";
+    document.getElementById("modalTarjeta").innerHTML +=
+        `<div id="profile" class="modal fade " data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header style">
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
+
 var swiper = new Swiper('.swiper-container', {
     effect: 'coverflow',
     grabCursor: true,
@@ -594,6 +855,7 @@ $(window).scroll(function() {
         document.getElementById("logoGanguitas").innerHTML =
             `<img src="../img/logo.png" alt="imagen logo">`;
     } else {
+        $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
         document.getElementById("logoGanguitas").innerHTML =
             `<img src="../img/logo-blanco-y-negro.png" alt="imagen logo">`;
     }

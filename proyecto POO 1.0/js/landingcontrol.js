@@ -1,7 +1,10 @@
 var localStorage = window.localStorage;
 var empresas;
 var clientes;
+var selec;
 var selecciono;
+var verifUser = false;
+var verifPass = false;
 
 if (localStorage.getItem("clientes") == null) {
     clientes = [{
@@ -11,9 +14,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'hugoamador@gmail.com',
             passwordCliente: 'Barca1234',
             actual: false,
+            fechaNacimiento: "02/08/1999",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
         {
             nombreCliente: 'Cristian Alejandro',
@@ -22,9 +28,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'kikansama@gmail.com',
             passwordCliente: 'kirito145',
             actual: false,
+            fechaNacimiento: "02/08/1997",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
         {
             nombreCliente: 'Sarol Michel',
@@ -33,9 +42,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'solrodriguez@gmail.com',
             passwordCliente: 'solecito',
             actual: false,
+            fechaNacimiento: "22/01/2000",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
         {
             nombreCliente: 'Fany Julisa',
@@ -44,9 +56,12 @@ if (localStorage.getItem("clientes") == null) {
             emailCliente: 'flacamil@gmail.com',
             passwordCliente: 'instagram',
             actual: false,
+            fechaNacimiento: "02/08/2001",
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         },
     ];
     localStorage.setItem("clientes", JSON.stringify(clientes));
@@ -58,6 +73,11 @@ if (localStorage.getItem("empresas") == null) {
     empresas = [{
             nombreEmpresa: 'Diunsa',
             logoEmpresa: '../img/Diunsa-logo.png',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Comercial',
             nombreUsuario: 'diunsahn',
             password: 'password',
@@ -73,23 +93,40 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Vamos a apoyar al Motagua por la compra de una camiseta deportiva del Motagua te regalamos un pase doble en localidad sombra sur!',
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
-                    ofertasDisponibles: '5',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 5,
+                    fechaInicio: '7:00',
+                    precio: 999.99,
+                    venta: [{
+                        cantidad: 1,
+                        fechaCompra: '20/06/20'
+                    }],
+                    comentarios: [{
+                        nomCliente: 'ache',
+                        comentCliente: '¡Se ve super la promocion!'
+                    }]
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
                     nombreGanga: '¡Hyper Mega Oferta!',
                     descripcionGanga: 'Por la compra de un celular Huawei Nova 5T ¡Te regalamos un televisor LED de 24" GRATIS!',
-                    fechaMax: '05/16/20',
+                    fechaMax: '28/06/20',
                     horaMax: '20:50',
-                    ofertasDisponibles: '45',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 45,
+                    fechaInicio: '7:00',
+                    precio: 9000.00,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Samsung',
             logoEmpresa: '../img/logo-samsung.jpg',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Tecnologia',
             nombreUsuario: 'samsunghn',
             password: 'password',
@@ -105,8 +142,17 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Aprovecha y lleva a tu persona querida al cine por la compra de un Samsung A30 o A30s te regalamos entradas al cine!',
                     fechaMax: '',
                     horaMax: '16:50',
-                    ofertasDisponibles: '15',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 15,
+                    fechaInicio: '7:00',
+                    precio: 6300.00,
+                    venta: [{
+                        cantidad: 1,
+                        fechaCompra: '12/06/20'
+                    }],
+                    comentarios: [{
+                        nomCliente: 'kikin',
+                        comentCliente: '¡A tiempo llego la promocion!'
+                    }]
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -114,14 +160,22 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Es tiempo de innovar! Por la compra de tu celular Samsung te llevas gratis hasta $200 en productos Samsung',
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
-                    ofertasDisponibles: '205',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 205,
+                    fechaInicio: '7:00',
+                    precio: 3500.00,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Lady Lee',
             logoEmpresa: '../img/logo-lady-lee.jpg',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Electrodomesticos',
             nombreUsuario: 'ladyLeehn',
             password: 'password',
@@ -134,11 +188,14 @@ if (localStorage.getItem("empresas") == null) {
             publicaciones: [{
                     imagenGanga: '../img/ladylee1.jpg',
                     nombreGanga: 'Televisor Samsung',
-                    descripcionGanga: '¿Aburrido de ver televisión en pantalla pequeña? ¡Ven y aprovecha esta súper oferta!, televisor SMART Samsung de 65"',
+                    descripcionGanga: '¿Aburrido de ver televisión en pantalla pequena? ¡Ven y aprovecha esta súper oferta!, televisor SMART Samsung de 65"',
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
-                    ofertasDisponibles: '5',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 5,
+                    fechaInicio: '7:00',
+                    precio: 15000.00,
+                    venta: [],
+                    comentarios: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -146,14 +203,22 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Muebles super comodos super baratos! ¡Ven y aprovecha esta súper oferta!',
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
-                    ofertasDisponibles: '15',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 15,
+                    fechaInicio: '7:00',
+                    precio: 9999.99,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Burger King',
             logoEmpresa: '../img/Burger-King-Logo.png',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '6.17403',
             tipoEmpresa: 'Comidas Rapidas',
             nombreUsuario: 'burgerkinghn',
             password: 'password',
@@ -169,8 +234,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¿Deseas comer en familia? Llego el combo #2 de Burguer King para que disfrutes en familia.',
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
-                    ofertasDisponibles: '255',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 255,
+                    fechaInicio: '7:00',
+                    precio: 249.99,
+                    venta: [],
+                    comentarios: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -178,8 +246,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Un refresco, orden de papitas, un sundae, y una hamburguesa Danés!',
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
-                    ofertasDisponibles: '405',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 405,
+                    fechaInicio: '7:00',
+                    precio: 79.99,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
@@ -189,62 +260,93 @@ if (localStorage.getItem("empresas") == null) {
     empresas = JSON.parse(localStorage.getItem('empresas'));
 }
 
-function actual() {
-    var verifUser = false;
-    var verifPass = false;
-    for (let i = 0; i < clientes.length; i++) {
-        if (clientes[i].usuarioCliente == document.getElementById("userName").value) {
-            if (clientes[i].passwordCliente == document.getElementById("password").value) {
-                for (let j = 0; j < clientes.length; j++) {
-                    clientes[j].actual = false;
-                }
-                clientes[i].actual = true;
-                selecciono = "cliente";
-                localStorage.setItem("clientes", JSON.stringify(clientes));
-                verifPass = false;
+function validar(id) {
+    document.getElementById("alertLog").innerHTML = "";
+    var elem = document.getElementById(id);
+    if (id == "userName") {
+        for (let i = 0; i < clientes.length; i++) {
+            if (clientes[i].usuarioCliente === elem.value) {
+                selec = clientes[i];
+                selecciono = "clientes";
                 verifUser = false;
                 break;
-            } else {
-                verifPass = true
-            }
-        } else {
-            verifUser = true;
-        }
-    }
-
-    if (verifUser || verifPass) {
-        for (let i = 0; i < empresas.length; i++) {
-            if (empresas[i].nombreUsuario == document.getElementById("userName").value) {
-                if (empresas[i].password == document.getElementById("password").value) {
-                    for (let j = 0; j < empresas.length; j++) {
-                        empresas[j].actual = false;
-                    }
-                    empresas[i].actual = true;
-                    localStorage.setItem("empresas", JSON.stringify(empresas));
-                    selecciono = "empresa";
-                    verifPass = false;
-                    verifUser = false;
-                    break;
-                } else {
-                    verifPass = true
-                }
             } else {
                 verifUser = true;
             }
         }
-        if (verifUser || verifPass) {
-            alert("Usuario o Contraseña Invalido");
-        } else if (verifUser == false || verifPass == false) {
-            redireccionar();
+        if (verifUser) {
+            for (let i = 0; i < empresas.length; i++) {
+                if (empresas[i].nombreUsuario === elem.value) {
+                    selec = empresas[i];
+                    selecciono = "empresas";
+                    verifUser = false;
+                    break;
+                } else {
+                    verifUser = true;
+                }
+            }
         }
-
-    } else if (verifUser == false || verifPass == false) {
-        redireccionar();
+    } else {
+        if (selecciono == "clientes") {
+            if (selec.passwordCliente == elem.value) {
+                console.log("entro a pascli" + elem.value);
+                for (let j = 0; j < clientes.length; j++) {
+                    clientes[j].actual = false;
+                }
+                selec.actual = true;
+                localStorage.setItem("clientes", JSON.stringify(clientes));
+                verifPass = false;
+            } else {
+                verifPass = true;
+            }
+        } else if (selecciono == "empresas") {
+            if (selec.password == elem.value) {
+                console.log("entro a pascomp" + elem.value);
+                for (let j = 0; j < empresas.length; j++) {
+                    empresas[j].actual = false;
+                }
+                empresas[i].actual = true;
+                localStorage.setItem("empresas", JSON.stringify(empresas));
+                selecciono = "empresas";
+                verifPass = false;
+                verifUser = false;
+            } else {
+                verifPass = true;
+            }
+        }
     }
 }
 
-function redireccionar() {
-    if (selecciono == "cliente") {
+function actual() {
+    if (verifUser) {
+        document.getElementById("userName").style.borderColor = "red";
+        document.getElementById("userName").style.color = "red";
+        document.getElementById("alertLog").innerHTML = "";
+        document.getElementById("alertLog").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Wrong name , </strong>The username you used it doesn't exist.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (verifPass) {
+        document.getElementById("password").style.borderColor = "red";
+        document.getElementById("password").style.color = "red";
+        document.getElementById("alertLog").innerHTML = "";
+        document.getElementById("alertLog").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Wrong Password!, </strong>Please make sure that is your password.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (verifUser === false && verifPass === false) {
+        redireccionar(selecciono);
+    }
+}
+
+function redireccionar(selec) {
+    if (selec == "clientes") {
         top.location.href = "html/ganguitasUsuario.html";
     } else {
         top.location.href = "html/ganguitasCompany.html";
@@ -257,8 +359,9 @@ $(window).scroll(function() {
         document.getElementById("logoGanguitas").innerHTML =
             `<img src="img/logo.png" alt="imagen logo">`;
     } else {
+        $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
         document.getElementById("logoGanguitas").innerHTML =
             `<img src="img/logo-blanco-y-negro.png" alt="imagen logo">`;
     }
 
-})
+});

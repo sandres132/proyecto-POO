@@ -11,6 +11,11 @@ if (localStorage.getItem("empresas") == null) {
     empresas = [{
             nombreEmpresa: 'Diunsa',
             logoEmpresa: '../img/Diunsa-logo.png',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Comercial',
             nombreUsuario: 'diunsahn',
             password: 'password',
@@ -26,23 +31,40 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Vamos a apoyar al Motagua por la compra de una camiseta deportiva del Motagua te regalamos un pase doble en localidad sombra sur!',
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
-                    ofertasDisponibles: '5',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 5,
+                    fechaInicio: '7:00',
+                    precio: 999.99,
+                    venta: [{
+                        cantidad: 1,
+                        fechaCompra: '20/06/20'
+                    }],
+                    comentarios: [{
+                        nomCliente: 'ache',
+                        comentCliente: '¡Se ve super la promocion!'
+                    }]
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
                     nombreGanga: '¡Hyper Mega Oferta!',
                     descripcionGanga: 'Por la compra de un celular Huawei Nova 5T ¡Te regalamos un televisor LED de 24" GRATIS!',
-                    fechaMax: '05/16/20',
+                    fechaMax: '28/06/20',
                     horaMax: '20:50',
-                    ofertasDisponibles: '45',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 45,
+                    fechaInicio: '7:00',
+                    precio: 9000.00,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Samsung',
             logoEmpresa: '../img/logo-samsung.jpg',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Tecnologia',
             nombreUsuario: 'samsunghn',
             password: 'password',
@@ -58,8 +80,17 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Aprovecha y lleva a tu persona querida al cine por la compra de un Samsung A30 o A30s te regalamos entradas al cine!',
                     fechaMax: '',
                     horaMax: '16:50',
-                    ofertasDisponibles: '15',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 15,
+                    fechaInicio: '7:00',
+                    precio: 6300.00,
+                    venta: [{
+                        cantidad: 1,
+                        fechaCompra: '12/06/20'
+                    }],
+                    comentarios: [{
+                        nomCliente: 'kikin',
+                        comentCliente: '¡A tiempo llego la promocion!'
+                    }]
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -67,14 +98,22 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Es tiempo de innovar! Por la compra de tu celular Samsung te llevas gratis hasta $200 en productos Samsung',
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
-                    ofertasDisponibles: '205',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 205,
+                    fechaInicio: '7:00',
+                    precio: 3500.00,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Lady Lee',
             logoEmpresa: '../img/logo-lady-lee.jpg',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '2.17403',
             tipoEmpresa: 'Electrodomesticos',
             nombreUsuario: 'ladyLeehn',
             password: 'password',
@@ -87,11 +126,14 @@ if (localStorage.getItem("empresas") == null) {
             publicaciones: [{
                     imagenGanga: '../img/ladylee1.jpg',
                     nombreGanga: 'Televisor Samsung',
-                    descripcionGanga: '¿Aburrido de ver televisión en pantalla pequeña? ¡Ven y aprovecha esta súper oferta!, televisor SMART Samsung de 65"',
+                    descripcionGanga: '¿Aburrido de ver televisión en pantalla pequena? ¡Ven y aprovecha esta súper oferta!, televisor SMART Samsung de 65"',
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
-                    ofertasDisponibles: '5',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 5,
+                    fechaInicio: '7:00',
+                    precio: 15000.00,
+                    venta: [],
+                    comentarios: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -99,14 +141,22 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Muebles super comodos super baratos! ¡Ven y aprovecha esta súper oferta!',
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
-                    ofertasDisponibles: '15',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 15,
+                    fechaInicio: '7:00',
+                    precio: 9999.99,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
         {
             nombreEmpresa: 'Burger King',
             logoEmpresa: '../img/Burger-King-Logo.png',
+            banner: "../img/logo.png",
+            pais: "Honduras",
+            direccion: 'Col. Miraflores',
+            longitud: '8.17403',
+            latitud: '6.17403',
             tipoEmpresa: 'Comidas Rapidas',
             nombreUsuario: 'burgerkinghn',
             password: 'password',
@@ -122,8 +172,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¿Deseas comer en familia? Llego el combo #2 de Burguer King para que disfrutes en familia.',
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
-                    ofertasDisponibles: '255',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 255,
+                    fechaInicio: '7:00',
+                    precio: 249.99,
+                    venta: [],
+                    comentarios: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -131,8 +184,11 @@ if (localStorage.getItem("empresas") == null) {
                     descripcionGanga: '¡Un refresco, orden de papitas, un sundae, y una hamburguesa Danés!',
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
-                    ofertasDisponibles: '405',
-                    fechaInicio: '7:00'
+                    ofertasDisponibles: 405,
+                    fechaInicio: '7:00',
+                    precio: 79.99,
+                    venta: [],
+                    comentarios: []
                 },
             ]
         },
@@ -416,6 +472,7 @@ $(window).scroll(function() {
         document.getElementById("logoGanguitas").innerHTML =
             `<img src="../img/logo.png" alt="imagen logo">`;
     } else {
+        $('nav').toggleClass('scrolled', $(this).scrollTop() > 50);
         document.getElementById("logoGanguitas").innerHTML =
             `<img src="../img/logo-blanco-y-negro.png" alt="imagen logo">`;
     }

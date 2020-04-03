@@ -215,19 +215,22 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div id="alertLog">
+
+                    </div>
                     <div class="form-control ">
                         <form class="form-control">
                             <div class="form-group">
                                 <i class="fa fa-user"> User Name</i>
-                                <input type="text" id="userName" class="form-control" aria-describedby="userNameHelp">
+                                <input type="text" id="userName" class="form-control" aria-describedby="userNameHelp" oninput="validar('userName');" required>
                                 <small id="userNameHelp" class="text-muted">andresju</small>
                             </div>
                         </form>
                         <form class="form-control">
                             <div class="form-group">
                                 <i class="fa fa-lock"> Password</i>
-                                <input type="password" id="password" class="form-control" aria-describedby="passwordHelp" autocomplete="on">
-                                <small id="passwordHelp" class="text-muted">Must be 8-20 characters long.</small>
+                                <input type="password" id="password" class="form-control" aria-describedby="passwordHelp" autocomplete="on" oninput="validar('password');" required>
+                                <small id="passwordHelp" class="text-muted">Put your password.</small>
                             </div>
                         </form>
                     </div>

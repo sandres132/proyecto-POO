@@ -96,7 +96,7 @@ body {
     margin: 20px;
     text-align: center;
     transition: all 0.25s;
-    max-width: 330px !important;
+    max-width: 500px !important;
     min-width: 284px !important;
 }
 
@@ -123,14 +123,14 @@ body {
 }
 
 .card-top-img {
-    max-width: 330px;
+    max-width: 500px;
     min-width: 284px;
     height: auto;
 }
 
 .card-adv,
 .card-QR {
-    max-width: 100px;
+    max-width: 200px;
     min-width: 70px;
     height: auto;
 }
