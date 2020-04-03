@@ -102,7 +102,8 @@ if (localStorage.getItem("empresas") == null) {
                     }],
                     comentarios: [{
                         nomCliente: 'ache',
-                        comentCliente: '¡Se ve super la promocion!'
+                        comentCliente: '¡Se ve super la promocion!',
+                        fechaComment: '20/06/20'
                     }]
                 },
                 {
@@ -151,7 +152,8 @@ if (localStorage.getItem("empresas") == null) {
                     }],
                     comentarios: [{
                         nomCliente: 'kikin',
-                        comentCliente: '¡A tiempo llego la promocion!'
+                        comentCliente: '¡A tiempo llego la promocion!',
+                        fechaComment: '20/06/20'
                     }]
                 },
                 {
@@ -296,6 +298,31 @@ function generarPublicaciones() {
 
             }
 
+            let botonFavEmp = "";
+            for (let l = 0; l < clienteSeleccionado.companiasFav.length; l++) {
+                if (clienteSeleccionado.companiasFav[l].nombreEmp == empresas[i].nombreEmpresa) {
+                    botonFavEmp =
+                        `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
+                    break;
+                } else {
+                    botonFavEmp =
+                        `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
+                }
+            }
+
+            let botonFavPub = "";
+            for (let l = 0; l < clienteSeleccionado.companiasFav.length; l++) {
+                if (clienteSeleccionado.companiasFav[l].nombreEmp == empresas[i].nombreEmpresa) {
+                    botonFavPub =
+                        `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
+                    break;
+                } else {
+                    botonFavPub =
+                        `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
+                }
+
+            }
+
             document.getElementById("publicaciones").innerHTML +=
                 `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <div class="card">
@@ -323,7 +350,7 @@ function generarPublicaciones() {
                                     <div class="rw-ui-container" data-title="product rating"></div>
                                 </div>
                                 <div class="card-footer">
-                                    <button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>
+                                    ${botonFavPub}
                                     <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#compCant${cont}" aria-expanded="false" aria-controls="comprarPub"><i class="fa fa-cart-arrow-down fa-1x"></i></button>
                                     <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
                                         <i class="fa fa-eye">Ver Mas</i>
@@ -335,17 +362,23 @@ function generarPublicaciones() {
                                             <h4 class="form-control "><b>Precio:</b> ${empresas[i].publicaciones[j].precio}</h4>
                                             <hr>
                                             <h4><b><i class="fa fa-comment-o"></i>Comentarios</b></h4>
-                                            <button id="commentPub${cont}" onclick="comentPub(" comPub${cont} ",${j},${i});" class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comPub${cont}" aria-expanded="false" aria-controls="commentPub"><i class="fa fa-commenting-o"> Comment</i></button>
+                                            <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comPub${cont}" aria-expanded="false" aria-controls="commentPub"><i class="fa fa-commenting-o"> Comment</i></button>
                                             <div class="collapse" id="comPub${cont}">
                                                 <div class="card-body m-0">
                                                     <div class="form-row py-1">
                                                         <label for="comPub"><b><i class="fa fa-commenting-o"> Post</i></b></label>
-                                                        <input type="text" id="comPub${cont}" style="height:80px;" class="form-control" aria-describedby="comPubHelp" oninput="validacion('comPub${cont}')" required>
+                                                        <input type="text" id="comentarPub${cont}" style="height:80px;" class="form-control" aria-describedby="comPubHelp" required>
                                                         <small id="comPubHelp" class="text-muted">Post your opinion</small>
+                                                    </div>
+                                                    <div class="container mb-3">
+                                                        <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${j},${i});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> post</i></button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <hr> ${coments}
+                                            <hr> 
+                                            <div id="paraComent${cont}">
+                                                ${coments}
+                                            </div>
                                             <hr>
                                         </div>
                                     </div>
@@ -354,12 +387,13 @@ function generarPublicaciones() {
                                             <div class="form-group py-1">
                                                 <label for="cantComprar" class="float-left"><b><i class="fa fa-cart-arrow-down"> Quantity to buy</i></b></label>
                                                 <input type="number" value="0" min="0" id="cantComprar${cont}" class="form-control" aria-describedby="cantComprarHelp" required>
-                                                <small id="cantComprarHelp" class="text-muted float-left">Put the quantity you are going to buy</small><br>
+                                                <small id="cantComprarHelp" class="text-muted float-left">Put the quantity you are going to buy</small>
+                                                <br>
                                                 <div id="alertaComprar${cont}">
 
                                                 </div>
                                                 <div class="container mb-3">
-                                                    <button onclick="aComprar(" cantComprar${cont} ", "alertaComprar${cont} " ,${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-cart-plus fa-1x"> Add</i></button>
+                                                    <button onclick="aComprar('cantComprar${cont}','alertaComprar${cont}',${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-cart-plus fa-1x"> Add</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -404,8 +438,8 @@ function generarPublicaciones() {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>
+                                <div class="card-footer" >
+                                    ${botonFavEmp}
                                     <a href="#" class="log btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Locales
                                         Cercanos</a>
                                 </div>
@@ -419,6 +453,47 @@ function generarPublicaciones() {
     }
 }
 generarPublicaciones();
+
+function generarModalCompras() {
+    let lista = "";
+    let contador = 0;
+    for (let i = 0; i < clienteSeleccionado.aComprar.length; i++) {
+        lista +=
+            `
+            <div class="container">
+                <div class="form-control ">
+                    <h5><b>Nombre Articulo: </b>${clienteSeleccionado.aComprar[i].aComprar}</h5>
+                    <h5><b>Cantidad de articulos: </b>${clienteSeleccionado.aComprar[i].cant}</h5>
+                    <button class="btn btn-info" onclick="borrarCompra('${contador}');"><i class="fa fa-trash-o"> Delete</i></button>
+                </div>
+            </div>`;
+        contador++;
+    }
+
+    document.getElementById("modalCompras").innerHTML = "";
+    document.getElementById("modalCompras").innerHTML +=
+        `<div id="compras" class="modal fade " data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header style">
+                        <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Hi ${clienteSeleccionado.nombreUsuario}!</h2>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Here are your products!</h4>
+                        <div class="row">
+                            ${lista}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="buy" class="btn btn-info" onclick="comprarPub();"><i class="fa fa-credit-card"> Buy</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
 
 function generarModalPerfil() {
     let publicacionesFavoritas = "";
@@ -764,11 +839,10 @@ function empFavorita(cont, indiceEmp) {
 function aComprar(idInput, idAlert, indiceEmp, indicePub) {
     let elem = document.getElementById(idInput).value;
     let pub = empresas[indiceEmp].publicaciones[indicePub];
-    console.log(elem);
     if (elem != 0) {
         let porComprar = {
             aComprar: pub.nombreGanga,
-            fechaCompra: '20/06/20',
+            fechaCompra: fechaActual(),
             cant: elem
         }
         clienteSeleccionado.comprar.push(porComprar);
@@ -786,28 +860,54 @@ function aComprar(idInput, idAlert, indiceEmp, indicePub) {
     }
 }
 
-function comprarPub(id, indiceEmp, indicePub) {
-    let elem = document.getElementById(id).value;
-    let pub = empresas[indiceEmp].publicaciones[indicePub];
-    if (elem != 0) {
+function borrarCompra(indiceCompra) {
+    clienteSeleccionado.comprar.splice(indiceCompra, 1);
+    localStorage.setItem("clientes", JSON.stringify(clientes));
+}
+
+function comprarPub() {
+    for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
         let nuevaVenta = {
-            cantidad: elem,
-            fechaCompra: '20/06/20'
+            cantidad: clienteSeleccionado.comprar[i].cant,
+            fechaCompra: fechaActual()
         }
         let nuevaCompra = {
-            comprasHechas: pub.nombreGanga,
-            fechaCompra: '20/06/20',
-            cant: elem
-        }
-        let porComprar = {
-            aComprar: pub.nombreGanga,
-            fechaCompra: '20/06/20',
-            cant: elem
+            nomCompra: clienteSeleccionado.comprar[i].aComprar,
+            fechaCompra: fechaActual(),
+            cant: clienteSeleccionado.comprar[i].cant
         }
         pub.venta.push(nuevaVenta);
         clienteSeleccionado.comprasHechas.push(nuevaCompra);
+        localStorage.setItem('clientes', JSON.stringify(clientes));
         localStorage.setItem('empresas', JSON.stringify(empresas));
-        elem = 0;
+    }
+}
+
+function comentPub(idParCom, id, indiceEmp, indicePub) {
+    let elem = document.getElementById(id).value;
+    let pub = empresas[indiceEmp].publicaciones[indicePub];
+    if (elem.length != 0) {
+        let nuevoComenta = {
+            nomCliente: clienteSeleccionado.usuarioCliente,
+            comentCliente: elem,
+            fechaComment: fechaActual()
+        }
+        pub.comentarios.push(nuevoComenta);
+        localStorage.setItem('empresas', JSON.stringify(empresas));
+
+        document.getElementById(idParCom).innerHTML +=
+            `
+            <div class="form-control py-1">
+                <div>
+                    <h4><b><i class="fa fa-user-circle-o">${nuevoComenta.nomCliente}</i></b></h4>
+                </div>
+                <hr>
+                <div>
+                    <h4><i class="fa fa-comments-o"> ${nuevoComenta.comentCliente}</i></h4>
+                </div>
+            </div>`;
+
+        document.getElementById(id).value = "";
     }
 }
 
@@ -830,6 +930,12 @@ function generarModalTarjeta() {
                 </div>
             </div>
         </div>`;
+}
+
+function fechaActual() {
+    var f = new Date();
+    var fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+    return fecha;
 }
 
 var swiper = new Swiper('.swiper-container', {

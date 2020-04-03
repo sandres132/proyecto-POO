@@ -102,7 +102,8 @@ if (localStorage.getItem("empresas") == null) {
                     }],
                     comentarios: [{
                         nomCliente: 'ache',
-                        comentCliente: '¡Se ve super la promocion!'
+                        comentCliente: '¡Se ve super la promocion!',
+                        fechaComment: '20/06/20'
                     }]
                 },
                 {
@@ -151,7 +152,8 @@ if (localStorage.getItem("empresas") == null) {
                     }],
                     comentarios: [{
                         nomCliente: 'kikin',
-                        comentCliente: '¡A tiempo llego la promocion!'
+                        comentCliente: '¡A tiempo llego la promocion!',
+                        fechaComment: '20/06/20'
                     }]
                 },
                 {

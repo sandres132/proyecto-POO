@@ -27,7 +27,7 @@
                 <div id="my-nav" class="collapse navbar-collapse">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-white superText"><i class="fa fa-shopping-cart fa-2x"></i>
+                            <a href="#" class="nav-link text-white superText" data-toggle="modal" data-target="#compras"><i class="fa fa-shopping-cart fa-2x"></i>
                                 Buy</a>
                         </li>
                         <li class="nav-item" id="nombreDeUsuario">
@@ -76,26 +76,30 @@
 
     </section>
 
-    <section id="modalTarjeta">
-        <div id="profile" class="modal fade " data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header style">
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+    <section id="modalCompras">
+
+    </section>
+
+    <section id="modalTarjeta ">
+        <div id="tarjeta " class="modal fade " data-backdrop="position-static " tabindex="-1 " role="dialog " aria-labelledby="contentForm " aria-hidden="true ">
+            <div class="modal-dialog " role="document ">
+                <div class="modal-content ">
+                    <div class="modal-header style ">
+                        <button class="close " data-dismiss="modal " aria-label="Close ">
+                            <span aria-hidden="true ">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="card mb-3" style="max-width: 540px;">
-                            <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <img src=".." class="card-img" alt="..">
+                    <div class="modal-body ">
+                        <div class="card mb-3 " style="max-width: 540px; ">
+                            <div class="row no-gutters ">
+                                <div class="col-md-4 ">
+                                    <img src=".. " class="card-img " alt=".. ">
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                <div class="col-md-8 ">
+                                    <div class="card-body ">
+                                        <h5 class="card-title ">Card title</h5>
+                                        <p class="card-text ">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                        <p class="card-text "><small class="text-muted ">Last updated 3 mins ago</small></p>
                                     </div>
                                 </div>
                             </div>
@@ -106,46 +110,46 @@
         </div>
     </section>
 
-    <div class="position-static fixed-bottom">
-        <footer class="bg-dark py-5">
-            <div class="container">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="accordion d-lg-flex w-100" id="accordion">
-                            <div class="col-lg-4 col-md-12">
-                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="links">
-                                    <ul class="list-unstyled">
+    <div class="position-static fixed-bottom ">
+        <footer class="bg-dark py-5 ">
+            <div class="container ">
+                <div class="col-md-12 ">
+                    <div class="row ">
+                        <div class="accordion d-lg-flex w-100 " id="accordion ">
+                            <div class="col-lg-4 col-md-12 ">
+                                <div class="collapse text-white d-lg-flex " data-parent="#accordion " id="links ">
+                                    <ul class="list-unstyled ">
                                         <li>
-                                            <a onclick="logOut();" href="../index.html" class="nav-link p-0 text-white">Log Out</a>
+                                            <a onclick="logOut(); " href="../index.html " class="nav-link p-0 text-white ">Log Out</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-12">
-                                <a href="#aboutUs" data-toggle="collapse" class="text-white h5 text-uppercase p-0 nav-link d-block d-lg-none d-xl-none">About
+                            <div class="col-lg-4 col-md-12 ">
+                                <a href="#aboutUs " data-toggle="collapse " class="text-white h5 text-uppercase p-0 nav-link d-block d-lg-none d-xl-none ">About
                                     Us</a>
-                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block ">
                                     About Us
                                 </div>
-                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="aboutUs">
+                                <div class="collapse text-white d-lg-flex " data-parent="#accordion " id="aboutUs ">
                                     <p>
                                         Somos una pagina web responsable con sus clientes, nuestro objetivo es poder brindar el mejor servicio para todos los tipos de clientes que visitan nuestra pagina.
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-12">
-                                <a href="#redesSociales" data-toggle="collapse" class="text-white h5 text-uppercase nav-link p-0 d-block d-lg-none d-xl-none">Encuentranos
+                            <div class="col-lg-4 col-md-12 ">
+                                <a href="#redesSociales " data-toggle="collapse " class="text-white h5 text-uppercase nav-link p-0 d-block d-lg-none d-xl-none ">Encuentranos
                                     En:</a>
-                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block">
+                                <div class="text-white h5 text-uppercase p-0 d-none d-lg-block d-xl-block ">
                                     Encuentranos En:
                                 </div>
-                                <div class="collapse text-white d-lg-flex" data-parent="#accordion" id="redesSociales">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <a href="#" class="icon"><i class="fa fa-facebook fa-2x"></i></a>
-                                        <a href="#" class="icon"><i class="fa fa-twitter fa-2x"></i></a>
-                                        <a href="#" class="icon"><i class="fa fa-instagram fa-2x"></i></a>
-                                        <a href="#" class="icon"><i class="fa fa-youtube fa-2x"></i></a>
-                                        <a href="#" class="icon"><i class="fa fa-linkedin fa-2x"></i></a>
+                                <div class="collapse text-white d-lg-flex " data-parent="#accordion " id="redesSociales ">
+                                    <div class="d-flex w-100 justify-content-between ">
+                                        <a href="# " class="icon "><i class="fa fa-facebook fa-2x "></i></a>
+                                        <a href="# " class="icon "><i class="fa fa-twitter fa-2x "></i></a>
+                                        <a href="# " class="icon "><i class="fa fa-instagram fa-2x "></i></a>
+                                        <a href="# " class="icon "><i class="fa fa-youtube fa-2x "></i></a>
+                                        <a href="# " class="icon "><i class="fa fa-linkedin fa-2x "></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -154,22 +158,22 @@
                 </div>
             </div>
         </footer>
-        <div class="container-fluid">
-            <div class="row bg-danger">
-                <div class="col-md-12">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <span class="p-3 text-white">GANGUITAS.COM &copy; Copyright 2020</span>
+        <div class="container-fluid ">
+            <div class="row bg-danger ">
+                <div class="col-md-12 ">
+                    <div class="d-flex justify-content-center align-items-center ">
+                        <span class="p-3 text-white ">GANGUITAS.COM &copy; Copyright 2020</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="../js/swiper.min.js"></script>
-    <script src="../js/jquery.slim.js"></script>
-    <script src="../js/popper.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/usuariosController.js"></script>
+    <script src="../js/swiper.min.js "></script>
+    <script src="../js/jquery.slim.js "></script>
+    <script src="../js/popper.js "></script>
+    <script src="../js/bootstrap.min.js "></script>
+    <script src="../js/usuariosController.js "></script>
 </body>
 
 </html>
