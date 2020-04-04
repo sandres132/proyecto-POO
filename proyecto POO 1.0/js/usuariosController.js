@@ -1,5 +1,4 @@
 var localStorage = window.localStorage;
-var empresaSeleccionada;
 var publicacionSeleccionada;
 var clienteSeleccionado;
 var clientes;
@@ -299,29 +298,40 @@ function generarPublicaciones() {
             }
 
             let botonFavEmp = "";
-            for (let l = 0; l < clienteSeleccionado.companiasFav.length; l++) {
-                if (clienteSeleccionado.companiasFav[l].nombreEmp == empresas[i].nombreEmpresa) {
-                    botonFavEmp =
-                        `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
-                    break;
-                } else {
-                    botonFavEmp =
-                        `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
+            if (clienteSeleccionado.companiasFav.length >= 1) {
+                for (let l = 0; l < clienteSeleccionado.companiasFav.length; l++) {
+                    if (clienteSeleccionado.companiasFav[l].nombreEmp == empresas[i].nombreEmpresa) {
+                        botonFavEmp =
+                            `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
+                        break;
+                    } else {
+                        botonFavEmp =
+                            `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
+                    }
                 }
+            } else {
+                botonFavEmp =
+                    `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
             }
+
 
             let botonFavPub = "";
-            for (let l = 0; l < clienteSeleccionado.companiasFav.length; l++) {
-                if (clienteSeleccionado.companiasFav[l].nombreEmp == empresas[i].nombreEmpresa) {
-                    botonFavPub =
-                        `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
-                    break;
-                } else {
-                    botonFavPub =
-                        `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
+            if (clienteSeleccionado.publicacionesFav.length >= 1) {
+                for (let l = 0; l < clienteSeleccionado.publicacionesFav.length; l++) {
+                    if (clienteSeleccionado.publicacionesFav[l].nombreGan == empresas[i].publicaciones[j].nombreGanga) {
+                        botonFavPub =
+                            `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
+                        break;
+                    } else {
+                        botonFavPub =
+                            `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
+                    }
                 }
-
+            } else {
+                botonFavPub =
+                    `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
             }
+
 
             document.getElementById("publicaciones").innerHTML +=
                 `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -371,7 +381,7 @@ function generarPublicaciones() {
                                                         <small id="comPubHelp" class="text-muted">Post your opinion</small>
                                                     </div>
                                                     <div class="container mb-3">
-                                                        <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${j},${i});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> post</i></button>
+                                                        <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> post</i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -457,15 +467,20 @@ generarPublicaciones();
 function generarModalCompras() {
     let lista = "";
     let contador = 0;
-    for (let i = 0; i < clienteSeleccionado.aComprar.length; i++) {
+    let montoTot = 0;
+    for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
+        montoTot += clienteSeleccionado.comprar[i].monto;
         lista +=
             `
             <div class="container">
                 <div class="form-control ">
-                    <h5><b>Nombre Articulo: </b>${clienteSeleccionado.aComprar[i].aComprar}</h5>
-                    <h5><b>Cantidad de articulos: </b>${clienteSeleccionado.aComprar[i].cant}</h5>
+                    <h5><b>Nombre Articulo: </b>${clienteSeleccionado.comprar[i].aComprar}</h5>
+                    <h5><b>Cantidad de articulos: </b>${clienteSeleccionado.comprar[i].cant}</h5>
+                    <h5><b>Precio articulo: </b>${clienteSeleccionado.comprar[i].precioArt}</h5>
+                    <h5><b>Monto articulos: </b>${clienteSeleccionado.comprar[i].monto}</h5>
                     <button class="btn btn-info" onclick="borrarCompra('${contador}');"><i class="fa fa-trash-o"> Delete</i></button>
                 </div>
+                <h5><b>Monto total+6: </b>${montoTot}</h5>
             </div>`;
         contador++;
     }
@@ -476,15 +491,20 @@ function generarModalCompras() {
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header style">
-                        <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Hi ${clienteSeleccionado.nombreUsuario}!</h2>
+                        <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Hi ${clienteSeleccionado.usuarioCliente}!</h2>
                         <button class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <h4>Here are your products!</h4>
-                        <div class="row">
-                            ${lista}
+                        <div id="mostrarProd">
+                            <div class="row">
+                                ${lista}
+                            </div>
+                        </div>
+                        <div id="alerModalComp">
+                        
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -494,6 +514,7 @@ function generarModalCompras() {
             </div>
         </div>`;
 }
+generarModalCompras();
 
 function generarModalPerfil() {
     let publicacionesFavoritas = "";
@@ -568,21 +589,21 @@ function generarModalPerfil() {
                                                 <h4 class="form-control"><i class="fa fa-user"></i><b> Apellido:</b> ${clienteSeleccionado.apellidoCliente}</h4>
                                         </form>
                                         <form class="form-control">
+                                                <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Fecha de Nacimiento:</b> ${clienteSeleccionado.fechaNacimiento}</h4>
+                                        </form>
+                                        <form class="form-control">
                                                 <h4 class="form-control"><i class="fa fa-user-circle"></i><b> Nombre de Usuario:</b> ${clienteSeleccionado.usuarioCliente}</h4>
                                         </form>
                                         <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-envelop"></i><b> Email:</b> ${clienteSeleccionado.emailCliente}</h4>
+                                                <h4 class="form-control"><i class="fa fa-envelope"></i><b> Email:</b> ${clienteSeleccionado.emailCliente}</h4>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-sm btn-info" id="favCompanies" type="button" data-toggle="collapse" data-target="#contCompanies" aria-expanded="false" aria-controls="contCompanies"><i class="fa fa-institution"></i> Favorites
-                                        Companies</button>
-                                    <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts">
-                                        <i class="fa fa-eye"> Favorite Products</i>
+                                    <button class="btn btn-sm btn-info" id="favCompanies" type="button" data-toggle="collapse" data-target="#contCompanies" aria-expanded="false" aria-controls="contCompanies">Favorites <i class="fa fa-institution"></i></button>
+                                    <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts"> Favorite <i class="fa fa-shopping-bag"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-info" id="histoDeComp" type="button" data-toggle="collapse" data-target="#histComp" aria-expanded="false" aria-controls="histComp">
-                                        <i class="fa fa-eye"> Historial de compras</i>
+                                    <button class="btn btn-sm btn-info" id="histoDeComp" type="button" data-toggle="collapse" data-target="#histComp" aria-expanded="false" aria-controls="histComp">Compras <i class="fa fa-history"></i>
                                     </button>
                                     <div class="collapse" id="contProducts">
                                         <div class="card-body m-0">
@@ -607,7 +628,7 @@ function generarModalPerfil() {
                                     <div class="collapse" id="histComp">
                                         <div class="card-body m-0">
                                             <hr>
-                                            <h4 class="form-group"><b>Favorite Products</b></h4>
+                                            <h4 class="form-group"><b>Historial de Compras</b></h4>
                                             <hr>
                                             <div id="verHistComp">
                                                 ${historialComp}
@@ -760,6 +781,11 @@ function validarUser(id) {
 }
 
 function logOut() {
+    for (let j = 0; j < clienteSeleccionado.comprar.length; j++) {
+        clienteSeleccionado.comprar.splice(j, 1);
+    }
+
+    localStorage.setItem('clientes', JSON.stringify(clientes));
     clienteSeleccionado.actual = false;
     localStorage.setItem("clientes", JSON.stringify(clientes));
 }
@@ -843,11 +869,16 @@ function aComprar(idInput, idAlert, indiceEmp, indicePub) {
         let porComprar = {
             aComprar: pub.nombreGanga,
             fechaCompra: fechaActual(),
-            cant: elem
+            cant: elem,
+            precioArt: pub.precio,
+            monto: pub.precio * elem,
+            indEmp: indiceEmp,
+            indPub: indicePub
         }
         clienteSeleccionado.comprar.push(porComprar);
-        localStorage.setItem('empresas', JSON.stringify(clientes));
-        elem = 0;
+        localStorage.setItem('clientes', JSON.stringify(clientes));
+        document.getElementById(idInput).value = 0;
+        generarModalCompras();
     } else {
         document.getElementById(idAlert).innerHTML = "";
         document.getElementById(idAlert).innerHTML +=
@@ -863,39 +894,74 @@ function aComprar(idInput, idAlert, indiceEmp, indicePub) {
 function borrarCompra(indiceCompra) {
     clienteSeleccionado.comprar.splice(indiceCompra, 1);
     localStorage.setItem("clientes", JSON.stringify(clientes));
+    document.getElementById("mostrarProd").innerHTML = "";
+    document.getElementById("alerModalComp").innerHTML = "";
+    document.getElementById("alerModalComp").innerHTML +=
+        `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Delete successfull!</strong> go and look for more offers!.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
 }
 
 function comprarPub() {
-    for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
-        let nuevaVenta = {
-            cantidad: clienteSeleccionado.comprar[i].cant,
-            fechaCompra: fechaActual()
+    if (clienteSeleccionado.comprar.length >= 1) {
+        for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
+            let nuevaVenta = {
+                cantidad: clienteSeleccionado.comprar[i].cant,
+                fechaCompra: fechaActual()
+            }
+            let nuevaCompra = {
+                nomCompra: clienteSeleccionado.comprar[i].aComprar,
+                fechaCompra: fechaActual(),
+                cant: clienteSeleccionado.comprar[i].cant,
+                precioArticulo: clienteSeleccionado.comprar[i].precioArt,
+                montoComprado: clienteSeleccionado.comprar[i].monto
+            }
+            empresas[clienteSeleccionado.comprar[i].indEmp].publicaciones[clienteSeleccionado.comprar[i].indPub].venta.push(nuevaVenta);
+            clienteSeleccionado.comprasHechas.push(nuevaCompra);
+
+            for (let j = 0; j < clienteSeleccionado.comprar.length; j++) {
+                clienteSeleccionado.comprar.splice(j, 1);
+            }
+
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+            localStorage.setItem('empresas', JSON.stringify(empresas));
+            document.getElementById("mostrarProd").innerHTML = "";
+            document.getElementById("alerModalComp").innerHTML = "";
+            document.getElementById("alerModalComp").innerHTML +=
+                `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Thanks for your purchase!</strong>  go and look for more offers!.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
         }
-        let nuevaCompra = {
-            nomCompra: clienteSeleccionado.comprar[i].aComprar,
-            fechaCompra: fechaActual(),
-            cant: clienteSeleccionado.comprar[i].cant
-        }
-        pub.venta.push(nuevaVenta);
-        clienteSeleccionado.comprasHechas.push(nuevaCompra);
-        localStorage.setItem('clientes', JSON.stringify(clientes));
-        localStorage.setItem('empresas', JSON.stringify(empresas));
+    } else {
+        document.getElementById("alerModalComp").innerHTML = "";
+        document.getElementById("alerModalComp").innerHTML +=
+            `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>No products!</strong> go choose what you want.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
     }
+
 }
 
-function comentPub(idParCom, id, indiceEmp, indicePub) {
-    let elem = document.getElementById(id).value;
-    let pub = empresas[indiceEmp].publicaciones[indicePub];
-    if (elem.length != 0) {
+function comentPub(idParComent, id, indiceEmp, indicePub) {
+    if (document.getElementById(id).value.length != 0) {
         let nuevoComenta = {
             nomCliente: clienteSeleccionado.usuarioCliente,
-            comentCliente: elem,
+            comentCliente: document.getElementById(id).value,
             fechaComment: fechaActual()
         }
-        pub.comentarios.push(nuevoComenta);
+        empresas[indiceEmp].publicaciones[indicePub].comentarios.push(nuevoComenta);
         localStorage.setItem('empresas', JSON.stringify(empresas));
 
-        document.getElementById(idParCom).innerHTML +=
+        document.getElementById(idParComent).innerHTML +=
             `
             <div class="form-control py-1">
                 <div>
