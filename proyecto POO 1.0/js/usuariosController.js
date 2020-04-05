@@ -93,7 +93,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 999.99,
                     venta: [{
                         cantidad: 1,
@@ -103,7 +105,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'ache',
                         comentCliente: '¡Se ve super la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
@@ -112,10 +115,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '28/06/20',
                     horaMax: '20:50',
                     ofertasDisponibles: 45,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 45,
                     precio: 9000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -143,7 +149,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '',
                     horaMax: '16:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 6300.00,
                     venta: [{
                         cantidad: 1,
@@ -153,7 +161,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'kikin',
                         comentCliente: '¡A tiempo llego la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -162,10 +171,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
                     ofertasDisponibles: 205,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 3500.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -193,10 +205,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 40,
                     precio: 15000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -205,10 +220,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 9999.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -236,10 +254,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
                     ofertasDisponibles: 255,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 25,
                     precio: 249.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -248,10 +269,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
                     ofertasDisponibles: 405,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 20,
                     precio: 79.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -342,10 +366,10 @@ function generarPublicaciones() {
                                     <a class="nav-link active" href="#ganga${cont}" role="tab" data-toggle="tab">Ganga</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Detalles</a>
+                                    <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Empresa</a>
+                                    <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Company</a>
                                 </li>
                             </ul>
                         </div>
@@ -356,32 +380,33 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-body">
                                     <h4>${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                    <p>${empresas[i].publicaciones[j].descripcionGanga}</p><br> Calificar: <br>
+                                    <p>${empresas[i].publicaciones[j].descripcionGanga}</p><br> Qualify: <br>
                                     <div class="rw-ui-container" data-title="product rating"></div>
                                 </div>
                                 <div class="card-footer">
                                     ${botonFavPub}
                                     <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#compCant${cont}" aria-expanded="false" aria-controls="comprarPub"><i class="fa fa-cart-arrow-down fa-1x"></i></button>
                                     <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
-                                        <i class="fa fa-eye">Ver Mas</i>
+                                        <i class="fa fa-eye">See more</i>
                                     </button>
                                     <div class="collapse" id="contCard${cont}">
                                         <div class="card-body m-0">
-                                            <h4 class="form-control "><b>Tiempo restante:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                            <h4 class="form-control "><b>Ofertas Disponibles:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
-                                            <h4 class="form-control "><b>Precio:</b> ${empresas[i].publicaciones[j].precio}</h4>
+                                            <h4 class="form-control "><b>Time remaining:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
+                                            <h4 class="form-control "><b>Available Offers:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
+                                            <h4 class="form-control "><b>Price:</b> ${empresas[i].publicaciones[j].precio}</h4>
+                                            <h4 class="form-control "><b>Posted on:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
                                             <hr>
-                                            <h4><b><i class="fa fa-comment-o"></i>Comentarios</b></h4>
+                                            <h4><b><i class="fa fa-comment-o"></i>Comments</b></h4>
                                             <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comPub${cont}" aria-expanded="false" aria-controls="commentPub"><i class="fa fa-commenting-o"> Comment</i></button>
                                             <div class="collapse" id="comPub${cont}">
                                                 <div class="card-body m-0">
                                                     <div class="form-row py-1">
                                                         <label for="comPub"><b><i class="fa fa-commenting-o"> Post</i></b></label>
-                                                        <input type="text" id="comentarPub${cont}" style="height:80px;" class="form-control" aria-describedby="comPubHelp" required>
+                                                        <textarea type="text" id="comentarPub${cont}" class="form-control" aria-describedby="comPubHelp" rows="3" required></textarea>
                                                         <small id="comPubHelp" class="text-muted">Post your opinion</small>
                                                     </div>
                                                     <div class="container mb-3">
-                                                        <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> post</i></button>
+                                                        <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> Post</i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -417,16 +442,16 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-body">
                                     <div class="form-control">
-                                        <h4 class="form-control"><b>Titulo:</b> ${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                        <h4 class="form-control"><b>Descripción:</b> ${empresas[i].publicaciones[j].descripcionGanga}</h4>
-                                        <h4 class="form-control"><b>Fecha Inicio:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
-                                        <h4 class="form-control"><b>Fecha Max:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
-                                        <h4 class="form-control"><b>Hora Max:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                        <h4 class="form-control"><b>Empresa:</b> ${empresas[i].nombreEmpresa}</h4>
+                                        <h4 class="form-control"><b>Title:</b> ${empresas[i].publicaciones[j].nombreGanga}</h4>
+                                        <h4 class="form-control"><b>Description:</b> ${empresas[i].publicaciones[j].descripcionGanga}</h4>
+                                        <h4 class="form-control"><b>Start date:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
+                                        <h4 class="form-control"><b>Max Date:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
+                                        <h4 class="form-control"><b>Max hour:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
+                                        <h4 class="form-control"><b>Company:</b> ${empresas[i].nombreEmpresa}</h4>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="button" class="btn btn-info"><i class="fa fa-save"> Guardar Tarjeta</i></button>
+                                    <button onmouseover="generaraModalTarjeta(${i},${j});" type="button" class="btn btn-info"  data-toggle="modal" data-target="#tarjeta"><i class="fa fa-save"> Save Card</i></button>
                                 </div>
                             </div>
                             <div class="tab-pane" role="tabpanel" id="empresa${cont}">
@@ -435,9 +460,9 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-body">
                                     <div class="form-control">
-                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Nombre:</b> ${empresas[i].nombreEmpresa}</h4>
-                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Descripción:</b> ${empresas[i].tipoEmpresa}</h4>
-                                        <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publicaciones:</b> ${empresas[i].publicaciones.length}</h4>
+                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresas[i].nombreEmpresa}</h4>
+                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresas[i].tipoEmpresa}</h4>
+                                        <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresas[i].publicaciones.length}</h4>
                                         <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresas[i].facebook}</h4>
                                         <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresas[i].instagram}</h4>
                                         <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresas[i].twitter}</h4>
@@ -450,8 +475,7 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-footer" >
                                     ${botonFavEmp}
-                                    <a href="#" class="log btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Locales
-                                        Cercanos</a>
+                                    <a href="#" class="log btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
                                 </div>
                             </div>
                         </div>
@@ -474,13 +498,12 @@ function generarModalCompras() {
             `
             <div class="container">
                 <div class="form-control ">
-                    <h5><b>Nombre Articulo: </b>${clienteSeleccionado.comprar[i].aComprar}</h5>
-                    <h5><b>Cantidad de articulos: </b>${clienteSeleccionado.comprar[i].cant}</h5>
-                    <h5><b>Precio articulo: </b>${clienteSeleccionado.comprar[i].precioArt}</h5>
-                    <h5><b>Monto articulos: </b>${clienteSeleccionado.comprar[i].monto}</h5>
+                    <h5><b>Article Name: </b>${clienteSeleccionado.comprar[i].aComprar}</h5>
+                    <h5><b>Quantity of items: </b>${clienteSeleccionado.comprar[i].cant}</h5>
+                    <h5><b>Price item: </b>${clienteSeleccionado.comprar[i].precioArt}</h5>
+                    <h5><b>Amount of items: </b>${clienteSeleccionado.comprar[i].monto}</h5>
                     <button class="btn btn-info" onclick="borrarCompra('${contador}');"><i class="fa fa-trash-o"> Delete</i></button>
                 </div>
-                <h5><b>Monto total+6: </b>${montoTot}</h5>
             </div>`;
         contador++;
     }
@@ -503,12 +526,13 @@ function generarModalCompras() {
                                 ${lista}
                             </div>
                         </div>
+                        <h4>Total amount: ${montoTot}</h4>
                         <div id="alerModalComp">
                         
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="buy" class="btn btn-info" onclick="comprarPub();"><i class="fa fa-credit-card"> Buy</i></button>
+                        <button id="buy" class="btn btn-info" onclick="comprarPub();"><i class="fa fa-credit-card"> Make the purchase</i></button>
                     </div>
                 </div>
             </div>
@@ -537,7 +561,7 @@ function generarModalPerfil() {
             `
             <form class="form-control">
                 <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Empresa:</b> ${clienteSeleccionado.companiasFav[i].nombreEmp}</h4>
+                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Company:</b> ${clienteSeleccionado.companiasFav[i].nombreEmp}</h4>
                 </div>
             </form>`;
 
@@ -548,9 +572,9 @@ function generarModalPerfil() {
             `
             <form class="form-control">
                 <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-money"></i><b> Nombre del articulo:</b> ${clienteSeleccionado.comprasHechas[i].nomCompra}</h4>
-                    <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Fecha de compra ${i}:</b> ${clienteSeleccionado.comprasHechas[i].fechaCompra}</h4>
-                    <h4 class="form-control"><i class="fa fa-money"></i><b> Cantidad:</b> ${clienteSeleccionado.comprasHechas[i].cant}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Article name:</b> ${clienteSeleccionado.comprasHechas[i].nomCompra}</h4>
+                    <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of purchase ${i}:</b> ${clienteSeleccionado.comprasHechas[i].fechaCompra}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Quantity:</b> ${clienteSeleccionado.comprasHechas[i].cant}</h4>
                 </div>
             </form>`;
 
@@ -583,16 +607,16 @@ function generarModalPerfil() {
                                 <div class="card-body">
                                     <div class="form-control py-0">
                                         <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-user"></i><b> Nombre:</b> ${clienteSeleccionado.nombreCliente}</h4>
+                                                <h4 class="form-control"><i class="fa fa-user"></i><b> First Name:</b> ${clienteSeleccionado.nombreCliente}</h4>
                                         </form>
                                         <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-user"></i><b> Apellido:</b> ${clienteSeleccionado.apellidoCliente}</h4>
+                                                <h4 class="form-control"><i class="fa fa-user"></i><b> Last Name:</b> ${clienteSeleccionado.apellidoCliente}</h4>
                                         </form>
                                         <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Fecha de Nacimiento:</b> ${clienteSeleccionado.fechaNacimiento}</h4>
+                                                <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of birth:</b> ${clienteSeleccionado.fechaNacimiento}</h4>
                                         </form>
                                         <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-user-circle"></i><b> Nombre de Usuario:</b> ${clienteSeleccionado.usuarioCliente}</h4>
+                                                <h4 class="form-control"><i class="fa fa-user-circle"></i><b> Username:</b> ${clienteSeleccionado.usuarioCliente}</h4>
                                         </form>
                                         <form class="form-control">
                                                 <h4 class="form-control"><i class="fa fa-envelope"></i><b> Email:</b> ${clienteSeleccionado.emailCliente}</h4>
@@ -601,10 +625,9 @@ function generarModalPerfil() {
                                 </div>
                                 <div class="card-footer">
                                     <button class="btn btn-sm btn-info" id="favCompanies" type="button" data-toggle="collapse" data-target="#contCompanies" aria-expanded="false" aria-controls="contCompanies">Favorites <i class="fa fa-institution"></i></button>
-                                    <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts"> Favorite <i class="fa fa-shopping-bag"></i>
+                                    <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts"> Favorites <i class="fa fa-shopping-bag"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-info" id="histoDeComp" type="button" data-toggle="collapse" data-target="#histComp" aria-expanded="false" aria-controls="histComp">Compras <i class="fa fa-history"></i>
-                                    </button>
+                                    <button class="btn btn-sm btn-info" id="histoDeComp" type="button" data-toggle="collapse" data-target="#histComp" aria-expanded="false" aria-controls="histComp"><i class="fa fa-history"></i> Shopping history</button>
                                     <div class="collapse" id="contProducts">
                                         <div class="card-body m-0">
                                             <hr>
@@ -628,7 +651,7 @@ function generarModalPerfil() {
                                     <div class="collapse" id="histComp">
                                         <div class="card-body m-0">
                                             <hr>
-                                            <h4 class="form-group"><b>Historial de Compras</b></h4>
+                                            <h4 class="form-group"><b>Shopping history</b></h4>
                                             <hr>
                                             <div id="verHistComp">
                                                 ${historialComp}
@@ -806,9 +829,16 @@ function pubFavorita(conta, indiceEmp, indicePub) {
         let añadir = {
             nombreGan: empresas[indiceEmp].publicaciones[indicePub].nombreGanga,
         }
+        let nuevaPubFavD = {
+            cliente: clienteSeleccionado.usuarioCliente,
+            fechaSelecFav: fechaActual(),
+            indiceDePub: indicePub
+        }
 
+        empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe.push(nuevaPubFavD);
         clienteSeleccionado.publicacionesFav.push(añadir);
         localStorage.setItem("clientes", JSON.stringify(clientes));
+        localStorage.setItem("empresas", JSON.stringify(empresas));
         document.getElementById("verPubFav").innerHTML +=
             `
             <form class="form-control">
@@ -819,9 +849,16 @@ function pubFavorita(conta, indiceEmp, indicePub) {
 
         document.getElementById(`pubFav${conta}`).classList.add("fav");
     } else {
+        for (let k = 0; k < empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe.length; k++) {
+            if (empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe[k].indiceDePub == indicePub) {
+                empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe.splice(k, 1);
+                break;
+            }
+        }
         clienteSeleccionado.publicacionesFav.splice(indiceEncontrado, 1);
         document.getElementById(`pubFav${conta}`).classList.remove("fav");
         localStorage.setItem("clientes", JSON.stringify(clientes));
+        localStorage.setItem("empresas", JSON.stringify(empresas));
         top.location.reload();
     }
 }
@@ -829,7 +866,7 @@ function pubFavorita(conta, indiceEmp, indicePub) {
 function empFavorita(cont, indiceEmp) {
     var verif = false;
     var indiceEncontrado;
-    console.log(empresas[indiceEmp].nombreEmpresa);
+
     for (let i = 0; i < clienteSeleccionado.companiasFav.length; i++) {
         if (clienteSeleccionado.companiasFav[i].nombreEmp == empresas[indiceEmp].nombreEmpresa) {
             verif = true;
@@ -842,22 +879,22 @@ function empFavorita(cont, indiceEmp) {
         let añadir = {
             nombreEmp: empresas[indiceEmp].nombreEmpresa,
         }
-        console.log(añadir);
         clienteSeleccionado.companiasFav.push(añadir);
-        localStorage.setItem('empresas', JSON.stringify(empresas));
+        localStorage.setItem("clientes", JSON.stringify(clientes));
         document.getElementById("verEmpFav").innerHTML +=
             `
             <form class="form-control">
                 <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Empresa:</b> ${clienteSeleccionado.companiasFav[clienteSeleccionado.companiasFav.length-1].nombreEmp}</h4>
+                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Company:</b> ${clienteSeleccionado.companiasFav[clienteSeleccionado.companiasFav.length-1].nombreEmp}</h4>
                 </div>
             </form>`;
 
         document.getElementById(`empFav${cont}`).classList.add("fav");
+        top.location.reload();
     } else {
         clienteSeleccionado.companiasFav.splice(indiceEncontrado, 1);
         document.getElementById(`empFav${cont}`).classList.remove("fav");
-        localStorage.setItem("empresas", JSON.stringify(empresas));
+        localStorage.setItem("clientes", JSON.stringify(clientes));
         top.location.reload();
     }
 }
@@ -883,7 +920,7 @@ function aComprar(idInput, idAlert, indiceEmp, indicePub) {
         document.getElementById(idAlert).innerHTML = "";
         document.getElementById(idAlert).innerHTML +=
             `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Choose another quantity!</strong> You should check in on the input field.
+                <strong>Choose another quantity!</strong> You should check the field above.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -977,25 +1014,58 @@ function comentPub(idParComent, id, indiceEmp, indicePub) {
     }
 }
 
-function generarModalTarjeta() {
+function generarModalTarjeta(indiceEmp, indicePub) {
+    let pub = empresas[indiceEmp].publicaciones[indicePub];
     document.getElementById("modalTarjeta").innerHTML = "";
     document.getElementById("modalTarjeta").innerHTML +=
-        `<div id="profile" class="modal fade " data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header style">
-                        <button class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                        
+        `<div id="tarjeta" class="modal fade" data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content modalTarjeta">
+                    <div class="modal-body imag" style="background-image: url(${pub.imagenGanga});">
+                        <div class="card-header">
+                            <div>
+                                <div class="container mb-4">
+                                    <div class="row">
+                                        <div class="formaTrans col">
+                                            <img src="../img/QR.png" class="card-img">
+                                        </div>
+                                        <div class="formaTrans col">
+                                            <div class="porcentaje">
+                                                <h1 style="align-content: ">${pub.porcentDesc}%</h1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container textTarjeta">
+                                    <div class="card-body p-2">
+                                        <div class="container">
+                                            <div class="row">
+                                                <h1 class="card-title">${pub.nombreGanga}</h1>
+                                            </div>
+                                        </div>
+                                        <h4 class="card-text">${pub.descripcionGanga}</h4><br>
+                                        <h4 class="card-text">Published on ${pub.fechaInicio}</h4><br>
+                                        <h4 class="card-text">Offer lasts until ${pub.fechaMax}!</h4><br>
+                                        <h4 class="card-text">Remaining offers ${pub.ofertasDisponibles}</h4><br>
+                                        <h4 class="card-text">Offer price ${pub.precio}</h4><br>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="modal-footer py-2">
+                        <button type="button" class="btn btn-info" onclick="guardarTarjeta();" data-dismiss="modal" aria-label="Close"><i class="fa fa-save"></i>Save</button>
+                        <button class="btn btn-info " data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
         </div>`;
+}
+
+function guardarTarjeta() {
+    alert("I Keep Lying Card");
 }
 
 function fechaActual() {

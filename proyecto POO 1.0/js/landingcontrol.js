@@ -94,7 +94,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 999.99,
                     venta: [{
                         cantidad: 1,
@@ -104,7 +106,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'ache',
                         comentCliente: '¡Se ve super la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
@@ -113,10 +116,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '28/06/20',
                     horaMax: '20:50',
                     ofertasDisponibles: 45,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 45,
                     precio: 9000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -144,7 +150,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '',
                     horaMax: '16:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 6300.00,
                     venta: [{
                         cantidad: 1,
@@ -154,7 +162,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'kikin',
                         comentCliente: '¡A tiempo llego la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -163,10 +172,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
                     ofertasDisponibles: 205,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 3500.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -194,10 +206,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 40,
                     precio: 15000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -206,10 +221,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 9999.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -237,10 +255,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
                     ofertasDisponibles: 255,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 25,
                     precio: 249.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -249,10 +270,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
                     ofertasDisponibles: 405,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 20,
                     precio: 79.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },

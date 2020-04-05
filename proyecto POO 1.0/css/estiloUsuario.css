@@ -4,6 +4,13 @@ body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
 }
 
+.middleUser {
+    background-image: url(../img/BG-imageuser.jpg);
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
 .navbar {
     height: 75px;
     padding: .0rem 3rem;
@@ -228,4 +235,41 @@ body {
 
 .fav {
     color: red;
+}
+
+.modalTarjeta {
+    border-radius: 18px;
+}
+
+.formaTrans {
+    background-color: transparent;
+    border: none !important;
+}
+
+.porcentaje {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    background-color: brown;
+}
+
+.porcentaje h1 {
+    font-family: cursive;
+    font-size: 45px;
+    font-weight: 600;
+    padding-top: 22px
+}
+
+.imag {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px
+}
+
+.textTarjeta {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
 }

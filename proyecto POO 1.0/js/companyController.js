@@ -32,7 +32,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 999.99,
                     venta: [{
                         cantidad: 1,
@@ -42,7 +44,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'ache',
                         comentCliente: '¡Se ve super la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
@@ -51,10 +54,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '28/06/20',
                     horaMax: '20:50',
                     ofertasDisponibles: 45,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 45,
                     precio: 9000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -82,7 +88,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '',
                     horaMax: '16:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 6300.00,
                     venta: [{
                         cantidad: 1,
@@ -92,7 +100,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'kikin',
                         comentCliente: '¡A tiempo llego la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -101,10 +110,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
                     ofertasDisponibles: 205,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 3500.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -132,10 +144,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 40,
                     precio: 15000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -144,10 +159,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 9999.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -175,10 +193,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
                     ofertasDisponibles: 255,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 25,
                     precio: 249.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -187,10 +208,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
                     ofertasDisponibles: 405,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 20,
                     precio: 79.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -217,8 +241,26 @@ function generarNombre() {
 
 function generarPublicaciones() {
     let cont = 0;
+
+
     document.getElementById("publicaciones").innerHTML = '';
     for (let i = 0; i < empresaSeleccionada.publicaciones.length; i++) {
+        let coments = "";
+        for (let k = 0; k < empresaSeleccionada.publicaciones[i].comentarios.length; k++) {
+            coments +=
+                `
+                    <div class="form-control py-1">
+                        <div>
+                            <h4><b><i class="fa fa-user-circle-o">${empresaSeleccionada.publicaciones[i].comentarios[k].nomCliente}</i></b></h4>
+                        </div>
+                        <hr>
+                        <div>
+                            <h4><i class="fa fa-comments-o"> ${empresaSeleccionada.publicaciones[i].comentarios[k].comentCliente}</i></h4>
+                        </div>
+                    </div>`;
+
+        }
+
         document.getElementById("publicaciones").innerHTML +=
             `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
                 <div class="card">
@@ -228,10 +270,7 @@ function generarPublicaciones() {
                                 <a class="nav-link active" href="#ganga${cont}" role="tab" data-toggle="tab">Ganga</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Detalles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Empresa</a>
+                                <a class="nav-link" href="#editPub${cont}" role="tab" data-toggle="tab">Edit Post</a>
                             </li>
                         </ul>
                     </div>
@@ -242,62 +281,74 @@ function generarPublicaciones() {
                             </div>
                             <div class="card-body">
                                 <h4>${empresaSeleccionada.publicaciones[i].nombreGanga}</h4>
-                                <p>${empresaSeleccionada.publicaciones[i].descripcionGanga}</p>
+                                <p>${empresaSeleccionada.publicaciones[i].descripcionGanga}</p><br>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-sm btn-info"><i
-                                        class="fa fa-heart fa-1x"></i></button>
-                                <button class="btn btn-sm btn-info"><i
-                                        class="fa fa-cart-plus fa-1x"></i></button>
+                                ${botonFavPub}
+                                <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#compCant${cont}" aria-expanded="false" aria-controls="comprarPub"><i class="fa fa-cart-arrow-down fa-1x"></i></button>
                                 <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
-                                    <i class="fa fa-eye">Ver Mas</i>
+                                    <i class="fa fa-eye">See more</i>
                                 </button>
                                 <div class="collapse" id="contCard${cont}">
                                     <div class="card-body m-0">
-                                        <h4 class="form-control "><b>Tiempo restante:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
-                                        <h4 class="form-control "><b>Ofertas Disponibles:</b> ${empresaSeleccionada.publicaciones[i].ofertasDisponibles}</h4>
+                                        <h4 class="form-control "><b>Time remaining:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
+                                        <h4 class="form-control "><b>Available Offers:</b> ${empresaSeleccionada.publicaciones[i].ofertasDisponibles}</h4>
+                                        <h4 class="form-control "><b>Price:</b> ${empresaSeleccionada.publicaciones[i].precio}</h4>
+                                        <h4 class="form-control "><b>Posted on:</b> ${empresaSeleccionada.publicaciones[i].fechaInicio}</h4>
+                                        <hr>
+                                        <h4><b><i class="fa fa-comment-o"></i>Comments</b></h4>
+                                        <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comPub${cont}" aria-expanded="false" aria-controls="commentPub"><i class="fa fa-commenting-o"> Comment</i></button>
+                                        <div class="collapse" id="comPub${cont}">
+                                            <div class="card-body m-0">
+                                                <div class="form-row py-1">
+                                                    <label for="comPub"><b><i class="fa fa-commenting-o"> Post</i></b></label>
+                                                    <textarea type="text" id="comentarPub${cont}" class="form-control" aria-describedby="comPubHelp" rows="3" required></textarea>
+                                                    <small id="comPubHelp" class="text-muted">Post your opinion</small>
+                                                </small>
+                                                <div class="container mb-3">
+                                                    <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${i});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> Post</i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr> 
+                                        <div id="paraComent${cont}">
+                                            ${coments}
+                                        </div>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="compCant${cont}">
+                                    <div class="card-body m-0">
+                                        <div class="form-group py-1">
+                                            <label for="cantComprar" class="float-left"><b><i class="fa fa-cart-arrow-down"> Quantity to buy</i></b></label>
+                                            <input type="number" value="0" min="0" id="cantComprar${cont}" class="form-control" aria-describedby="cantComprarHelp" required>
+                                            <small id="cantComprarHelp" class="text-muted float-left">Put the quantity you are going to buy</small>
+                                            <br>
+                                            <div id="alertaComprar${cont}">
+
+                                            </div>
+                                            <div class="container mb-3">
+                                                <button onclick="aComprar('cantComprar${cont}','alertaComprar${cont}',${i});" class="btn btn-sm btn-info float-right"><i class="fa fa-cart-plus fa-1x"> Add</i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane" role="tabpanel" id="detalles${cont}">
+                        <div class="tab-pane" role="tabpanel" id="editPub${cont}">
                             <div class="inner">
                                 <img class="card-QR" src="../img/QR.png" alt="">
                                 <img class="card-QR" src="${empresaSeleccionada.publicaciones[i].imagenGanga}" alt="">
                             </div>
                             <div class="card-body">
                                 <div class="form-control">
-                                    <h4 class="form-control"><b>Titulo:</b> ${empresaSeleccionada.publicaciones[i].nombreGanga}</h4>
-                                    <h4 class="form-control"><b>Descripción:</b> ${empresaSeleccionada.publicaciones[i].descripcionGanga}</h4>
-                                    <h4 class="form-control"><b>Fecha Inicio:</b> ${empresaSeleccionada.publicaciones[i].fechaInicio}</h4>
-                                    <h4 class="form-control"><b>Fecha Max:</b> ${empresaSeleccionada.publicaciones[i].fechaMax}</h4>
-                                    <h4 class="form-control"><b>Hora Max:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
-                                    <h4 class="form-control"><b>Empresa:</b> ${empresaSeleccionada.publicaciones[i].nombreEmpresa}</h4>
+                                    <h4 class="form-control"><b>Title:</b> ${empresaSeleccionada.publicaciones[i].nombreGanga}</h4>
+                                    <h4 class="form-control"><b>Description:</b> ${empresaSeleccionada.publicaciones[i].descripcionGanga}</h4>
+                                    <h4 class="form-control"><b>Start date:</b> ${empresaSeleccionada.publicaciones[i].fechaInicio}</h4>
+                                    <h4 class="form-control"><b>Max Date:</b> ${empresaSeleccionada.publicaciones[i].fechaMax}</h4>
+                                    <h4 class="form-control"><b>Max hour:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
+                                    <h4 class="form-control"><b>Company:</b> ${empresaSeleccionada.publicaciones[i].nombreEmpresa}</h4>
                                 </div>
-                            </div>
-                            <div class="card-footer">
-                                <input class="btn btn-info" type="button" value="Guardar Tarjeta">
-                            </div>
-                        </div>
-                        <div class="tab-pane" role="tabpanel" id="empresa${cont}">
-                            <div class="inner">
-                                <img class="card-img-top" src="${empresaSeleccionada.logoEmpresa}" alt="">
-                            </div>
-                            <div class="card-body">
-                                <div class="form-control">
-                                    <h4 class="form-control"><i class="fa fa-institution"></i><b>Nombre:</b> ${empresaSeleccionada.nombreEmpresa}</h4>
-                                    <h4 class="form-control"><i class="fa fa-institution"></i><b>Descripción:</b> ${empresaSeleccionada.tipoEmpresa}</h4>
-                                    <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publicaciones:</b> ${empresaSeleccionada.publicaciones.length}</h4>
-                                    <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresaSeleccionada.facebook}</h4>
-                                    <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresaSeleccionada.instagram}</h4>
-                                    <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresaSeleccionada.twitter}</h4>
-                                    <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresaSeleccionada.twitch}</h4>
-                                    <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresaSeleccionada.email}</h4>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Locales
-                                    Cercanos</a>
                             </div>
                         </div>
                     </div>

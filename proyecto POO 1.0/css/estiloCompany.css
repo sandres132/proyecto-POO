@@ -4,6 +4,13 @@ body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
 }
 
+.middleComp {
+    background-image: url(../img/BG-imageComp.jpg);
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
 .navbar {
     height: 75px;
     padding: .0rem 3rem;

@@ -94,7 +94,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '25/06/20',
                     horaMax: '3:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 999.99,
                     venta: [{
                         cantidad: 1,
@@ -104,7 +106,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'ache',
                         comentCliente: '¡Se ve super la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/diunsa2.jpg',
@@ -113,10 +116,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '28/06/20',
                     horaMax: '20:50',
                     ofertasDisponibles: 45,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 45,
                     precio: 9000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -144,7 +150,9 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '',
                     horaMax: '16:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 6300.00,
                     venta: [{
                         cantidad: 1,
@@ -154,7 +162,8 @@ if (localStorage.getItem("empresas") == null) {
                         nomCliente: 'kikin',
                         comentCliente: '¡A tiempo llego la promocion!',
                         fechaComment: '20/06/20'
-                    }]
+                    }],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/samsung2.png',
@@ -163,10 +172,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '07/06/20',
                     horaMax: '23:50',
                     ofertasDisponibles: 205,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 3500.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -194,10 +206,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '5:50',
                     ofertasDisponibles: 5,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 40,
                     precio: 15000.00,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/ladylee3.jpg',
@@ -206,10 +221,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/26/20',
                     horaMax: '8:50',
                     ofertasDisponibles: 15,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 30,
                     precio: 9999.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -237,10 +255,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '05/06/20',
                     horaMax: '15:50',
                     ofertasDisponibles: 255,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 25,
                     precio: 249.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
                 {
                     imagenGanga: '../img/comboHamburger.jpg',
@@ -249,10 +270,13 @@ if (localStorage.getItem("empresas") == null) {
                     fechaMax: '06/06/20',
                     horaMax: '21:50',
                     ofertasDisponibles: 405,
-                    fechaInicio: '7:00',
+                    horaInicio: '7:00',
+                    fechaInicio: '28/08/20',
+                    porcentDesc: 20,
                     precio: 79.99,
                     venta: [],
-                    comentarios: []
+                    comentarios: [],
+                    pubFavoritaDe: []
                 },
             ]
         },
@@ -276,10 +300,10 @@ function generarPublicaciones() {
                                     <a class="nav-link active" href="#ganga${cont}" role="tab" data-toggle="tab">Ganga</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Detalles</a>
+                                    <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Empresa</a>
+                                    <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Company</a>
                                 </li>
                             </ul>
                         </div>
@@ -290,19 +314,19 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-body">
                                     <h4>${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                    <p>${empresas[i].publicaciones[j].descripcionGanga}</p><br> Calificar: <br>
-                                    <div class="rw-ui-container" data-title="product rating"></div>
+                                    <p>${empresas[i].publicaciones[j].descripcionGanga}</p>
                                 </div>
                                 <div class="card-footer">
                                     <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-heart fa-1x"></i></a>
                                     <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-cart-plus fa-1x"></i></a>
                                     <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
-                                        <i class="fa fa-eye">Ver Mas</i>
+                                        <i class="fa fa-eye">See more</i>
                                     </button>
                                     <div class="collapse" id="contCard${cont}">
                                         <div class="card-body m-0">
-                                            <h4 class="form-control "><b>Tiempo restante:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                            <h4 class="form-control "><b>Ofertas Disponibles:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
+                                            <h4 class="form-control "><b>Max date:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
+                                            <h4 class="form-control "><b>Time remaining:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
+                                            <h4 class="form-control "><b>Available Offers:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -314,16 +338,16 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-body">
                                     <div class="form-control">
-                                        <h4 class="form-control"><b>Titulo:</b> ${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                        <h4 class="form-control"><b>Descripción:</b> ${empresas[i].publicaciones[j].descripcionGanga}</h4>
-                                        <h4 class="form-control"><b>Fecha Inicio:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
-                                        <h4 class="form-control"><b>Fecha Max:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
-                                        <h4 class="form-control"><b>Hora Max:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                        <h4 class="form-control"><b>Empresa:</b> ${empresas[i].publicaciones[j].nombreEmpresa}</h4>
+                                        <h4 class="form-control"><b>Title:</b> ${empresas[i].publicaciones[j].nombreGanga}</h4>
+                                        <h4 class="form-control"><b>Description:</b> ${empresas[i].publicaciones[j].descripcionGanga}</h4>
+                                        <h4 class="form-control"><b>Start date:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
+                                        <h4 class="form-control"><b>Max Date:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
+                                        <h4 class="form-control"><b>Max hour:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
+                                        <h4 class="form-control"><b>Company:</b> ${empresas[i].publicaciones[j].nombreEmpresa}</h4>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="#" class="btn btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-save fa-2x"></i> Guardar Tarjeta</a>
+                                    <a href="#" class="btn btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-save fa-2x"></i> Save Card</a>
                                 </div>
                             </div>
                             <div class="tab-pane" role="tabpanel" id="empresa${cont}">
@@ -332,22 +356,20 @@ function generarPublicaciones() {
                                 </div>
                                 <div class="card-body">
                                     <div class="form-control">
-                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Nombre:</b> ${empresas[i].nombreEmpresa}</h4>
-                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Descripción:</b> ${empresas[i].tipoEmpresa}</h4>
-                                        <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publicaciones:</b> ${empresas[i].publicaciones.length}</h4>
+                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresas[i].nombreEmpresa}</h4>
+                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresas[i].tipoEmpresa}</h4>
+                                        <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresas[i].publicaciones.length}</h4>
                                         <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresas[i].facebook}</h4>
                                         <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresas[i].instagram}</h4>
                                         <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresas[i].twitter}</h4>
                                         <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresas[i].twitch}</h4>
                                         <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresas[i].email}</h4>
-                                        <div class="rw-ui-container" data-title="company rating"></div>
                                     <div class="form-control">
                                 </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Locales
-                                        Cercanos</a>
+                                    <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
                                 </div>
                             </div>
                         </div>
