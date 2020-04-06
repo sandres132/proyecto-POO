@@ -296,7 +296,7 @@ function generarSignInUser() {
     } else {
         document.getElementById("posCardUser").innerHTML = "";
         document.getElementById("posCardUser").innerHTML +=
-            `<div class="card col-lg-6 col-md-9 col-sm-12 col-xs-12 m-auto pb-0">
+            `<div class="card col-lg-6 col-md-9 col-sm-12 col-xs-12 m-auto pb-0 rad">
                 <div class="card-header p-2 mt-3">
                     <h5 class="card-title mb-0"><i class="fa fa-sign-in"> Sign In</i></h5>
                 </div>
@@ -362,7 +362,7 @@ function generarSignInComp() {
     } else {
         document.getElementById("posCardComp").innerHTML = "";
         document.getElementById("posCardComp").innerHTML +=
-            `<div class="card col-lg-10 col-md-10 col-sm-12 col-xs-12 m-auto pb-0">
+            `<div class="card col-lg-10 col-md-10 col-sm-12 col-xs-12 m-auto pb-0 rad">
                 <div class="card-header p-2 m-3">
                     <h5 class="card-title"><i class="fa fa-sign-in"> Sign In</i></h5>
                 </div>

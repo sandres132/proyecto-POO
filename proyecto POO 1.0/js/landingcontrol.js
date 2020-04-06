@@ -331,7 +331,7 @@ function validar(id) {
                 for (let j = 0; j < empresas.length; j++) {
                     empresas[j].actual = false;
                 }
-                empresas[i].actual = true;
+                selec.actual = true;
                 localStorage.setItem("empresas", JSON.stringify(empresas));
                 selecciono = "empresas";
                 verifPass = false;

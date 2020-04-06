@@ -9,6 +9,11 @@ body {
     background-attachment: fixed;
     background-position: center center;
     background-size: cover;
+    border: none;
+}
+
+.rad {
+    border-radius: 20px !important;
 }
 
 .navbar {
@@ -86,8 +91,12 @@ body {
     margin: 20px;
     text-align: center;
     transition: all 0.25s;
-    max-width: 330px !important;
+    max-width: 500px !important;
     min-width: 284px !important;
+}
+
+.card-header {
+    background-color: whitesmoke !important;
 }
 
 .info {
@@ -116,6 +125,11 @@ body {
     max-width: 330px;
     min-width: 284px;
     height: auto;
+    background-color: whitesmoke !important;
+}
+
+.trans {
+    background-color: rgba(255, 255, 255, 0.726);
 }
 
 .card-adv,

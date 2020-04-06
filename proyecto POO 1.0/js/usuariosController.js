@@ -500,8 +500,8 @@ function generarModalCompras() {
                 <div class="form-control ">
                     <h5><b>Article Name: </b>${clienteSeleccionado.comprar[i].aComprar}</h5>
                     <h5><b>Quantity of items: </b>${clienteSeleccionado.comprar[i].cant}</h5>
-                    <h5><b>Price item: </b>${clienteSeleccionado.comprar[i].precioArt}</h5>
-                    <h5><b>Amount of items: </b>${clienteSeleccionado.comprar[i].monto}</h5>
+                    <h5><b>Price item: </b>${clienteSeleccionado.comprar[i].precioArt.toFixed(2)}</h5>
+                    <h5><b>Amount of items: </b>${clienteSeleccionado.comprar[i].monto.toFixed(2)}</h5>
                     <button class="btn btn-info" onclick="borrarCompra('${contador}');"><i class="fa fa-trash-o"> Delete</i></button>
                 </div>
             </div>`;
@@ -525,8 +525,8 @@ function generarModalCompras() {
                             <div class="row">
                                 ${lista}
                             </div>
+                            <h4>Total amount: ${montoTot.toFixed(2)}</h4>
                         </div>
-                        <h4>Total amount: ${montoTot}</h4>
                         <div id="alerModalComp">
                         
                         </div>
@@ -574,7 +574,9 @@ function generarModalPerfil() {
                 <div class="form-group">
                     <h4 class="form-control"><i class="fa fa-money"></i><b> Article name:</b> ${clienteSeleccionado.comprasHechas[i].nomCompra}</h4>
                     <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of purchase ${i}:</b> ${clienteSeleccionado.comprasHechas[i].fechaCompra}</h4>
-                    <h4 class="form-control"><i class="fa fa-money"></i><b> Quantity:</b> ${clienteSeleccionado.comprasHechas[i].cant}</h4>
+                    <h4 class="form-control"><i class="fa fa-list"></i><b> Quantity:</b> ${clienteSeleccionado.comprasHechas[i].cant}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> price:</b> ${clienteSeleccionado.comprasHechas[i].precioArt}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Amount:</b> ${clienteSeleccionado.comprasHechas[i].montoComprado}</h4>
                 </div>
             </form>`;
 
@@ -735,7 +737,9 @@ function modifUser() {
             fechaNacimiento: document.getElementById("dateUser").value,
             fotoCliente: "../img/user-logo-png-4.png",
             companiasFav: [],
-            publicacionesFav: []
+            publicacionesFav: [],
+            comprasHechas: [],
+            comprar: []
         }
         clientes.push(nuevoCliente);
         localStorage.setItem('clientes', JSON.stringify(clientes));
