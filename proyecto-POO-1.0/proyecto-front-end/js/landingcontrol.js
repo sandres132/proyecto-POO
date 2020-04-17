@@ -8,62 +8,30 @@ var verifPass = false;
 
 //llena la variable clientes con los clientes existentes
 function obtenerClientes() {
-    let urlencoded = `tipo=cliente`;
-    /*$.ajax({
-        url: '../../proyecto-back-end/API/usuarios.php',
-        method: 'get',
-        data: urlencoded,
-        dataType: 'json',
-        success: function(res) {
-            clientes = res;
-            console.log(clientes);
-        },
-        error: function(error) {
-            console.error(error);
-        }
+    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
+            params: { tipo: "cliente" }
 
-    });*/
-    axios({
-        method: 'GET',
-        url: '../../proyecto-back-end/API/usuarios.php',
-        responseType: 'json',
-        params: { tipo: "cliente" }
-    }).then(function(res) {
-        clientes = res;
-        console.log(clientes);
-    }).catch(function(error) {
-        console.error(error);
-    });
+        })
+        .then(function(res) {
+            clientes = res.data;
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
 }
 obtenerClientes();
 
 //llena la variable empresas con las empresas existentes
 function obtenerEmpresas() {
-    let urlencoded = `tipo=empresa`;
-    /*$.ajax({
-        url: '../../proyecto-back-end/API/usuarios.php',
-        method: 'GET',
-        data: urlencoded,
-        dataType: 'json',
-        success: function(res) {
-            empresas = res;
-            console.log(empresas);
-        },
-        error: function(error) {
-            console.error(error);
-        }
-    });*/
-    axios({
-        url: '../../proyecto-back-end/API/usuarios.php',
-        method: 'get',
-        responseType: 'json',
-        params: { tipo: "empresa" }
-    }).then(function(res) {
-        empresas = res;
-        console.log(empresas);
-    }).catch(function(err) {
-        console.error(err);
-    });
+    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
+            params: { tipo: "empresa" }
+        })
+        .then(function(res) {
+            empresas = res.data;
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
 }
 obtenerEmpresas();
 

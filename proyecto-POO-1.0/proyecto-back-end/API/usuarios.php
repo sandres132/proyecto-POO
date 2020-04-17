@@ -1,6 +1,6 @@
 <?php
 
-header("content-Type: application/json");
+//header("content-Type: application/json");
 include_once ("../clases/class-usuario-cliente.php");
 include_once ("../clases/class-usuario-empresa.php");
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -55,20 +55,19 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'GET':
-        echo json_encode($_GET);
-        /*if ($_GET['tipo'] == 'cliente') {
+        if ($_GET['tipo'] == 'cliente') {
             if (isset($_GET['usuarioCliente'])) {
-                echo json_encode(Cliente::obtenerCliente($_GET['usuarioCliente']));
+                return Cliente::obtenerCliente($_GET['usuarioCliente']);
             } else {
-                echo json_encode(Cliente::obtenerclientes());
+                return Cliente::obtenerclientes();
             }
         } else if ($_GET['tipo'] == 'empresa'){
             if (isset($_GET['nombreUsuario'])) {
-                echo json_encode(Empresa::obtenerEmpresa($_GET['nombreUsuario']));
+                return Empresa::obtenerEmpresa($_GET['nombreUsuario']);
             } else {
-                echo json_encode(Empresa::obtenerEmpresas());
+                return Empresa::obtenerEmpresas();
             }
-        }*/
+        }
         break;
 
     case 'PUT':
