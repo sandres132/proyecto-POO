@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 class Empresa
 {
@@ -19,8 +19,10 @@ class Empresa
     private $email;
     private $actual;
     private $publicaciones;
+    private $calificacionEmpresaDe;
+    private $tipo;
 
-    public function __construct($nombreEmpresa, $logoEmpresa, $banner, $pais, $direccion, $longitud, $latitud, $tipoEmpresa, $nombreUsuario, $password, $facebook, $instagram, $twitter, $twitch, $email, $actual, $publicaciones)
+    public function __construct($nombreEmpresa, $logoEmpresa, $banner, $pais, $direccion, $longitud, $latitud, $tipoEmpresa, $nombreUsuario, $password, $facebook, $instagram, $twitter, $twitch, $email, $actual, $publicaciones, $calificacionEmpresaDe, $tipo)
     {
         $this->nombreEmpresa = $nombreEmpresa;
         $this->logoEmpresa = $logoEmpresa;
@@ -39,6 +41,8 @@ class Empresa
         $this->email = $email;
         $this->actual = $actual;
         $this->publicaciones = $publicaciones;
+        $this->calificacionEmpresaDe = $calificacionEmpresaDe;
+        $this->tipo = $tipo;
     }
 
     public function getNombreEmpresa()
@@ -245,6 +249,30 @@ class Empresa
         return $this;
     }
 
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    public function getCalificacionEmpresaDe()
+    {
+        return $this->calificacionEmpresaDe;
+    }
+
+    public function setCalificacionEmpresaDe($calificacionEmpresaDe)
+    {
+        $this->calificacionEmpresaDe = $calificacionEmpresaDe;
+
+        return $this;
+    }
+
     public function guardarEmpresa()
     {
         //guardar Empresa
@@ -267,7 +295,9 @@ class Empresa
             "twitch" => $this->twitch,
             "email" => $this->email,
             "actual" => $this->actual,
-            "publicaciones" => $this->publicaciones
+            "publicaciones" => $this->publicaciones,
+            "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
+            "tipo" => $this->tipo,
         );
         $archivo = fopen('../data/usuariosEmpresas.json', 'w');
         fwrite($archivo, json_encode($usuariosEmpresas));
@@ -285,10 +315,10 @@ class Empresa
     {
         //retornar la empresa con nombre de empresa 'nombEmpresa'
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $usuarios = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($usuarios); $i++) {
-            if ($usuarios[$i]['usuarioCliente'] == $nombEmpresa) {
-                echo json_encode($usuarios[$i]);
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                echo json_encode($empresas[$i]);
                 break;
             }
         }
@@ -297,34 +327,36 @@ class Empresa
     public function actualizarEmpresa($nombEmpresa)
     {
         //actualizar la empresa con nombre de empresa 'nombEmpresa'
-        $usuarioModif = array(
-            "nombreCliente" => $this->nombreCliente,
-            "apellidoCliente" => $this->apellidoCliente,
-            "usuarioCliente" => $this->usuarioCliente,
-            "emailCliente" => $this->emailCliente,
-            "passwordCliente" => $this->passwordCliente,
-            "actual" => $this->actual,
-            "fechaNacimiento" => $this->fechaNacimiento,
-            "fotoCliente" => $this->fotoCliente,
-            "genero" => $this->genero,
+        $empresaModif = array(
+            "nombreEmpresa" => $this->nombreEmpresa,
+            "logoEmpresa" => $this->logoEmpresa,
+            "banner" => $this->banner,
             "pais" => $this->pais,
-            "companiasFav" => $this->companiasFav,
-            "publicacionesFav" => $this->publicacionesFav,
-            "comprasHechas" => $this->comprasHechas,
-            "comprar" => $this->comprar,
+            "direccion" => $this->direccion,
+            "longitud" => $this->longitud,
+            "latitud" => $this->latitud,
+            "tipoEmpresa" => $this->tipoEmpresa,
+            "nombreUsuario" => $this->nombreUsuario,
+            "password" => $this->password,
+            "facebook" => $this->facebook,
+            "instagram" => $this->instagram,
+            "twitter" => $this->twitter,
+            "twitch" => $this->twitch,
+            "email" => $this->email,
+            "actual" => $this->actual,
+            "publicaciones" => $this->publicaciones,
+            "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
         );
 
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $usuarios = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($usuarios); $i++) {
-            if ($usuarios[$i]['usuarioCliente'] == $nombEmpresa) {
-                $usuarios[$i] = $usuarioModif;
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                $empresas[$i] = $empresaModif;
                 $archivo = fopen('../data/usuariosEmpresas.json', 'w');
-                fwrite($archivo, json_encode($usuarios));
+                fwrite($archivo, json_encode($empresas));
                 fclose($archivo);
-                $resultado["mensaje"] = "se actualizo la informacion del cliente " . $nombEmpresa . " al nuevo cliente " . $usuarios[$i]['usuarioCliente'];
-                echo json_encode($resultado);
                 break;
             }
         }
@@ -334,19 +366,18 @@ class Empresa
     {
         //eliminar la empresa con nombre de empresa 'nombEmpresa'
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $usuarios = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($usuarios); $i++) {
-            if ($usuarios[$i]['usuarioCliente'] == $nombEmpresa) {
-                array_splice($usuarios, $i, 1);
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                array_splice($empresas, $i, 1);
                 $archivo = fopen('../data/usuariosEmpresas.json', 'w');
-                fwrite($archivo, json_encode($usuarios));
+                fwrite($archivo, json_encode($empresas));
                 fclose($archivo);
-                $resultado["mensaje"] = "El cliente " . $nombEmpresa . " fue eliminado con exito";
-                echo json_encode($resultado);
                 break;
             }
         }
     }
+
 }
 
 ?>

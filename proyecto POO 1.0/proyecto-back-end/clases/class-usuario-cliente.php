@@ -293,8 +293,6 @@ class Cliente
                                 $archivo = fopen('../data/usuariosClientes.json', 'w');
                                 fwrite($archivo, json_encode($usuarios));
                                 fclose($archivo);
-                                $resultado["mensaje"]= "se actualizo la informacion del cliente ".$nombCliente." al nuevo cliente ".$usuarios[$i]['usuarioCliente'];
-                                echo json_encode($resultado);
                         break;
                         }
                 }
@@ -311,8 +309,6 @@ class Cliente
                                 $archivo = fopen('../data/usuariosClientes.json', 'w');
                                 fwrite($archivo, json_encode($usuarios));
                                 fclose($archivo);
-                                $resultado["mensaje"]= "El cliente ".$nombCliente. " fue eliminado con exito";
-                                echo json_encode($resultado);
                         break;
                         }
                 }

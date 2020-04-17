@@ -1,11 +1,11 @@
 [{
         "nombreEmpresa": "Diunsa",
-        "logoEmpresa": "../img/Diunsa-logo.png",
-        "banner": "../img/logo.png",
+        "logoEmpresa": "..\/img\/Diunsa-logo.png",
+        "banner": "..\/img\/logo.png",
         "pais": "Honduras",
         "direccion": "Col. Miraflores",
-        "longitud": "8.17403",
-        "latitud": "2.17403",
+        "longitud": 8.17403,
+        "latitud": 2.17403,
         "tipoEmpresa": "Comercial",
         "nombreUsuario": "diunsahn",
         "password": "password",
@@ -16,44 +16,44 @@
         "email": "diunsahn@gmail.hn",
         "actual": false,
         "publicaciones": [{
-                "imagenGanga": "../img/diunsa3.jpg",
+                "imagenGanga": "..\/img\/diunsa3.jpg",
                 "nombreGanga": "Camisa Deportiva",
-                "descripcionGanga": "¡Vamos a apoyar al Motagua por la compra de una camiseta deportiva del Motagua te regalamos un pase doble en localidad sombra sur!",
-                "fechaMax": "25/06/20",
+                "descripcionGanga": "\u00a1Vamos a apoyar al Motagua por la compra de una camiseta deportiva del Motagua te regalamos un pase doble en localidad sombra sur!",
+                "fechaMax": "25\/06\/20",
                 "horaMax": "3:50",
                 "ofertasDisponibles": 5,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 30,
                 "precio": 999.99,
                 "venta": [{
                     "cantidad": 1,
-                    "fechaCompra": "20/06/20"
+                    "fechaCompra": "20\/06\/20"
                 }],
                 "comentarios": [{
                     "nomCliente": "ache",
-                    "comentCliente": "¡Se ve super la promocion!",
-                    "fechaComment": "20/06/20"
+                    "comentCliente": "\u00a1Se ve super la promocion!",
+                    "fechaComment": "20\/06\/20"
                 }],
                 "pubFavoritaDe": [],
                 "calificacionPublicacionDe": [{
                     "nomCliente": "ache",
                     "califDePub": 4,
-                    "comentCliente": "¡Se ve super la promocion!",
-                    "fechaCalif": "20/06/20"
+                    "comentCliente": "\u00a1Se ve super la promocion!",
+                    "fechaCalif": "20\/06\/20"
                 }]
             },
             {
-                "imagenGanga": "../img/diunsa2.jpg",
-                "nombreGanga": "¡Hyper Mega Oferta!",
-                "descripcionGanga": "Por la compra de un celular Huawei Nova 5T ¡Te regalamos un televisor LED de 24' GRATIS!",
-                "fechaMax": "28/06/20",
+                "imagenGanga": "..\/img\/diunsa2.jpg",
+                "nombreGanga": "\u00a1Hyper Mega Oferta!",
+                "descripcionGanga": "Por la compra de un celular Huawei Nova 5T \u00a1Te regalamos un televisor LED de 24' GRATIS!",
+                "fechaMax": "28\/06\/20",
                 "horaMax": "20:50",
                 "ofertasDisponibles": 45,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 45,
-                "precio": 9000.00,
+                "precio": 9000,
                 "venta": [],
                 "comentarios": [],
                 "pubFavoritaDe": [],
@@ -63,18 +63,19 @@
         "calificacionEmpresaDe": [{
             "nomCliente": "ache",
             "califDeEmp": 4,
-            "comentCliente": "¡Me gusta Diunsa!",
-            "fechaCalif": "20/06/20"
-        }]
+            "comentCliente": "\u00a1Me gusta Diunsa!",
+            "fechaCalif": "20\/06\/20"
+        }],
+        "tipo": "empresa"
     },
     {
         "nombreEmpresa": "Samsung",
-        "logoEmpresa": "../img/logo-samsung.jpg",
-        "banner": "../img/logo.png",
+        "logoEmpresa": "..\/img\/logo-samsung.jpg",
+        "banner": "..\/img\/logo.png",
         "pais": "Honduras",
         "direccion": "Col. Miraflores",
-        "longitud": "8.17403",
-        "latitud": "2.17403",
+        "longitud": 8.17403,
+        "latitud": 2.17403,
         "tipoEmpresa": "Tecnologia",
         "nombreUsuario": "samsunghn",
         "password": "password",
@@ -85,55 +86,56 @@
         "email": "samsunghn@gmail.hn",
         "actual": false,
         "publicaciones": [{
-                "imagenGanga": "../img/samsung.png",
+                "imagenGanga": "..\/img\/samsung.png",
                 "nombreGanga": "Samsung A30 O A30s",
-                "descripcionGanga": "¡Aprovecha y lleva a tu persona querida al cine por la compra de un Samsung A30 o A30s te regalamos entradas al cine!",
+                "descripcionGanga": "\u00a1Aprovecha y lleva a tu persona querida al cine por la compra de un Samsung A30 o A30s te regalamos entradas al cine!",
                 "fechaMax": "",
                 "horaMax": "16:50",
                 "ofertasDisponibles": 15,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 30,
-                "precio": 6300.00,
+                "precio": 6300,
                 "venta": [{
                     "cantidad": 1,
-                    "fechaCompra": "12/06/20"
+                    "fechaCompra": "12\/06\/20"
                 }],
                 "comentarios": [{
                     "nomCliente": "kikin",
-                    "comentCliente": "¡A tiempo llego la promocion!",
-                    "fechaComment": "20/06/20"
+                    "comentCliente": "\u00a1A tiempo llego la promocion!",
+                    "fechaComment": "20\/06\/20"
                 }],
                 "pubFavoritaDe": [],
                 "calificacionPublicacionDe": []
             },
             {
-                "imagenGanga": "../img/samsung2.png",
-                "nombreGanga": "¿Aburrido de tu celular?",
-                "descripcionGanga": "¡Es tiempo de innovar! Por la compra de tu celular Samsung te llevas gratis hasta $200 en productos Samsung",
-                "fechaMax": "07/06/20",
+                "imagenGanga": "..\/img\/samsung2.png",
+                "nombreGanga": "\u00bfAburrido de tu celular?",
+                "descripcionGanga": "\u00a1Es tiempo de innovar! Por la compra de tu celular Samsung te llevas gratis hasta $200 en productos Samsung",
+                "fechaMax": "07\/06\/20",
                 "horaMax": "23:50",
                 "ofertasDisponibles": 205,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 30,
-                "precio": 3500.00,
+                "precio": 3500,
                 "venta": [],
                 "comentarios": [],
                 "pubFavoritaDe": [],
                 "calificacionPublicacionDe": []
             }
         ],
-        "calificacionEmpresaDe": []
+        "calificacionEmpresaDe": [],
+        "tipo": "empresa"
     },
     {
         "nombreEmpresa": "Lady Lee",
-        "logoEmpresa": "../img/logo-lady-lee.jpg",
-        "banner": "../img/logo.png",
+        "logoEmpresa": "..\/img\/logo-lady-lee.jpg",
+        "banner": "..\/img\/logo.png",
         "pais": "Honduras",
         "direccion": "Col. Miraflores",
-        "longitud": "8.17403",
-        "latitud": "2.17403",
+        "longitud": 8.17403,
+        "latitud": 2.17403,
         "tipoEmpresa": "Electrodomesticos",
         "nombreUsuario": "ladyLeehn",
         "password": "password",
@@ -144,30 +146,30 @@
         "email": "ladyleehn@gmail.hn",
         "actual": false,
         "publicaciones": [{
-                "imagenGanga": "../img/ladylee1.jpg",
+                "imagenGanga": "..\/img\/ladylee1.jpg",
                 "nombreGanga": "Televisor Samsung",
-                "descripcionGanga": "¿Aburrido de ver televisión en pantalla pequena? ¡Ven y aprovecha esta súper oferta!, televisor SMART Samsung de 65'",
-                "fechaMax": "05/06/20",
+                "descripcionGanga": "\u00bfAburrido de ver televisi\u00f3n en pantalla pequena? \u00a1Ven y aprovecha esta s\u00faper oferta!, televisor SMART Samsung de 65'",
+                "fechaMax": "05\/06\/20",
                 "horaMax": "5:50",
                 "ofertasDisponibles": 5,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 40,
-                "precio": 15000.00,
+                "precio": 15000,
                 "venta": [],
                 "comentarios": [],
                 "pubFavoritaDe": [],
                 "calificacionPublicacionDe": []
             },
             {
-                "imagenGanga": "../img/ladylee3.jpg",
+                "imagenGanga": "..\/img\/ladylee3.jpg",
                 "nombreGanga": "Juego de Sala",
-                "descripcionGanga": "¡Muebles super comodos super baratos! ¡Ven y aprovecha esta súper oferta!",
-                "fechaMax": "05/26/20",
+                "descripcionGanga": "\u00a1Muebles super comodos super baratos! \u00a1Ven y aprovecha esta s\u00faper oferta!",
+                "fechaMax": "05\/26\/20",
                 "horaMax": "8:50",
                 "ofertasDisponibles": 15,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 30,
                 "precio": 9999.99,
                 "venta": [],
@@ -176,16 +178,17 @@
                 "calificacionPublicacionDe": []
             }
         ],
-        "calificacionEmpresaDe": []
+        "calificacionEmpresaDe": [],
+        "tipo": "empresa"
     },
     {
         "nombreEmpresa": "Burger King",
-        "logoEmpresa": "../img/Burger-King-Logo.png",
-        "banner": "../img/logo.png",
+        "logoEmpresa": "..\/img\/Burger-King-Logo.png",
+        "banner": "..\/img\/logo.png",
         "pais": "Honduras",
         "direccion": "Col. Miraflores",
-        "longitud": "8.17403",
-        "latitud": "6.17403",
+        "longitud": 8.17403,
+        "latitud": 6.17403,
         "tipoEmpresa": "Comidas Rapidas",
         "nombreUsuario": "burgerkinghn",
         "password": "password",
@@ -196,14 +199,14 @@
         "email": "burgerkinghn@gmail.hn",
         "actual": false,
         "publicaciones": [{
-                "imagenGanga": "../img/comboHamburger2.jpg",
+                "imagenGanga": "..\/img\/comboHamburger2.jpg",
                 "nombreGanga": "Combo #2",
-                "descripcionGanga": "¿Deseas comer en familia? Llego el combo #2 de Burguer King para que disfrutes en familia.",
-                "fechaMax": "05/06/20",
+                "descripcionGanga": "\u00bfDeseas comer en familia? Llego el combo #2 de Burguer King para que disfrutes en familia.",
+                "fechaMax": "05\/06\/20",
                 "horaMax": "15:50",
                 "ofertasDisponibles": 255,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 25,
                 "precio": 249.99,
                 "venta": [],
@@ -212,14 +215,14 @@
                 "calificacionPublicacionDe": []
             },
             {
-                "imagenGanga": "../img/comboHamburger.jpg",
-                "nombreGanga": "¡Se vino el Econo Combo!",
-                "descripcionGanga": "¡Un refresco, orden de papitas, un sundae, y una hamburguesa Danés!",
-                "fechaMax": "06/06/20",
+                "imagenGanga": "..\/img\/comboHamburger.jpg",
+                "nombreGanga": "\u00a1Se vino el Econo Combo!",
+                "descripcionGanga": "\u00a1Un refresco, orden de papitas, un sundae, y una hamburguesa Dan\u00e9s!",
+                "fechaMax": "06\/06\/20",
                 "horaMax": "21:50",
                 "ofertasDisponibles": 405,
                 "horaInicio": "7:00",
-                "fechaInicio": "28/08/20",
+                "fechaInicio": "28\/08\/20",
                 "porcentDesc": 20,
                 "precio": 79.99,
                 "venta": [],
@@ -227,6 +230,8 @@
                 "pubFavoritaDe": [],
                 "calificacionPublicacionDe": []
             }
-        ]
+        ],
+        "calificacionEmpresaDe": [],
+        "tipo": "empresa"
     }
 ]
