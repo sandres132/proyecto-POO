@@ -16,6 +16,7 @@
         "email": "diunsahn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "nombreEmpresa": "diunsahn",
                 "imagenGanga": "..\/img\/diunsa3.jpg",
                 "nombreGanga": "Camisa Deportiva",
                 "descripcionGanga": "\u00a1Vamos a apoyar al Motagua por la compra de una camiseta deportiva del Motagua te regalamos un pase doble en localidad sombra sur!",
@@ -44,6 +45,7 @@
                 }]
             },
             {
+                "nombreEmpresa": "diunsahn",
                 "imagenGanga": "..\/img\/diunsa2.jpg",
                 "nombreGanga": "\u00a1Hyper Mega Oferta!",
                 "descripcionGanga": "Por la compra de un celular Huawei Nova 5T \u00a1Te regalamos un televisor LED de 24' GRATIS!",
@@ -86,6 +88,7 @@
         "email": "samsunghn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "nombreEmpresa": "samsunghn",
                 "imagenGanga": "..\/img\/samsung.png",
                 "nombreGanga": "Samsung A30 O A30s",
                 "descripcionGanga": "\u00a1Aprovecha y lleva a tu persona querida al cine por la compra de un Samsung A30 o A30s te regalamos entradas al cine!",
@@ -109,6 +112,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "nombreEmpresa": "samsumghn",
                 "imagenGanga": "..\/img\/samsung2.png",
                 "nombreGanga": "\u00bfAburrido de tu celular?",
                 "descripcionGanga": "\u00a1Es tiempo de innovar! Por la compra de tu celular Samsung te llevas gratis hasta $200 en productos Samsung",
@@ -146,6 +150,7 @@
         "email": "ladyleehn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "nombreEmpresa": "ladyleehn",
                 "imagenGanga": "..\/img\/ladylee1.jpg",
                 "nombreGanga": "Televisor Samsung",
                 "descripcionGanga": "\u00bfAburrido de ver televisi\u00f3n en pantalla pequena? \u00a1Ven y aprovecha esta s\u00faper oferta!, televisor SMART Samsung de 65'",
@@ -162,6 +167,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "nombreEmpresa": "ladyleehn",
                 "imagenGanga": "..\/img\/ladylee3.jpg",
                 "nombreGanga": "Juego de Sala",
                 "descripcionGanga": "\u00a1Muebles super comodos super baratos! \u00a1Ven y aprovecha esta s\u00faper oferta!",
@@ -199,6 +205,7 @@
         "email": "burgerkinghn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "nombreEmpresa": "burguerkinghn",
                 "imagenGanga": "..\/img\/comboHamburger2.jpg",
                 "nombreGanga": "Combo #2",
                 "descripcionGanga": "\u00bfDeseas comer en familia? Llego el combo #2 de Burguer King para que disfrutes en familia.",
@@ -215,6 +222,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "nombreEmpresa": "burguerkinghn",
                 "imagenGanga": "..\/img\/comboHamburger.jpg",
                 "nombreGanga": "\u00a1Se vino el Econo Combo!",
                 "descripcionGanga": "\u00a1Un refresco, orden de papitas, un sundae, y una hamburguesa Dan\u00e9s!",

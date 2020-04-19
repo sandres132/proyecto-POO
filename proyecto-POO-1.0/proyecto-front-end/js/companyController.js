@@ -1,7 +1,20 @@
-var localStorage = window.localStorage;
 var empresaSeleccionada;
 var empresas;
 var feActual = "";
+
+//llena la variable empresas con las empresas existentes
+function obtenerEmpresas() {
+    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
+            params: { tipo: "empresa" }
+        })
+        .then(function(res) {
+            empresas = res.data;
+        })
+        .catch(function(err) {
+            console.error(err);
+        });
+}
+obtenerEmpresas();
 
 function fechaActual() {
     var fecha;

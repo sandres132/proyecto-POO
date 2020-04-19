@@ -1,6 +1,6 @@
 <?php
 
-//header("content-Type: application/json");
+header("content-Type: application/json");
 include_once ("../clases/class-usuario-cliente.php");
 include_once ("../clases/class-usuario-empresa.php");
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -25,7 +25,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['tipo']
             );
             $usuario->guardarCliente();
-            echo "guardado";
+            $resultado["mensaje"] = "El cliente se guardo exitosamente";
+            echo json_encode($resultado);
 
         } else if ($_POST['tipo'] == 'empresa') {
             $empresa = new Empresa(
@@ -50,22 +51,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['tipo']
             );
             $empresa->guardarEmpresa();
-            echo "guardado";
+            $resultado["mensaje"] = "La empresa se guardo exitosamente";
+            echo json_encode($resultado);
         }
         break;
 
     case 'GET':
         if ($_GET['tipo'] == 'cliente') {
             if (isset($_GET['usuarioCliente'])) {
-                return Cliente::obtenerCliente($_GET['usuarioCliente']);
+                Cliente::obtenerCliente($_GET['usuarioCliente']);
             } else {
-                return Cliente::obtenerclientes();
+                Cliente::obtenerclientes();
             }
         } else if ($_GET['tipo'] == 'empresa'){
-            if (isset($_GET['nombreUsuario'])) {
-                return Empresa::obtenerEmpresa($_GET['nombreUsuario']);
+            if (isset($_GET['peticion'])) {
+                Empresa::obtenerPublicaciones();
+            }else if(isset($_GET['nombreUsuario'])){
+                Empresa::obtenerEmpresa($_GET['nombreUsuario']);
             } else {
-                return Empresa::obtenerEmpresas();
+                Empresa::obtenerEmpresas();
             }
         }
         break;
@@ -73,7 +77,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'PUT':
         $_PUT = json_decode(file_get_contents('php://input'), true);
         if ($_PUT['tipo'] == 'cliente') {
-            if (isset($_PUT['usuarioCliente'])) {
+            if (isset($_PUT['usuarioClienteModif'])) {
                 $usuario = new Cliente(
                     $_PUT['nombreCliente'],
                     $_PUT['apellidoCliente'],
@@ -91,11 +95,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['comprar'],
                     $_PUT['tipo']
                 );
-                $usuario->actualizarCliente($_PUT['usuarioCliente']);
-                echo "actualizado";
+                $usuario->actualizarCliente($_PUT['usuarioClienteModif']);
+                $resultado["mensaje"] = "El cliente se actualizo exitosamente";
+                echo json_encode($resultado);
             }
         } else if ($_PUT['tipo'] == 'empresa') {
-            if (isset($_PUT['nombreUsuario'])) {
+            if (isset($_PUT['nombreUsuarioModif'])) {
                 $empresa = new Empresa(
                     $_PUT['nombreEmpresa'],
                     $_PUT['logoEmpresa'],
@@ -117,8 +122,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['calificacionEmpresaDe'],
                     $_PUT['tipo']
                 );
-                $empresa->actualizarEmpresa($_PUT['nombreUsuario']);
-                echo "actualizado";
+                $empresa->actualizarEmpresa($_PUT['nombreUsuarioModif']);
+                $resultado["mensaje"] = "ELa empresa se actualizo exitosamente";
+                echo json_encode($resultado);
             }
         }
         break;
@@ -128,12 +134,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if ($_GET['tipo'] == 'cliente') {
             if (isset($_GET['usuarioCliente'])) {
                 Cliente::eliminarCliente($_GET['usuarioCliente']);
-                echo "eliminado";
+                $resultado["mensaje"] = "El cliente se elimino exitosamente";
+                echo json_encode($resultado);
             }
         } else if ($_GET['tipo'] == 'empresa'){
             if (isset($_GET['nombreUsuario'])) {
                 Empresa::eliminarEmpresa($_GET['nombreUsuario']);
-                echo "eliminado";
+                $resultado["mensaje"] = "La empresa se elimino exitosamente";
+                echo json_encode($resultado);
             }
         }
         break;

@@ -1,132 +1,203 @@
-var localStorage = window.localStorage;
-var empresas;
-var clientes;
 var selec;
 var selecciono;
-var verifUser = false;
-var verifPass = false;
 
-//llena la variable clientes con los clientes existentes
-function obtenerClientes() {
-    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
-            params: { tipo: "cliente" }
-
-        })
-        .then(function(res) {
-            clientes = res.data;
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
-}
-obtenerClientes();
-
-//llena la variable empresas con las empresas existentes
-function obtenerEmpresas() {
-    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
-            params: { tipo: "empresa" }
-        })
-        .then(function(res) {
-            empresas = res.data;
-        })
-        .catch(function(err) {
-            console.error(err);
-        });
-}
-obtenerEmpresas();
-
-
-//funcion para validar si es usuario o empresa registrada
-function validar(id) {
-    document.getElementById("alertLog").innerHTML = "";
-    var elem = document.getElementById(id);
-    //aqui revisa si lo que validara sera un usuario o password
-    if (id == "userName") {
-        for (let i = 0; i < clientes.length; i++) {
-            if (clientes[i].usuarioCliente === elem.value) {
-                selec = clientes[i];
-                selecciono = "clientes";
-                verifUser = false;
-                break;
-            } else {
-                verifUser = true;
-            }
-        }
-        if (verifUser) {
-            for (let i = 0; i < empresas.length; i++) {
-                if (empresas[i].nombreUsuario === elem.value) {
-                    selec = empresas[i];
-                    selecciono = "empresas";
-                    verifUser = false;
-                    break;
-                } else {
-                    verifUser = true;
-                }
-            }
-        }
+function redireccionar(seleccion) {
+    if (seleccion == "cliente") {
+        top.location.href = "html/ganguitasUsuario.html";
     } else {
-        if (selecciono == "clientes") {
-            if (selec.passwordCliente == elem.value) {
-                console.log("entro con passCli " + elem.value);
-                for (let j = 0; j < clientes.length; j++) {
-                    clientes[j].actual = false;
-                }
-                selec.actual = true;
-                localStorage.setItem("clientes", JSON.stringify(clientes));
-                verifPass = false;
-            } else {
-                verifPass = true;
-            }
-        } else if (selecciono == "empresas") {
-            if (selec.password == elem.value) {
-                for (let j = 0; j < empresas.length; j++) {
-                    empresas[j].actual = false;
-                }
-                selec.actual = true;
-                localStorage.setItem("empresas", JSON.stringify(empresas));
-                selecciono = "empresas";
-                verifPass = false;
-                verifUser = false;
-            } else {
-                verifPass = true;
-            }
-        }
+        top.location.href = "html/ganguitasCompany.html";
     }
 }
 
-function actual() {
-    if (verifUser) {
+function actualizarCliente() {
+    let clienteModif = {
+        usuarioClienteModif: selec.usuarioCliente,
+        nombreCliente: selec.nombreCliente,
+        usuarioCliente: selec.usuarioCliente,
+        apellidoCliente: selec.apellidoCliente,
+        emailCliente: selec.emailCliente,
+        passwordCliente: selec.passwordCliente,
+        actual: selec.actual,
+        fechaNacimiento: selec.fechaNacimiento,
+        fotoCliente: selec.fotoCliente,
+        genero: selec.genero,
+        pais: selec.pais,
+        companiasFav: selec.companiasFav,
+        publicacionesFav: selec.publicacionesFav,
+        comprasHechas: selec.comprasHechas,
+        comprar: selec.comprar,
+        tipo: selec.tipo
+    }
+
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            method: 'PUT',
+            responseType: 'json',
+            data: clienteModif
+        })
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+}
+
+function actualizarEmpresa() {
+    let empresaModif = {
+        nombreUsuarioModif: selec.nombreUsuario,
+        nombreEmpresa: selec.nombreEmpresa,
+        logoEmpresa: selec.logoEmpresa,
+        banner: selec.banner,
+        pais: selec.pais,
+        direccion: selec.direccion,
+        longitud: selec.longitud,
+        latitud: selec.latitud,
+        tipoEmpresa: selec.tipoEmpresa,
+        nombreUsuario: selec.nombreUsuario,
+        password: selec.password,
+        facebook: selec.facebook,
+        instagram: selec.instagram,
+        twitter: selec.twitter,
+        twitch: selec.twitch,
+        email: selec.email,
+        actual: selec.actual,
+        publicaciones: selec.publicaciones,
+        calificacionEmpresaDe: selec.calificacionEmpresaDe,
+        tipo: selec.tipo
+    }
+
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            method: 'PUT',
+            responseType: 'json',
+            data: empresaModif
+        })
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+}
+
+function colorLogin() {
+    document.getElementById("userName").style.borderColor = "green";
+    document.getElementById("userName").style.color = "green";
+    document.getElementById("password").style.borderColor = "green";
+    document.getElementById("password").style.color = "green";
+    document.getElementById("alertLog").innerHTML = "";
+}
+
+function validar() {
+    var verifUser;
+    var verifPass;
+    let elem1 = document.getElementById('userName');
+    let elem2 = document.getElementById('password');
+    console.log(elem1.value.length + " && " + elem2.value.length);
+
+    if (elem1.value.length != 0 && elem2.value.length != 0) {
+        axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            method: 'GET',
+            responseType: 'json',
+            params: {
+                tipo: "cliente",
+                usuarioCliente: elem1.value
+            }
+        }).then(function(res) {
+            if (res.data.usuarioCliente === elem1.value) {
+                selec = res.data;
+                selecciono = 'cliente';
+                verifUser = false;
+
+                if (selec.passwordCliente == elem2.value) {
+                    console.log("entro con password" + elem2.value);
+                    selec.actual = true;
+                    actualizarCliente();
+                    verifPass = false;
+                    console.log(verifPass);
+                    revisionFinal(verifUser, verifPass);
+                } else {
+                    verifPass = true;
+                    revisionFinal(verifUser, verifPass);
+                }
+            } else {
+                verifUser = true;
+            }
+            if (verifUser) {
+                axios({
+                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                        method: 'GET',
+                        responseType: 'json',
+                        params: {
+                            tipo: "empresa",
+                            nombreUsuario: elem1.value
+                        }
+                    })
+                    .then(function(res) {
+                        if (res.data.nombreUsuario === elem1.value) {
+                            selec = res.data;
+                            verifUser = false;
+
+                            if (selec.password == elem2.value) {
+                                console.log("entro con password" + elem2.value);
+                                selec.actual = true;
+                                actualizarEmpresa();
+                                selecciono = "empresa";
+                                verifUser = false;
+                                verifPass = false;
+                                revisionFinal(verifUser, verifPass);
+                            } else {
+                                verifPass = true;
+                                revisionFinal(verifUser, verifPass);
+                            }
+                        } else {
+                            verifUser = true;
+                            revisionFinal(verifUser, verifPass);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
+            }
+        }).catch(function(err) {
+            console.log(err);
+        });
+    } else {
+        verifPass = true;
+        verifUser = true;
+        revisionFinal(verifUser, verifPass);
+    }
+}
+
+function revisionFinal(verifUser, verifPass) {
+    document.getElementById("alertLog").innerHTML = "";
+
+    console.log("veriff pass en actual " + verifPass);
+
+    if (verifUser || verifPass) {
         document.getElementById("userName").style.borderColor = "red";
         document.getElementById("userName").style.color = "red";
-        document.getElementById("alertLog").innerHTML = "";
-        document.getElementById("alertLog").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Wrong name , </strong>The username you used it doesn't exist.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (verifPass) {
         document.getElementById("password").style.borderColor = "red";
         document.getElementById("password").style.color = "red";
         document.getElementById("alertLog").innerHTML = "";
         document.getElementById("alertLog").innerHTML +=
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Wrong Password!, </strong>Please make sure that is your password.
+                <strong>Wrong User or Password!, </strong>Please make sure that is your user name and your password.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`;
     } else if (verifUser === false && verifPass === false) {
-        redireccionar(selecciono);
-    }
-}
+        //redireccionar(selecciono);
+        /*let pubs = "";
+        for (let i = 0; i < selec.publicacionesFav.length; i++) {
+            pubs += JSON.stringify(selec.publicacionesFav[i]) + ", ";
 
-function redireccionar(selec) {
-    if (selec == "clientes") {
-        top.location.href = "html/ganguitasUsuario.html";
-    } else {
-        top.location.href = "html/ganguitasCompany.html";
+        }
+        console.log(pubs);*/
+        console.log("llego aki");
     }
 }
 

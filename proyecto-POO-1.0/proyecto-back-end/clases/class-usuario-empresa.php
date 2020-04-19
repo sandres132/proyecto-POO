@@ -308,19 +308,27 @@ class Empresa
     {
         //retornar todas las empresas
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        echo $contenidoArchivo;
+        echo json_encode($contenidoArchivo);
     }
 
     public static function obtenerEmpresa($nombEmpresa)
     {
+        $verif=false;
         //retornar la empresa con nombre de empresa 'nombEmpresa'
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
                 echo json_encode($empresas[$i]);
+                $verif=false;
                 break;
+            } else {
+                $verif=true;
             }
+        }
+        if ($verif) {
+                $resultado["nombreUsuario"] = "no se encontro";
+                echo json_encode($resultado);
         }
     }
 
@@ -376,6 +384,36 @@ class Empresa
                 break;
             }
         }
+    }
+
+    public static function obtenerPublicaciones()
+    {
+        $publicaciones = array();
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
+                $publicaciones[] = $empresas[$i]['publicaciones'][$j];
+            }
+        }
+        echo json_encode($publicaciones);
+    }
+
+    public static function obtenerPublicacionesDeEmpresa($nombEmpresa)
+    {
+        $publicaciones = array();
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($nombEmpresa == $empresas[$i]['nombreUsuario']) {
+                for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
+                    $publicaciones[] = $empresas[$i]['publicaciones'][$j];
+                }
+            }
+
+        }
+        echo json_encode($publicaciones);
     }
 
 }

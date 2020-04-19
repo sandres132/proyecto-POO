@@ -279,3 +279,5 @@ if (localStorage.getItem("empresas") == null) {
     empresas = JSON.parse(localStorage.getItem('empresas'));
 }
 
+funciones a implementarse para landingControl
+validar(tipo, )
