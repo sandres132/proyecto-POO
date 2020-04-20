@@ -97,6 +97,14 @@
             </div>
         </div>
     </section>
+
+    <div class="container-fluid">
+        <div class="row bg-dark">
+            <div class="col-md-12 mt-2">
+            </div>
+        </div>
+    </div>
+
     <section id="middle" class="middle">
         <div class="container">
             <div class="row justify-content-center">
@@ -185,14 +193,14 @@
                         <form class="form-control">
                             <div class="form-group">
                                 <i class="fa fa-user"> User Name</i>
-                                <input type="text" id="userName" class="form-control" aria-describedby="userNameHelp" oninput="validar('userName');" required>
+                                <input type="text" id="userName" class="form-control" aria-describedby="userNameHelp" onfocus="colorLogin();" required>
                                 <small id="userNameHelp" class="text-muted">andresju</small>
                             </div>
                         </form>
                         <form class="form-control">
                             <div class="form-group">
                                 <i class="fa fa-lock"> Password</i>
-                                <input type="password" id="password" class="form-control" aria-describedby="passwordHelp" autocomplete="on" oninput="validar('password');" required>
+                                <input type="password" id="password" class="form-control" aria-describedby="passwordHelp" autocomplete="on" onfocus="colorLogin();" required>
                                 <small id="passwordHelp" class="text-muted">Put your password.</small>
                             </div>
                         </form>
@@ -202,7 +210,7 @@
                     <a class="mr-auto" href="">
                         <p>Forgot your password?</p>
                     </a>
-                    <input type="button" class="btn btn-info" value="Log In" onclick="actual();">
+                    <input type="button" class="btn btn-info" value="Log In" onclick="validar();">
                 </div>
             </div>
         </div>

@@ -22,11 +22,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['publicacionesFav'],
                 $_POST['comprasHechas'],
                 $_POST['comprar'],
-                $_POST['tipo']
+                $_POST['tipo'],
+                $_POST['fechaSignIn']
             );
             $usuario->guardarCliente();
-            $resultado["mensaje"] = "El cliente se guardo exitosamente";
-            echo json_encode($resultado);
 
         } else if ($_POST['tipo'] == 'empresa') {
             $empresa = new Empresa(
@@ -48,7 +47,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['actual'],
                 $_POST['publicaciones'],
                 $_POST['calificacionEmpresaDe'],
-                $_POST['tipo']
+                $_POST['tipo'],
+                $_POST['fechaSignIn']
             );
             $empresa->guardarEmpresa();
             $resultado["mensaje"] = "La empresa se guardo exitosamente";
@@ -64,10 +64,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 Cliente::obtenerclientes();
             }
         } else if ($_GET['tipo'] == 'empresa'){
-            if (isset($_GET['peticion'])) {
-                Empresa::obtenerPublicaciones();
-            }else if(isset($_GET['nombreUsuario'])){
-                Empresa::obtenerEmpresa($_GET['nombreUsuario']);
+            if(isset($_GET['nombreUsuario'])){
+                if(isset($_GET['peticion'])){
+                    Empresa::obtenerPublicacionesDeEmpresa($_GET['nombreUsuario']);
+                }else{
+                    Empresa::obtenerEmpresa($_GET['nombreUsuario']);
+                }
+                
             } else {
                 Empresa::obtenerEmpresas();
             }
@@ -93,7 +96,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['publicacionesFav'],
                     $_PUT['comprasHechas'],
                     $_PUT['comprar'],
-                    $_PUT['tipo']
+                    $_PUT['tipo'],
+                    $_POST['fechaSignIn']
                 );
                 $usuario->actualizarCliente($_PUT['usuarioClienteModif']);
                 $resultado["mensaje"] = "El cliente se actualizo exitosamente";
@@ -120,7 +124,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['actual'],
                     $_PUT['publicaciones'],
                     $_PUT['calificacionEmpresaDe'],
-                    $_PUT['tipo']
+                    $_PUT['tipo'],
+                    $_POST['fechaSignIn']
                 );
                 $empresa->actualizarEmpresa($_PUT['nombreUsuarioModif']);
                 $resultado["mensaje"] = "ELa empresa se actualizo exitosamente";

@@ -17,8 +17,9 @@ class Cliente
     private $comprasHechas;
     private $comprar;
     private $tipo;
+    private $fechaSignIn;
 
-    public function __construct($nombreCliente, $apellidoCliente, $usuarioCliente, $emailCliente, $passwordCliente, $actual, $fechaNacimiento, $fotoCliente, $genero, $pais, $companiasFav, $publicacionesFav, $comprasHechas, $comprar, $tipo)
+    public function __construct($nombreCliente, $apellidoCliente, $usuarioCliente, $emailCliente, $passwordCliente, $actual, $fechaNacimiento, $fotoCliente, $genero, $pais, $companiasFav, $publicacionesFav, $comprasHechas, $comprar, $tipo, $fechaSignIn)
     {
         $this->nombreCliente = $nombreCliente;
         $this->apellidoCliente = $apellidoCliente;
@@ -35,6 +36,7 @@ class Cliente
         $this->comprasHechas = $comprasHechas;
         $this->comprar = $comprar;
         $this->tipo = $tipo;
+        $this->fechaSignIn = $fechaSignIn;
     }
 
     public function getNombreCliente()
@@ -217,6 +219,18 @@ class Cliente
         return $this;
     }
 
+    public function getFechaSignIn()
+    {
+        return $this->fechaSignIn;
+    }
+
+    public function setFechaSignIn($fechaSignIn)
+    {
+        $this->fechaSignIn = $fechaSignIn;
+
+        return $this;
+    }
+
     public function guardarCliente()
     {
         //guardar cliente
@@ -238,6 +252,7 @@ class Cliente
             "comprasHechas" => $this->comprasHechas,
             "comprar" => $this->comprar,
             "tipo" => $this->tipo,
+            "fechaSignIn" => $this-> fechaSignIn
         );
         $archivo = fopen('../data/usuariosClientes.json', 'w');
         fwrite($archivo, json_encode($usuariosClientes));
@@ -248,7 +263,7 @@ class Cliente
     {
         //retornar todos los clientes
         $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
-        echo json_decode($contenidoArchivo, false);
+        echo json_encode($contenidoArchivo);
     }
 
     public static function obtenerCliente($nombCliente)
@@ -291,6 +306,7 @@ class Cliente
             "comprasHechas" => $this->comprasHechas,
             "comprar" => $this->comprar,
             "tipo" => $this->tipo,
+            "fechaSignIn" => $this-> fechaSignIn
         );
 
         $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');

@@ -21,8 +21,9 @@ class Empresa
     private $publicaciones;
     private $calificacionEmpresaDe;
     private $tipo;
+    private $fechaSignIn;
 
-    public function __construct($nombreEmpresa, $logoEmpresa, $banner, $pais, $direccion, $longitud, $latitud, $tipoEmpresa, $nombreUsuario, $password, $facebook, $instagram, $twitter, $twitch, $email, $actual, $publicaciones, $calificacionEmpresaDe, $tipo)
+    public function __construct($nombreEmpresa, $logoEmpresa, $banner, $pais, $direccion, $longitud, $latitud, $tipoEmpresa, $nombreUsuario, $password, $facebook, $instagram, $twitter, $twitch, $email, $actual, $publicaciones, $calificacionEmpresaDe, $tipo, $fechaSignIn)
     {
         $this->nombreEmpresa = $nombreEmpresa;
         $this->logoEmpresa = $logoEmpresa;
@@ -43,6 +44,7 @@ class Empresa
         $this->publicaciones = $publicaciones;
         $this->calificacionEmpresaDe = $calificacionEmpresaDe;
         $this->tipo = $tipo;
+        $this->fechaSignIn=$fechaSignIn;
     }
 
     public function getNombreEmpresa()
@@ -272,6 +274,18 @@ class Empresa
 
         return $this;
     }
+    
+    public function getFechaSignIn()
+    {
+        return $this->fechaSignIn;
+    }
+
+    public function setFechaSignIn($fechaSignIn)
+    {
+        $this->fechaSignIn = $fechaSignIn;
+
+        return $this;
+    }
 
     public function guardarEmpresa()
     {
@@ -298,6 +312,7 @@ class Empresa
             "publicaciones" => $this->publicaciones,
             "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
+            "fechaSignIn"=> $this-> fechaSignIn
         );
         $archivo = fopen('../data/usuariosEmpresas.json', 'w');
         fwrite($archivo, json_encode($usuariosEmpresas));
@@ -355,6 +370,7 @@ class Empresa
             "publicaciones" => $this->publicaciones,
             "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
+            "fechaSignIn"=> $this-> fechaSignIn
         );
 
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
@@ -384,19 +400,6 @@ class Empresa
                 break;
             }
         }
-    }
-
-    public static function obtenerPublicaciones()
-    {
-        $publicaciones = array();
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $empresas = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($empresas); $i++) {
-            for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
-                $publicaciones[] = $empresas[$i]['publicaciones'][$j];
-            }
-        }
-        echo json_encode($publicaciones);
     }
 
     public static function obtenerPublicacionesDeEmpresa($nombEmpresa)

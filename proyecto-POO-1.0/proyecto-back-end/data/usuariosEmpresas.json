@@ -68,7 +68,8 @@
             "comentCliente": "\u00a1Me gusta Diunsa!",
             "fechaCalif": "20\/06\/20"
         }],
-        "tipo": "empresa"
+        "tipo": "empresa",
+        "fechaSignIn": "28\/08\/20"
     },
     {
         "nombreEmpresa": "Samsung",
@@ -130,7 +131,8 @@
             }
         ],
         "calificacionEmpresaDe": [],
-        "tipo": "empresa"
+        "tipo": "empresa",
+        "fechaSignIn": "28\/08\/20"
     },
     {
         "nombreEmpresa": "Lady Lee",
@@ -185,7 +187,8 @@
             }
         ],
         "calificacionEmpresaDe": [],
-        "tipo": "empresa"
+        "tipo": "empresa",
+        "fechaSignIn": "28\/08\/20"
     },
     {
         "nombreEmpresa": "Burger King",
@@ -240,6 +243,7 @@
             }
         ],
         "calificacionEmpresaDe": [],
-        "tipo": "empresa"
+        "tipo": "empresa",
+        "fechaSignIn": "28\/08\/20"
     }
 ]

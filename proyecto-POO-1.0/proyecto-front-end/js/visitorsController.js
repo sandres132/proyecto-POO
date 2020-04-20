@@ -1,4 +1,3 @@
-var arregloPublicaciones;
 var selec;
 var selecciono;
 
@@ -9,13 +8,12 @@ function ObtenerPublicaciones() {
             responseType: 'json',
             params: {
                 tipo: "empresa",
-                peticion: "publicaciones"
             }
         })
         .then(function(res) {
-            arregloPublicaciones = res.data;
-            console.log(arregloPublicaciones.length);
-
+            var empresas;
+            empresas = res.data;
+            generarPublicaciones(empresas);
         })
         .catch(function(err) {
             console.log(err);
@@ -23,115 +21,190 @@ function ObtenerPublicaciones() {
 }
 ObtenerPublicaciones();
 
-function generarPublicaciones() {
-    var empresa;
+function generarPublicaciones(empresas) {
+    var cont = 0;
+    var empresasLenght = 0;
+    empresas.map(item => {
+        empresasLenght++;
+    });
     document.getElementById("publicaciones").innerHTML = '';
-    for (let i = 0; i < arregloPublicaciones.length; i++) {
-        axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
-                method: 'GET',
-                responseType: 'json',
-                params: {
-                    tipo: "empresa",
-                    nombreUsuario: arregloPublicaciones.nombreEmpresa
-                }
-            })
-            .then(function(res) {
-                empresa = res.data;
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
+    for (let i = 0; i < empresasLenght; i++) {
+        for (let j = 0; j < empresas[i].publicaciones.length; j++) {
+            imprimirPublicaciones(empresas[i].publicaciones[j], empresas[i], cont);
+            cont++;
+        }
+    }
+}
 
-        document.getElementById("publicaciones").innerHTML +=
-            `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#ganga${i}" role="tab" data-toggle="tab">Ganga</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#detalles${i}" role="tab" data-toggle="tab">Details</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#empresa${i}" role="tab" data-toggle="tab">Company</a>
-                            </li>
-                        </ul>
+function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
+    document.getElementById("publicaciones").innerHTML +=
+        `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#ganga${contadorPubs}" role="tab" data-toggle="tab">Ganga</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#detalles${contadorPubs}" role="tab" data-toggle="tab">Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#empresa${contadorPubs}" role="tab" data-toggle="tab">Company</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="ganga${contadorPubs}">
+                        <div class="inner">
+                            <img class="card-top-img" src="${publicacion.imagenGanga}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h4>${publicacion.nombreGanga}</h4>
+                            <p>${publicacion.descripcionGanga}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-heart fa-1x"></i></a>
+                            <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-cart-plus fa-1x"></i></a>
+                            <button class="btn btn-sm btn-info" id="verMas${contadorPubs}" type="button" data-toggle="collapse" data-target="#contCard${contadorPubs}" aria-expanded="false" aria-controls="contCard">
+                                <i class="fa fa-eye">See more</i>
+                            </button>
+                            <div class="collapse" id="contCard${contadorPubs}">
+                                <div class="card-body m-0">
+                                    <h4 class="form-control "><b>Max date:</b> ${publicacion.fechaMax}</h4>
+                                    <h4 class="form-control "><b>Time remaining:</b> ${publicacion.horaMax}</h4>
+                                    <h4 class="form-control "><b>Available Offers:</b> ${publicacion.ofertasDisponibles}</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-content">
-                        <div class="tab-pane active" role="tabpanel" id="ganga${i}">
-                            <div class="inner">
-                                <img class="card-top-img" src="${arregloPublicaciones[i].imagenGanga}" alt="">
-                            </div>
-                            <div class="card-body">
-                                <h4>${arregloPublicaciones[i].nombreGanga}</h4>
-                                <p>${arregloPublicaciones[i].descripcionGanga}</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-heart fa-1x"></i></a>
-                                <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-cart-plus fa-1x"></i></a>
-                                <button class="btn btn-sm btn-info" id="verMas${i}" type="button" data-toggle="collapse" data-target="#contCard${i}" aria-expanded="false" aria-controls="contCard">
-                                    <i class="fa fa-eye">See more</i>
-                                </button>
-                                <div class="collapse" id="contCard${i}">
-                                    <div class="card-body m-0">
-                                        <h4 class="form-control "><b>Max date:</b> ${arregloPublicaciones[i].fechaMax}</h4>
-                                        <h4 class="form-control "><b>Time remaining:</b> ${arregloPublicaciones[i].horaMax}</h4>
-                                        <h4 class="form-control "><b>Available Offers:</b> ${arregloPublicaciones[i].ofertasDisponibles}</h4>
-                                    </div>
-                                </div>
+                    <div class="tab-pane" role="tabpanel" id="detalles${contadorPubs}">
+                        <div class="inner">
+                            <img class="card-QR" src="../img/QR.png" alt="">
+                            <img class="card-adv" src="${publicacion.imagenGanga}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <div class="form-control">
+                                <h4 class="form-control"><b>Title:</b> ${publicacion.nombreGanga}</h4>
+                                <h4 class="form-control"><b>Description:</b> ${publicacion.descripcionGanga}</h4>
+                                <h4 class="form-control"><b>Start date:</b> ${publicacion.fechaInicio}</h4>
+                                <h4 class="form-control"><b>Max Date:</b> ${publicacion.fechaMax}</h4>
+                                <h4 class="form-control"><b>Max hour:</b> ${publicacion.horaMax}</h4>
                             </div>
                         </div>
-                        <div class="tab-pane" role="tabpanel" id="detalles${i}">
-                            <div class="inner">
-                                <img class="card-QR" src="../img/QR.png" alt="">
-                                <img class="card-adv" src="${arregloPublicaciones[i].imagenGanga}" alt="">
-                            </div>
-                            <div class="card-body">
-                                <div class="form-control">
-                                    <h4 class="form-control"><b>Title:</b> ${arregloPublicaciones[i].nombreGanga}</h4>
-                                    <h4 class="form-control"><b>Description:</b> ${arregloPublicaciones[i].descripcionGanga}</h4>
-                                    <h4 class="form-control"><b>Start date:</b> ${arregloPublicaciones[i].fechaInicio}</h4>
-                                    <h4 class="form-control"><b>Max Date:</b> ${arregloPublicaciones[i].fechaMax}</h4>
-                                    <h4 class="form-control"><b>Max hour:</b> ${arregloPublicaciones[i].horaMax}</h4>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="btn btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-save fa-2x"></i> Save Card</a>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-save fa-2x"></i> Save Card</a>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="empresa${contadorPubs}">
+                        <div class="inner">
+                            <img class="card-img-top" src="${empresa.logoEmpresa}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <div class="form-control">
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresa.nombreEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresa.tipoEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${empresa.pais}</h4>
+                                <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${empresa.direccion}</h4>
+                                <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresa.publicaciones.length}</h4>
+                                <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresa.facebook}</h4>
+                                <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresa.instagram}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresa.twitter}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresa.twitch}</h4>
+                                <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresa.email}</h4>
+                            <div class="form-control">
+                        </div>
                             </div>
                         </div>
-                        <div class="tab-pane" role="tabpanel" id="empresa${i}">
-                            <div class="inner">
-                                <img class="card-img-top" src="${empresa.logoEmpresa}" alt="">
-                            </div>
-                            <div class="card-body">
-                                <div class="form-control">
-                                    <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresa.nombreEmpresa}</h4>
-                                    <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresa.tipoEmpresa}</h4>
-                                    <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${empresa.pais}</h4>
-                                    <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${empresa.direccion}</h4>
-                                    <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresa.publicaciones.length}</h4>
-                                    <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresa.facebook}</h4>
-                                    <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresa.instagram}</h4>
-                                    <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresa.twitter}</h4>
-                                    <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresa.twitch}</h4>
-                                    <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresa.email}</h4>
-                                <div class="form-control">
-                            </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
-                            </div>
+                        <div class="card-footer">
+                            <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
                         </div>
                     </div>
                 </div>
-            </div>`;
-        cont++;
+            </div>
+        </div>`;
+}
+
+function validar() {
+    var verifUser;
+    var verifPass;
+    let elem1 = document.getElementById('userName');
+    let elem2 = document.getElementById('password');
+    console.log(elem1.value.length + " && " + elem2.value.length);
+
+    if (elem1.value.length != 0 && elem2.value.length != 0) {
+        axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            method: 'GET',
+            responseType: 'json',
+            params: {
+                tipo: "cliente",
+                usuarioCliente: elem1.value
+            }
+        }).then(function(res) {
+            if (res.data.usuarioCliente === elem1.value) {
+                selec = res.data;
+                selecciono = 'cliente';
+                verifUser = false;
+
+                if (selec.passwordCliente == elem2.value) {
+                    console.log("entro con password" + elem2.value);
+                    selec.actual = true;
+                    actualizarCliente();
+                    verifPass = false;
+                    console.log(verifPass);
+                    revisionFinal(verifUser, verifPass);
+                } else {
+                    verifPass = true;
+                    revisionFinal(verifUser, verifPass);
+                }
+            } else {
+                verifUser = true;
+            }
+            if (verifUser) {
+                axios({
+                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                        method: 'GET',
+                        responseType: 'json',
+                        params: {
+                            tipo: "empresa",
+                            nombreUsuario: elem1.value
+                        }
+                    })
+                    .then(function(res) {
+                        if (res.data.nombreUsuario === elem1.value) {
+                            selec = res.data;
+                            verifUser = false;
+
+                            if (selec.password == elem2.value) {
+                                console.log("entro con password" + elem2.value);
+                                selec.actual = true;
+                                actualizarEmpresa();
+                                selecciono = "empresa";
+                                verifUser = false;
+                                verifPass = false;
+                                revisionFinal(verifUser, verifPass);
+                            } else {
+                                verifPass = true;
+                                revisionFinal(verifUser, verifPass);
+                            }
+                        } else {
+                            verifUser = true;
+                            revisionFinal(verifUser, verifPass);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
+            }
+        }).catch(function(err) {
+            console.log(err);
+        });
+    } else {
+        verifPass = true;
+        verifUser = true;
+        revisionFinal(verifUser, verifPass);
     }
 }
-generarPublicaciones();
 
 function revisionFinal(verifUser, verifPass) {
     document.getElementById("alertLog").innerHTML = "";
@@ -236,92 +309,10 @@ function actualizarEmpresa() {
 }
 
 function redireccionar(seleccion) {
-    if (seleccion == "clientes") {
+    if (seleccion == "cliente") {
         top.location.href = "../html/ganguitasUsuario.html";
     } else {
         top.location.href = "../html/ganguitasCompany.html";
-    }
-}
-
-function validar() {
-    var verifUser;
-    var verifPass;
-    let elem1 = document.getElementById('userName');
-    let elem2 = document.getElementById('password');
-    console.log(elem1.value.length + " && " + elem2.value.length);
-
-    if (elem1.value.length != 0 && elem2.value.length != 0) {
-        axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
-            method: 'GET',
-            responseType: 'json',
-            params: {
-                tipo: "cliente",
-                usuarioCliente: elem1.value
-            }
-        }).then(function(res) {
-            if (res.data.usuarioCliente === elem1.value) {
-                selec = res.data;
-                selecciono = 'cliente';
-                verifUser = false;
-
-                if (selec.passwordCliente == elem2.value) {
-                    console.log("entro con password" + elem2.value);
-                    selec.actual = true;
-                    actualizarCliente();
-                    verifPass = false;
-                    console.log(verifPass);
-                    revisionFinal(verifUser, verifPass);
-                } else {
-                    verifPass = true;
-                    revisionFinal(verifUser, verifPass);
-                }
-            } else {
-                verifUser = true;
-            }
-            if (verifUser) {
-                axios({
-                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
-                        method: 'GET',
-                        responseType: 'json',
-                        params: {
-                            tipo: "empresa",
-                            nombreUsuario: elem1.value
-                        }
-                    })
-                    .then(function(res) {
-                        if (res.data.nombreUsuario === elem1.value) {
-                            selec = res.data;
-                            verifUser = false;
-
-                            if (selec.password == elem2.value) {
-                                console.log("entro con password" + elem2.value);
-                                selec.actual = true;
-                                actualizarEmpresa();
-                                selecciono = "empresa";
-                                verifUser = false;
-                                verifPass = false;
-                                revisionFinal(verifUser, verifPass);
-                            } else {
-                                verifPass = true;
-                                revisionFinal(verifUser, verifPass);
-                            }
-                        } else {
-                            verifUser = true;
-                            revisionFinal(verifUser, verifPass);
-                        }
-                    })
-                    .catch(function(err) {
-                        console.log(err);
-                    });
-            }
-        }).catch(function(err) {
-            console.log(err);
-        });
-    } else {
-        verifPass = true;
-        verifUser = true;
-        revisionFinal(verifUser, verifPass);
     }
 }
 
