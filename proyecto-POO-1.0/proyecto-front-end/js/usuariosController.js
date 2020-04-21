@@ -1,247 +1,183 @@
 var publicacionSeleccionada;
 var clienteSeleccionado;
-var clientes;
-var verifUser = false;
-var verifPass = false;
 
-//llena la variable clientes con los clientes existentes
-function obtenerClientes() {
-    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
-            params: { tipo: "cliente" }
+function obtenerCliente() {
+    console.log("entro a obtener cliente");
 
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            method: 'GET',
+            responseType: 'json',
+            params: {
+                tipo: "cliente"
+            }
         })
         .then(function(res) {
+            var clientes;
+            var cont = 0;
             clientes = res.data;
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
-}
-obtenerClientes();
-
-//llena la variable empresas con las empresas existentes
-function obtenerEmpresas() {
-    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
-            params: { tipo: "empresa" }
-        })
-        .then(function(res) {
-            empresas = res.data;
+            clientes.map(item => {
+                cont++;
+            });
+            console.log(cont);
+            for (let i = 0; i < cont; i++) {
+                if (clientes[i].actual == true) {
+                    clienteSeleccionado = clientes[i];
+                    generarNombre();
+                    generarModalCompras(clienteSeleccionado);
+                    generarModalPerfil(clienteSeleccionado);
+                }
+            }
         })
         .catch(function(err) {
-            console.error(err);
+            console.log(err);
         });
 }
-obtenerEmpresas();
-
+obtenerCliente();
+//
 function generarNombre() {
     document.getElementById("nombreDeUsuario").innerHTML = "";
     document.getElementById("nombreDeUsuario").innerHTML =
         `<a href="#" class="nav-link text-white superText" data-target="#profile" data-toggle="modal"><i class="fa fa-user fa-2x"></i> ${clienteSeleccionado.usuarioCliente}</a>`;
 }
-
-function generarPublicaciones() {
-    let cont = 0;
-
+//
+function ObtenerPublicaciones() {
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            method: 'GET',
+            responseType: 'json',
+            params: {
+                tipo: "empresa",
+            }
+        })
+        .then(function(res) {
+            var empresas;
+            empresas = res.data;
+            generarPublicaciones(empresas);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
+ObtenerPublicaciones();
+//
+function generarPublicaciones(empresas) {
+    var cont = 0;
+    var empresasLenght = 0;
+    empresas.map(item => {
+        empresasLenght++;
+    });
     document.getElementById("publicaciones").innerHTML = '';
-    for (let i = 0; i < empresas.length; i++) {
+    for (let i = 0; i < empresasLenght; i++) {
         for (let j = 0; j < empresas[i].publicaciones.length; j++) {
-            let coments = "";
-            for (let k = 0; k < empresas[i].publicaciones[j].comentarios.length; k++) {
-                coments +=
-                    `
-                    <div class="form-control py-1">
-                        <div>
-                            <h4><b><i class="fa fa-user-circle-o">${empresas[i].publicaciones[j].comentarios[k].nomCliente}</i></b></h4>
+            imprimirPublicaciones(empresas[i].publicaciones[j], empresas[i], cont);
+            cont++;
+        }
+    }
+}
+//
+function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
+    document.getElementById("publicaciones").innerHTML +=
+        `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#ganga${contadorPubs}" role="tab" data-toggle="tab">Ganga</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#detalles${contadorPubs}" role="tab" data-toggle="tab">Details</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#empresa${contadorPubs}" role="tab" data-toggle="tab">Company</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="ganga${contadorPubs}">
+                        <div class="inner">
+                            <img class="card-top-img" src="${publicacion.imagenGanga}" alt="">
                         </div>
-                        <hr>
-                        <div>
-                            <h4><i class="fa fa-comments-o"> ${empresas[i].publicaciones[j].comentarios[k].comentCliente}</i></h4>
+                        <div class="card-body">
+                            <h4>${publicacion.nombreGanga}</h4>
+                            <p>${publicacion.descripcionGanga}</p>
                         </div>
-                    </div>`;
-
-            }
-
-            let botonFavEmp = "";
-            if (clienteSeleccionado.companiasFav.length >= 1) {
-                for (let l = 0; l < clienteSeleccionado.companiasFav.length; l++) {
-                    if (clienteSeleccionado.companiasFav[l].nombreEmp == empresas[i].nombreEmpresa) {
-                        botonFavEmp =
-                            `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
-                        break;
-                    } else {
-                        botonFavEmp =
-                            `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
-                    }
-                }
-            } else {
-                botonFavEmp =
-                    `<button id="empFav${cont}" onclick="empFavorita(${cont},${i});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
-            }
-
-
-            let botonFavPub = "";
-            if (clienteSeleccionado.publicacionesFav.length >= 1) {
-                for (let l = 0; l < clienteSeleccionado.publicacionesFav.length; l++) {
-                    if (clienteSeleccionado.publicacionesFav[l].nombreGan == empresas[i].publicaciones[j].nombreGanga) {
-                        botonFavPub =
-                            `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info fav"><i class="fa fa-heart fa-1x"></i></button>`;
-                        break;
-                    } else {
-                        botonFavPub =
-                            `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
-                    }
-                }
-            } else {
-                botonFavPub =
-                    `<button id="pubFav${cont}" onclick="pubFavorita(${cont},${i},${j});" class="btn btn-sm btn-info"><i class="fa fa-heart fa-1x"></i></button>`;
-            }
-
-
-            document.getElementById("publicaciones").innerHTML +=
-                `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <ul class="nav nav-tabs card-header-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#ganga${cont}" role="tab" data-toggle="tab">Ganga</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#detalles${cont}" role="tab" data-toggle="tab">Details</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#empresa${cont}" role="tab" data-toggle="tab">Company</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content">
-                            <div class="tab-pane active" role="tabpanel" id="ganga${cont}">
-                                <div class="inner">
-                                    <img class="card-img-top" src="${empresas[i].publicaciones[j].imagenGanga}" alt="">
-                                </div>
-                                <div class="card-body">
-                                    <h4>${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                    <p>${empresas[i].publicaciones[j].descripcionGanga}</p><br> Qualify: <br>
-                                    <div class="rw-ui-container" data-title="product rating"></div>
-                                </div>
-                                <div class="card-footer">
-                                    ${botonFavPub}
-                                    <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#compCant${cont}" aria-expanded="false" aria-controls="comprarPub"><i class="fa fa-cart-arrow-down fa-1x"></i></button>
-                                    <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
-                                        <i class="fa fa-eye">See more</i>
-                                    </button>
-                                    <div class="collapse" id="contCard${cont}">
-                                        <div class="card-body m-0">
-                                            <h4 class="form-control "><b>Time remaining:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                            <h4 class="form-control "><b>Available Offers:</b> ${empresas[i].publicaciones[j].ofertasDisponibles}</h4>
-                                            <h4 class="form-control "><b>Price:</b> ${empresas[i].publicaciones[j].precio}</h4>
-                                            <h4 class="form-control "><b>Posted on:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
-                                            <hr>
-                                            <h4><b><i class="fa fa-comment-o"></i>Comments</b></h4>
-                                            <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comPub${cont}" aria-expanded="false" aria-controls="commentPub"><i class="fa fa-commenting-o"> Comment</i></button>
-                                            <div class="collapse" id="comPub${cont}">
-                                                <div class="card-body m-0">
-                                                    <div class="form-row py-1">
-                                                        <label for="comPub"><b><i class="fa fa-commenting-o"> Post</i></b></label>
-                                                        <textarea type="text" id="comentarPub${cont}" class="form-control" aria-describedby="comPubHelp" rows="3" required></textarea>
-                                                        <small id="comPubHelp" class="text-muted">Post your opinion</small>
-                                                    </div>
-                                                    <div class="container mb-3">
-                                                        <button onclick="comentPub('paraComent${cont}','comentarPub${cont}',${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> Post</i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr> 
-                                            <div id="paraComent${cont}">
-                                                ${coments}
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                    <div class="collapse" id="compCant${cont}">
-                                        <div class="card-body m-0">
-                                            <div class="form-group py-1">
-                                                <label for="cantComprar" class="float-left"><b><i class="fa fa-cart-arrow-down"> Quantity to buy</i></b></label>
-                                                <input type="number" value="0" min="0" id="cantComprar${cont}" class="form-control" aria-describedby="cantComprarHelp" required>
-                                                <small id="cantComprarHelp" class="text-muted float-left">Put the quantity you are going to buy</small>
-                                                <br>
-                                                <div id="alertaComprar${cont}">
-
-                                                </div>
-                                                <div class="container mb-3">
-                                                    <button onclick="aComprar('cantComprar${cont}','alertaComprar${cont}',${i},${j});" class="btn btn-sm btn-info float-right"><i class="fa fa-cart-plus fa-1x"> Add</i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" role="tabpanel" id="detalles${cont}">
-                                <div class="inner">
-                                    <img class="card-QR" src="../img/QR.png" alt="">
-                                    <img class="card-QR" src="${empresas[i].publicaciones[j].imagenGanga}" alt="">
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-control">
-                                        <h4 class="form-control"><b>Title:</b> ${empresas[i].publicaciones[j].nombreGanga}</h4>
-                                        <h4 class="form-control"><b>Description:</b> ${empresas[i].publicaciones[j].descripcionGanga}</h4>
-                                        <h4 class="form-control"><b>Start date:</b> ${empresas[i].publicaciones[j].fechaInicio}</h4>
-                                        <h4 class="form-control"><b>Max Date:</b> ${empresas[i].publicaciones[j].fechaMax}</h4>
-                                        <h4 class="form-control"><b>Max hour:</b> ${empresas[i].publicaciones[j].horaMax}</h4>
-                                        <h4 class="form-control"><b>Company:</b> ${empresas[i].nombreEmpresa}</h4>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button onmouseover="generaraModalTarjeta(${i},${j});" type="button" class="btn btn-info"  data-toggle="modal" data-target="#tarjeta"><i class="fa fa-save"> Save Card</i></button>
-                                </div>
-                            </div>
-                            <div class="tab-pane" role="tabpanel" id="empresa${cont}">
-                                <div class="inner">
-                                    <img class="card-img-top" src="${empresas[i].logoEmpresa}" alt="">
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-control">
-                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresas[i].nombreEmpresa}</h4>
-                                        <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresas[i].tipoEmpresa}</h4>
-                                        <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresas[i].publicaciones.length}</h4>
-                                        <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresas[i].facebook}</h4>
-                                        <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresas[i].instagram}</h4>
-                                        <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresas[i].twitter}</h4>
-                                        <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresas[i].twitch}</h4>
-                                        <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresas[i].email}</h4>
-                                        <div class="form-control">
-                                            <div class="rw-ui-container" data-title="company rating"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer" >
-                                    ${botonFavEmp}
-                                    <a href="#" class="log btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-heart fa-1x"></i></a>
+                            <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-cart-plus fa-1x"></i></a>
+                            <button class="btn btn-sm btn-info" id="verMas${contadorPubs}" type="button" data-toggle="collapse" data-target="#contCard${contadorPubs}" aria-expanded="false" aria-controls="contCard">
+                                <i class="fa fa-eye">See more</i>
+                            </button>
+                            <div class="collapse" id="contCard${contadorPubs}">
+                                <div class="card-body m-0">
+                                    <h4 class="form-control "><b>Max date:</b> ${publicacion.fechaMax}</h4>
+                                    <h4 class="form-control "><b>Time remaining:</b> ${publicacion.horaMax}</h4>
+                                    <h4 class="form-control "><b>Available Offers:</b> ${publicacion.ofertasDisponibles}</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>`;
-            cont++;
-        }
-
-    }
+                    <div class="tab-pane" role="tabpanel" id="detalles${contadorPubs}">
+                        <div class="inner">
+                            <img class="card-QR" src="../img/QR.png" alt="">
+                            <img class="card-adv" src="${publicacion.imagenGanga}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <div class="form-control">
+                                <h4 class="form-control"><b>Title:</b> ${publicacion.nombreGanga}</h4>
+                                <h4 class="form-control"><b>Description:</b> ${publicacion.descripcionGanga}</h4>
+                                <h4 class="form-control"><b>Start date:</b> ${publicacion.fechaInicio}</h4>
+                                <h4 class="form-control"><b>Max Date:</b> ${publicacion.fechaMax}</h4>
+                                <h4 class="form-control"><b>Max hour:</b> ${publicacion.horaMax}</h4>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-save fa-2x"></i> Save Card</a>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="empresa${contadorPubs}">
+                        <div class="inner">
+                            <img class="card-img-top" src="${empresa.logoEmpresa}" alt="">
+                        </div>
+                        <div class="card-body">
+                            <div class="form-control">
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresa.nombreEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresa.tipoEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${empresa.pais}</h4>
+                                <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${empresa.direccion}</h4>
+                                <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresa.publicaciones.length}</h4>
+                                <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresa.facebook}</h4>
+                                <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresa.instagram}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresa.twitter}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresa.twitch}</h4>
+                                <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresa.email}</h4>
+                            <div class="form-control">
+                        </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
 }
-generarPublicaciones();
-
-function generarModalCompras() {
+//
+function generarModalCompras(cliente) {
     let lista = "";
     let contador = 0;
     let montoTot = 0;
-    for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
-        montoTot += clienteSeleccionado.comprar[i].monto;
+    for (let i = 0; i < cliente.comprar.length; i++) {
+        montoTot += cliente.comprar[i].monto;
         lista +=
             `
             <div class="container">
                 <div class="form-control ">
-                    <h5><b>Article Name: </b>${clienteSeleccionado.comprar[i].aComprar}</h5>
-                    <h5><b>Quantity of items: </b>${clienteSeleccionado.comprar[i].cant}</h5>
-                    <h5><b>Price item: </b>${clienteSeleccionado.comprar[i].precioArt.toFixed(2)}</h5>
-                    <h5><b>Amount of items: </b>${clienteSeleccionado.comprar[i].monto.toFixed(2)}</h5>
+                    <h5><b>Article Name: </b>${cliente.comprar[i].aComprar}</h5>
+                    <h5><b>Quantity of items: </b>${cliente.comprar[i].cant}</h5>
+                    <h5><b>Price item: </b>${cliente.comprar[i].precioArt.toFixed(2)}</h5>
+                    <h5><b>Amount of items: </b>${cliente.comprar[i].monto.toFixed(2)}</h5>
                     <button class="btn btn-info" onclick="borrarCompra('${contador}');"><i class="fa fa-trash-o"> Delete</i></button>
                 </div>
             </div>`;
@@ -254,7 +190,7 @@ function generarModalCompras() {
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header style">
-                        <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Hi ${clienteSeleccionado.usuarioCliente}!</h2>
+                        <h2 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Hi ${cliente.usuarioCliente}!</h2>
                         <button class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -272,54 +208,58 @@ function generarModalCompras() {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="buy" class="btn btn-info" onclick="comprarPub();"><i class="fa fa-credit-card"> Make the purchase</i></button>
+                        <button id="buy" class="btn btn-info" onclick="comprarPub(${cliente});"><i class="fa fa-credit-card"> Make the purchase</i></button>
                     </div>
                 </div>
             </div>
         </div>`;
 }
-generarModalCompras();
 
-function generarModalPerfil() {
+function generarModalPerfil(cliente) {
     let publicacionesFavoritas = "";
     let empresasFavoritas = "";
     let historialComp = "";
 
-    for (let i = 0; i < clienteSeleccionado.publicacionesFav.length; i++) {
-        publicacionesFavoritas +=
-            `
-            <form class="form-control">
+    if (cliente.publicacionesFav.length != 0) {
+        for (let i = 0; i < cliente.publicacionesFav.length; i++) {
+            publicacionesFavoritas +=
+                `
                 <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Ganga:</b> ${clienteSeleccionado.publicacionesFav[i].nombreGan}</h4>
-                </div>
-            </form>`;
+                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Ganga:</b> ${cliente.publicacionesFav[i].nombreGan}</h4>
+                </div>`;
 
+        }
+    } else {
+        publicacionesFavoritas = `<p><b>You have no favorite products yet</b></p>`;
     }
 
-    for (let i = 0; i < clienteSeleccionado.companiasFav.length; i++) {
-        empresasFavoritas +=
-            `
-            <form class="form-control">
+    if (cliente.companiasFav.length != 0) {
+        for (let i = 0; i < cliente.companiasFav.length; i++) {
+            empresasFavoritas +=
+                `
                 <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Company:</b> ${clienteSeleccionado.companiasFav[i].nombreEmp}</h4>
-                </div>
-            </form>`;
+                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Company:</b> ${cliente.companiasFav[i].nombreEmp}</h4>
+                </div>`;
 
+        }
+    } else {
+        empresasFavoritas = `<p><b>You have no favorite companies yet</b></p>`;
     }
 
-    for (let i = 0; i < clienteSeleccionado.comprasHechas.length; i++) {
-        historialComp +=
-            `
-            <form class="form-control">
+    if (cliente.comprasHechas.length != 0) {
+        for (let i = 0; i < cliente.comprasHechas.length; i++) {
+            historialComp +=
+                `
                 <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-money"></i><b> Article name:</b> ${clienteSeleccionado.comprasHechas[i].nomCompra}</h4>
-                    <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of purchase ${i}:</b> ${clienteSeleccionado.comprasHechas[i].fechaCompra}</h4>
-                    <h4 class="form-control"><i class="fa fa-list"></i><b> Quantity:</b> ${clienteSeleccionado.comprasHechas[i].cant}</h4>
-                    <h4 class="form-control"><i class="fa fa-money"></i><b> price:</b> ${clienteSeleccionado.comprasHechas[i].precioArt}</h4>
-                    <h4 class="form-control"><i class="fa fa-money"></i><b> Amount:</b> ${clienteSeleccionado.comprasHechas[i].montoComprado}</h4>
-                </div>
-            </form>`;
-
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Article name:</b> ${cliente.comprasHechas[i].nomCompra}</h4>
+                    <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of purchase ${i}:</b> ${cliente.comprasHechas[i].fechaCompra}</h4>
+                    <h4 class="form-control"><i class="fa fa-list"></i><b> Quantity:</b> ${cliente.comprasHechas[i].cant}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> price:</b> ${cliente.comprasHechas[i].precioArt}</h4>
+                    <h4 class="form-control"><i class="fa fa-money"></i><b> Amount:</b> ${cliente.comprasHechas[i].montoComprado}</h4>
+                </div>`;
+        }
+    } else {
+        historialComp = `<p><b>You have no shopping history yet</b></p>`;
     }
 
     document.getElementById("modalUs").innerHTML = "";
@@ -330,7 +270,7 @@ function generarModalPerfil() {
                     <div class="modal-header style">
                         <ul class="nav nav-tabs modal-header-tabs">
                             <li class="nav-item card-header-tabs">
-                                <a class="nav-link" href="#userProfile" role="tab" data-toggle="tab">${clienteSeleccionado.usuarioCliente}</a>
+                                <a class="nav-link" href="#userProfile" role="tab" data-toggle="tab">${cliente.usuarioCliente}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#edit" role="tab" data-toggle="tab">Edit Profile</a>
@@ -344,59 +284,64 @@ function generarModalPerfil() {
                         <div class="tab-content">
                             <div class="tab-pane active" role="tabpanel" id="userProfile">
                                 <div class="inner">
-                                    <img class="card-img-top" src="${clienteSeleccionado.fotoCliente}" alt="foto cliente">
+                                    <img class="card-img-top" src="${cliente.fotoCliente}" alt="foto cliente">
                                 </div>
                                 <div class="card-body">
                                     <div class="form-control py-0">
-                                        <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-user"></i><b> First Name:</b> ${clienteSeleccionado.nombreCliente}</h4>
-                                        </form>
-                                        <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-user"></i><b> Last Name:</b> ${clienteSeleccionado.apellidoCliente}</h4>
-                                        </form>
-                                        <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of birth:</b> ${clienteSeleccionado.fechaNacimiento}</h4>
-                                        </form>
-                                        <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-user-circle"></i><b> Username:</b> ${clienteSeleccionado.usuarioCliente}</h4>
-                                        </form>
-                                        <form class="form-control">
-                                                <h4 class="form-control"><i class="fa fa-envelope"></i><b> Email:</b> ${clienteSeleccionado.emailCliente}</h4>
-                                        </form>
+                                        <h4 class="form-control mt-2"><i class="fa fa-user"></i><b> First Name:</b> ${cliente.nombreCliente}</h4>
+                                        <h4 class="form-control"><i class="fa fa-user"></i><b> Last Name:</b> ${cliente.apellidoCliente}</h4>
+                                        <h4 class="form-control"><i class="fa fa-flag"></i><b> Pais:</b> ${cliente.pais}</h4>
+                                        <h4 class="form-control"><i class="fa fa-transgender-alt"></i><b> Pais:</b> ${cliente.genero}</h4>
+                                        <h4 class="form-control"><i class="fa fa-calendar-check-o"></i><b> Date of birth:</b> ${cliente.fechaNacimiento}</h4>
+                                        <h4 class="form-control"><i class="fa fa-user-circle"></i><b> Username:</b> ${cliente.usuarioCliente}</h4>
+                                        <h4 class="form-control"><i class="fa fa-envelope"></i><b> Email:</b> ${cliente.emailCliente}</h4>
+                                        <h4 class="form-control"><i class="fa fa-calendar"></i><b> With us since:</b> ${cliente.fechaSignIn}</h4>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-sm btn-info" id="favCompanies" type="button" data-toggle="collapse" data-target="#contCompanies" aria-expanded="false" aria-controls="contCompanies">Favorites <i class="fa fa-institution"></i></button>
-                                    <button class="btn btn-sm btn-info" id="favProducts" type="button" data-toggle="collapse" data-target="#contProducts" aria-expanded="false" aria-controls="contProducts"> Favorites <i class="fa fa-shopping-bag"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-info" id="histoDeComp" type="button" data-toggle="collapse" data-target="#histComp" aria-expanded="false" aria-controls="histComp"><i class="fa fa-history"></i> Shopping history</button>
-                                    <div class="collapse" id="contProducts">
-                                        <div class="card-body m-0">
-                                            <hr>
-                                            <h4 class="form-group"><b>Favorite Products</b></h4>
-                                            <hr>
-                                            <div id="verPubFav">
-                                                ${publicacionesFavoritas}
+                                    <ul class="nav nav-tabs modal-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#contProducts" role="tab" data-toggle="tab"><i class="fa fa-shopping-bag"> My Products</i></a>
+                                        </li>
+                                        <li class="nav-item card-header-tabs">
+                                            <a class="nav-link" href="#contCompanies" role="tab" data-toggle="tab"><i class="fa fa-institution"> My Companies</i></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#histComp" role="tab" data-toggle="tab"><i class="fa fa-history"></i> Shopping</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" role="tabpanel" id="contProducts">
+                                            <div class="card-body m-0">
+                                                <h4 class="form-group"><b>My Favorite Products</b></h4>
+                                                <hr>
+                                                <div>
+                                                    <form class="form-control" id="verPubFav">
+                                                        ${publicacionesFavoritas}
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="collapse" id="contCompanies">
-                                        <div class="card-body m-0">
-                                            <hr>
-                                            <h4 class="form-group"><b>Favorite Companies</b></h4>
-                                            <hr>
-                                            <div id="verEmpFav">
-                                                ${empresasFavoritas}
+                                        <div class="tab-pane" role="tabpanel" id="contCompanies">
+                                            <div class="card-body m-0">
+                                                <h4 class="form-group"><b>My Favorite Companies</b></h4>
+                                                <hr>
+                                                <div>
+                                                    <form class="form-control" id="verEmpFav">
+                                                        ${empresasFavoritas} 
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="collapse" id="histComp">
-                                        <div class="card-body m-0">
-                                            <hr>
-                                            <h4 class="form-group"><b>Shopping history</b></h4>
-                                            <hr>
-                                            <div id="verHistComp">
-                                                ${historialComp}
+                                        <div class="tab-pane" role="tabpanel" id="histComp">
+                                            <div class="card-body m-0">
+                                                <h4 class="form-group"><b>Shopping history</b></h4>
+                                                <hr>
+                                                <div>
+                                                    <form class="form-control" id="verHistComp">
+                                                        ${historialComp}    
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -406,56 +351,63 @@ function generarModalPerfil() {
                                 <div class="card-body mb-0 pb-0">
                                     <form class="form-control py-0">
                                         <fieldset>
-                                            <form class="form-control">
-                                                <div class="form-group">
-                                                    <i class="fa fa-image"> User Image</i>
-                                                    <input class="form-control" type="file" accept="image/*" id="imgGanga">
-                                                    <small id="institutionImageHelp" class="text-muted">User Photo</small>
-                                                </div>
-                                            </form>
                                             <div class="form-row py-1">
                                                 <label for="firstName"><b><i class="fa fa-edit"> First Name</i></b></label>
-                                                <input type="text" id="firstName" class="form-control" aria-describedby="firstNameHelp" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
+                                                <input type="text" id="firstName" value="${cliente.nombreCliente}" class="form-control" aria-describedby="firstNameHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
                                                 <small id="firstNameHelp" class="text-muted"> Julian Andres</small>
                                             </div>
                                             <div class="form-row py-1">
                                                 <label for="lastName"><b><i class="fa fa-edit"> Last Name</i></b></label>
-                                                <input type="text" id="lastName" class="form-control" aria-describedby="lastNameHelp" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
+                                                <input type="text" id="lastName" value="${cliente.apellidoCliente}" class="form-control" aria-describedby="lastNameHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
                                                 <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
                                             </div>
                                             <div class="form-row py-1">
                                                 <label for="emailUser"><b><i class=" fa fa-envelope"> Email</i></b></label>
-                                                <input type="email" id="emailUser" class="form-control" aria-describedby="emailHelp" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                                <input type="email" id="emailUser" value="${cliente.emailCliente}" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                                 <small id="emailHelp" class="text-muted ">andresjulian@yahoo.es</small>
                                             </div>
                                             <div class="form-row py-1 ">
-                                                <label for="dateUser"><b><i class="fa fa-calendar-times-o"> Date of Birth</i></b></label>
-                                                <input type="date" min="1920-01-01" max="2008-12-31" value="1980-01-01" id="dateUser" class="form-control " aria-describedby="datelHelp" onfocus="validacion('dateUser')" required>
+                                                <label for="dateUser"><b><i class="fa fa-calendar"> Birthdate</i></b></label>
+                                                <input type="date" min="1920-01-01" max="2008-12-31" value="${cliente.fechaNacimiento}" id="dateUser" class="form-control " aria-describedby="datelHelp" onfocus="validacion('dateUser')" required>
                                                 <small id="dateHelp" class="text-muted">Put your birth date here</small>
+                                            </div>
+                                            <div class="form-row py-1 ">
+                                                <label for="genero"><b><i class="fa fa-transgender-alt"> Gender</i></b></label>
+                                                <select class="form-control" id="genero" value="${cliente.genero}" onfocus="limpiarAlertas('alertSignUser')" onchange="cambiar('genero');">
+                                                    <option value="Male" id="male">Male</i></option>
+                                                    <option value="Female" id="female">Female</></option>
+                                                    <option selected="true" value="Other" id="otro">I prefer not to specify</i></option>
+                                                </select>
                                             </div>
                                             <div class="form-row py-1">
                                                 <label for="usName"><b><i class="fa fa-user"> User Name</i></b></label>
-                                                <input type="text" id="usName" class="form-control" aria-describedby="userHelp" oninput="validarUser('usName')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                                <input type="text" id="usName" value="${cliente.usuarioCliente}" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validarUser('usName','cliente')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
                                                 <small id="userHelp" class="text-muted">Put the name you want as a user</small>
                                             </div>
                                             <div class="form-row py-1 ">
-                                                <label for="passwordUser"><b><i class="fa fa-lock "> Password</i></b></label>
-                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" oninput="validacion('passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <label for="newPasswordUser"><b><i class="fa fa-lock ">New Password</i></b> (If you want to change else let the two field above in blanc)</label>
+                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
                                                 <small id="passwordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
                                             </div>
                                             <div class="form-row py-1 ">
-                                                <label for="confirmPassUser"><b><i class="fa fa-lock "> Confirm your password</i></b></label>
-                                                <input type="password" id="confirmPassUser" class="form-control" aria-describedby="confirmHelp" oninput="alertar('passwordUser','confirmPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <label for="confirmNewPassUser"><b><i class="fa fa-lock "> Confirm your new password</i></b></label>
+                                                <input type="password" id="confirmPassUser" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="alertar('passwordUser','confirmPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
                                                 <small id="confirmHelp" class="text-muted ">Repeat your password.</small>
                                             </div>
+                                            <hr>
+                                            <div class="form-row py-1 ">
+                                                <label for="passwordUser"><b><i class="fa fa-lock ">New Password</i></b></label>
+                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertSignUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <small id="passwordHelp" class="text-muted">Ypo most privide your actual password to confirm the changes.</small>
+                                            </div>
                                         </fieldset>
-                                        <div id="alert">
-                                        
-                                        </div>
                                     </form>
                                 </div>
+                                <div id="alertSignUser">
+
+                                </div>
                                 <div class="card-footer">
-                                    <button type="submit" onclick="modifUser();" class="btn btn-info">Saves Changes</button>
+                                    <button type="submit" onclick="modifUser(${cliente});" class="btn btn-info">Saves Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -465,7 +417,7 @@ function generarModalPerfil() {
         </div>`;
 }
 
-function modifUser() {
+function modifUser(cliente) {
     if (verifUser && verifPass && document.getElementById("lastName").value.length != 0 && document.getElementById("emailUser").value.length != 0 && document.getElementById("firstName").value.length != 0) {
         var nuevoCliente = {
             nombreCliente: document.getElementById("firstName").value,
@@ -483,7 +435,6 @@ function modifUser() {
         }
         clientes.push(nuevoCliente);
         localStorage.setItem('clientes', JSON.stringify(clientes));
-        top.location.reload();
     } else if (verifUser == false || verifPass == false || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("firstName").value.length == 0) {
         document.getElementById("alert").innerHTML = "";
         document.getElementById("alert").innerHTML +=
@@ -496,15 +447,69 @@ function modifUser() {
     }
 }
 
+function actualizarCliente() {
+    let clienteModif = {
+        usuarioClienteModif: selec.usuarioCliente,
+        nombreCliente: selec.nombreCliente,
+        usuarioCliente: selec.usuarioCliente,
+        apellidoCliente: selec.apellidoCliente,
+        emailCliente: selec.emailCliente,
+        passwordCliente: selec.passwordCliente,
+        actual: selec.actual,
+        fechaNacimiento: selec.fechaNacimiento,
+        fotoCliente: selec.fotoCliente,
+        genero: selec.genero,
+        pais: selec.pais,
+        companiasFav: selec.companiasFav,
+        publicacionesFav: selec.publicacionesFav,
+        comprasHechas: selec.comprasHechas,
+        comprar: selec.comprar,
+        tipo: selec.tipo,
+        fechaSignIn: selec.fechaSignIn
+    }
+
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            method: 'PUT',
+            responseType: 'json',
+            data: clienteModif
+        })
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+}
+
 function validacion(id) {
     var elem = document.getElementById(id);
-    if (elem.checkValidity()) {
-        elem.style.borderColor = "green";
-        elem.style.color = "green";
+    if (id == 'dateUser') {
+        limpiarAlertas('alertSignUser');
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        }
+    } else if (id == 'newPasswordUser') {
+        document.getElementById('confirmNewPassUser').value = "";
+        alertar("newPasswordUser", "confirmNewPassUser");
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     } else {
-        elem.style.borderColor = "red";
-        elem.style.color = "red";
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     }
+
 }
 
 function alertar(id1, id2) {
@@ -512,38 +517,101 @@ function alertar(id1, id2) {
     var elem2 = document.getElementById(id2);
     if (elem1.value == elem2.value) {
         if (elem2.checkValidity()) {
-            verifPass = true;
             elem2.style.borderColor = "green";
             elem2.style.color = "green";
+            verifPassSign = true;
         } else {
             elem2.style.borderColor = "red";
             elem2.style.color = "red";
+            verifPassSign = false;
         }
     } else {
         elem2.style.borderColor = "red";
         elem2.style.color = "red";
+        verifPassSign = false;
     }
 
 }
 
-function validarUser(id) {
+function validarUser(id, descripcion) {
     var elem = document.getElementById(id);
+    if (descripcion == 'cliente') {
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                method: 'GET',
+                responseType: 'json',
+                params: {
+                    tipo: "cliente",
+                }
+            })
+            .then(function(res) {
+                var clientes = res.data;
+                var clientesLength = 0;
+                clientes.map(item => {
+                    clientesLength++;
+                });
+                for (let i = 0; i < clientesLength; i++) {
+                    if (clientes[i].usuarioCliente == elem.value) {
+                        elem.style.borderColor = "red";
+                        elem.style.color = "red";
+                        verifUsersign = false;
+                        break;
+                    } else {
+                        if (elem.checkValidity()) {
+                            elem.style.borderColor = "green";
+                            elem.style.color = "green";
+                            verifUsersign = true;
 
-    for (let i = 0; i < clientes.length; i++) {
-        if (clientes[i].usuarioCliente == elem.value) {
-            elem.style.borderColor = "red";
-            elem.style.color = "red";
-            verifUser = true;
-            break;
-        } else {
-            if (elem.checkValidity()) {
-                elem.style.borderColor = "green";
-                elem.style.color = "green";
-            } else {
-                elem.style.borderColor = "red";
-                elem.style.color = "red";
-            }
-        }
+                        } else {
+                            elem.style.borderColor = "red";
+                            elem.style.color = "red";
+                            verifUsersign = false;
+                        }
+                    }
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+
+    } else if (descripcion == 'empresa') {
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                method: 'GET',
+                responseType: 'json',
+                params: {
+                    tipo: "empresa",
+                }
+            })
+            .then(function(res) {
+                var empresas = res.data;
+                var empresasLength = 0;
+                empresas.map(item => {
+                    empresasLength++;
+                });
+                for (let i = 0; i < empresasLength; i++) {
+                    if (empresas[i].nombreUsuario == elem.value) {
+                        elem.style.borderColor = "red";
+                        elem.style.color = "red";
+                        verifUsersign = false;
+                        break;
+                    } else {
+                        if (elem.checkValidity()) {
+                            elem.style.borderColor = "green";
+                            elem.style.color = "green";
+                            verifUsersign = true;
+
+                        } else {
+                            elem.style.borderColor = "red";
+                            elem.style.color = "red";
+                            verifUsersign = false;
+                        }
+                    }
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
     }
 }
 
@@ -643,6 +711,7 @@ function empFavorita(cont, indiceEmp) {
     }
 }
 
+//llama a generarModalCompras
 function aComprar(idInput, idAlert, indiceEmp, indicePub) {
     let elem = document.getElementById(idInput).value;
     let pub = empresas[indiceEmp].publicaciones[indicePub];
@@ -686,25 +755,25 @@ function borrarCompra(indiceCompra) {
                 </div>`;
 }
 
-function comprarPub() {
-    if (clienteSeleccionado.comprar.length >= 1) {
-        for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
+function comprarPub(cliente) {
+    if (cliente.comprar.length >= 1) {
+        for (let i = 0; i < cliente.comprar.length; i++) {
             let nuevaVenta = {
-                cantidad: clienteSeleccionado.comprar[i].cant,
+                cantidad: cliente.comprar[i].cant,
                 fechaCompra: fechaActual()
             }
             let nuevaCompra = {
-                nomCompra: clienteSeleccionado.comprar[i].aComprar,
+                nomCompra: cliente.comprar[i].aComprar,
                 fechaCompra: fechaActual(),
-                cant: clienteSeleccionado.comprar[i].cant,
-                precioArticulo: clienteSeleccionado.comprar[i].precioArt,
-                montoComprado: clienteSeleccionado.comprar[i].monto
+                cant: cliente.comprar[i].cant,
+                precioArticulo: cliente.comprar[i].precioArt,
+                montoComprado: cliente.comprar[i].monto
             }
-            empresas[clienteSeleccionado.comprar[i].indEmp].publicaciones[clienteSeleccionado.comprar[i].indPub].venta.push(nuevaVenta);
-            clienteSeleccionado.comprasHechas.push(nuevaCompra);
+            empresas[cliente.comprar[i].indEmp].publicaciones[cliente.comprar[i].indPub].venta.push(nuevaVenta);
+            cliente.comprasHechas.push(nuevaCompra);
 
-            for (let j = 0; j < clienteSeleccionado.comprar.length; j++) {
-                clienteSeleccionado.comprar.splice(j, 1);
+            for (let j = 0; j < cliente.comprar.length; j++) {
+                cliente.comprar.splice(j, 1);
             }
 
             localStorage.setItem('clientes', JSON.stringify(clientes));
@@ -816,7 +885,7 @@ function fechaActual() {
     var f = new Date();
     var fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
     return fecha;
-}
+} * /
 
 var swiper = new Swiper('.swiper-container', {
     effect: 'coverflow',

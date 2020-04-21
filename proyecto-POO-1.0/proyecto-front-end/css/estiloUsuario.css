@@ -130,7 +130,7 @@ body {
 }
 
 .card-top-img {
-    max-width: 500px;
+    max-width: -webkit-fill-available;
     min-width: 284px;
     height: auto;
 }

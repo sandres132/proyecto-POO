@@ -343,27 +343,27 @@ function generarSignInComp() {
                                 <div class="col">
                                     <div class="form-row py-1">
                                         <label for="institutionName"><b><i class="fa fa-institution"> Company Name</i></b></label>
-                                        <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp" oninput="validacion('institutionName')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionNameHelp" class="text-muted ">Ganguitas</small>
+                                        <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('institutionName')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionNameHelp" class="text-muted ">Ganguitas</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="institutionDescription"><b><i class="fa fa-institution"> Company Description</i></b></label>
-                                        <input type="text" id="institutionDescription" class="form-control" aria-describedby="institutionDescriptionHelp" oninput="validacion('institutionDescription')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionDescriptionHelp" class="text-muted ">What describes your company as example "fast food"</small>
+                                        <input type="text" id="institutionDescription" class="form-control" aria-describedby="institutionDescriptionHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('institutionDescription')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionDescriptionHelp" class="text-muted ">What describes your company as example "fast food"</small>
                                     </div>
                                     <div class="form-row py-1">
-                                        <label for="direcComp"><b><i class="fa fa-institution"> Company Address</i></b></label>
-                                        <input type="text" id="direcComp" class="form-control" aria-describedby="direcCompHelp" oninput="validacion('direcComp')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,50}" required><small id="direcCompHelp" class="text-muted ">Put your company address as an example: Col. Miramontes</small>
+                                        <label for="direcComp"><b><i class="fa fa-map-marker"> Company Address</i></b></label>
+                                        <input type="text" id="direcComp" class="form-control" aria-describedby="direcCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('direcComp')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,50}" required><small id="direcCompHelp" class="text-muted ">Put your company address as an example: Col. Miramontes</small>
                                     </div>
                                     <div class="form-row py-1">
-                                        <label for="longComp"><b><i class="fa fa-institution"> Company longitude</i></b></label>
-                                        <input type="text" id="longComp" class="form-control" aria-describedby="longCompHelp" oninput="validacion('longComp')" pattern="[0-9.]{5,50}" required><small id="longCompHelp" class="text-muted ">Put your company longitude as an example: 41.40338</small>
+                                        <label for="longComp"><b><i class="fa fa-location-arrow"> Company longitude</i></b></label>
+                                        <input type="text" id="longComp" class="form-control" aria-describedby="longCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('longComp')" pattern="[0-9.]{5,50}" required><small id="longCompHelp" class="text-muted ">Put your company longitude as an example: 41.40338</small>
                                     </div>
                                     <div class="form-row py-1">
-                                        <label for="latComp"><b><i class="fa fa-institution"> Company latitude</i></b></label>
-                                        <input type="text" id="latComp" class="form-control" aria-describedby="latCompHelp" oninput="validacion('latComp')" pattern="[0-9.]{5,50}" required><small id="latCompHelp" class="text-muted ">Put your company latitude as an example: 2.17403</small>
+                                        <label for="latComp"><b><i class="fa fa-location-arrow"> Company latitude</i></b></label>
+                                        <input type="text" id="latComp" class="form-control" aria-describedby="latCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('latComp')" pattern="[0-9.]{5,50}" required><small id="latCompHelp" class="text-muted ">Put your company latitude as an example: 2.17403</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="selectPaisEmpresa"><i class="fa fa-flag-checkered"> Select Country</i></label>
-                                        <select class="form-control" id="selectPaisEmpresa" onchange="cambiar('selectPaisEmpresa')">
+                                        <select class="form-control" id="selectPaisEmpresa" onfocus="limpiarAlertas('alertSignComp')" onchange="cambiar('selectPaisEmpresa')">
                                             <option value="Afganistán" id="AF">Afganistán</option>
                                             <option value="Albania" id="AL">Albania</option>
                                             <option value="Alemania" id="DE">Alemania</option>
@@ -605,50 +605,53 @@ function generarSignInComp() {
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="emailComp"><b><i class="fa fa-envelope"> Email</i></b></label>
-                                        <input type="email" id="emailComp" class="form-control" aria-describedby="emailHelp" oninput="validacion('emailComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                        <input type="email" id="emailComp" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('emailComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                         <small id="emailHelp" class="text-muted ">ganguitas@gmail.com</small>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-row py-1">
                                         <label for="facebookComp"><b><i class="fa fa-facebook"> Facebook</i></b></label>
-                                        <input type="email" id="facebookComp" class="form-control" aria-describedby="facebookHelp" oninput="validacion('facebookComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                        <input type="email" id="facebookComp" class="form-control" aria-describedby="facebookHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('facebookComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                         <small id="facebookHelp" class="text-muted ">ganguitas_facebook@gmail.com</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="instagramComp"><b><i class="fa fa-instagram"> Instagram</i></b></label>
-                                        <input type="email" id="instagramComp" class="form-control" aria-describedby="instagramHelp" oninput="validacion('instagramComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                        <input type="email" id="instagramComp" class="form-control" aria-describedby="instagramHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('instagramComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                         <small id="instagramHelp" class="text-muted ">ganguitas_instagram@gmail.com</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="twitterComp"><b><i class="fa fa-twitter"> Twitter</i></b></label>
-                                        <input type="email" id="twitterComp" class="form-control" aria-describedby="twitterHelp" oninput="validacion('twitterComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                        <input type="email" id="twitterComp" class="form-control" aria-describedby="twitterHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('twitterComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                         <small id="twitterHelp" class="text-muted ">ganguitas_twitter@gmail.com</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="twitchComp"><b><i class="fa fa-twitch"> Twitch</i></b></label>
-                                        <input type="email" id="twitchComp" class="form-control" aria-describedby="twitchHelp" oninput="validacion('twitchComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                        <input type="email" id="twitchComp" class="form-control" aria-describedby="twitchHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('twitchComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                         <small id="twitchHelp" class="text-muted ">ganguitas_twitch@gmail.com</small>
                                     </div>
                                     <div class="form-row py-1 ">
                                         <label for="userComp"><b><i class="fa fa-user"> User Name</i></b></label>
-                                        <input type="text" id="userComp" class="form-control" aria-describedby="userCompHelp" oninput="validarUser('userComp','compañia')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                        <input type="text" id="userComp" class="form-control" aria-describedby="userCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validarUser('userComp','empresa')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
                                         <small id="userCompHelp" class="text-muted"> Put the name you want as a user</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="passwordComp"><b><i class="fa fa-lock"> Password</i></b></label>
-                                        <input type="password" id="passwordComp" class="form-control" aria-describedby="passwordHelp" oninput="validacion('passwordComp')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                        <input type="password" id="passwordComp" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('passwordComp')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
                                         <small id="passwordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="confirmPassComp"><b><i class="fa fa-lock"> Confirm your password</i></b></label>
-                                        <input type="password" id="confirmPassComp" class="form-control" aria-describedby="confirmHelp" oninput="alertar('passwordComp','confirmPassComp');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                        <input type="password" id="confirmPassComp" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="alertar('passwordComp','confirmPassComp');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
                                         <small id="confirmHelp" class="text-muted">Repeat your password.</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
+                </div>
+                <div id="alertSignComp">
+                
                 </div>
                 <div class="card-footer container pb-2 mb-3">
                     <div class="row">
@@ -872,13 +875,42 @@ function cambiar(id) {
 
 function validacion(id) {
     var elem = document.getElementById(id);
-    if (elem.checkValidity()) {
-        elem.style.borderColor = "green";
-        elem.style.color = "green";
+    if (id == 'dateUser') {
+        limpiarAlertas('alertSignUser');
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        }
+    } else if (id == 'passwordUser') {
+        document.getElementById('confirmPassUser').value = "";
+        alertar("passwordUser", "confirmPassUser");
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
+    } else if (id == 'passwordComp') {
+        document.getElementById('confirmPassComp').value = "";
+        alertar("passwordComp", "confirmPassComp");
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     } else {
-        elem.style.borderColor = "red";
-        elem.style.color = "red";
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     }
+
 }
 
 function alertar(id1, id2) {
@@ -888,14 +920,16 @@ function alertar(id1, id2) {
         if (elem2.checkValidity()) {
             elem2.style.borderColor = "green";
             elem2.style.color = "green";
-            verifPass = true;
+            verifPassSign = true;
         } else {
             elem2.style.borderColor = "red";
             elem2.style.color = "red";
+            verifPassSign = false;
         }
     } else {
         elem2.style.borderColor = "red";
         elem2.style.color = "red";
+        verifPassSign = false;
     }
 
 }
@@ -928,6 +962,7 @@ function validarUser(id, descripcion) {
                             elem.style.borderColor = "green";
                             elem.style.color = "green";
                             verifUsersign = true;
+
                         } else {
                             elem.style.borderColor = "red";
                             elem.style.color = "red";
@@ -940,26 +975,53 @@ function validarUser(id, descripcion) {
                 console.log(err);
             });
 
-    } else if (descripcion == 'compañia') {
-        for (let i = 0; i < empresas.length; i++) {
-            if (empresas[i].nombreUsuario == elem.value) {
-                elem.style.borderColor = "red";
-                elem.style.color = "red";
-                break;
-            } else {
-                if (elem.checkValidity()) {
-                    elem.style.borderColor = "green";
-                    elem.style.color = "green";
-                } else {
-                    elem.style.borderColor = "red";
-                    elem.style.color = "red";
+    } else if (descripcion == 'empresa') {
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                method: 'GET',
+                responseType: 'json',
+                params: {
+                    tipo: "empresa",
                 }
-            }
-        }
+            })
+            .then(function(res) {
+                var empresas = res.data;
+                var empresasLength = 0;
+                empresas.map(item => {
+                    empresasLength++;
+                });
+                for (let i = 0; i < empresasLength; i++) {
+                    if (empresas[i].nombreUsuario == elem.value) {
+                        elem.style.borderColor = "red";
+                        elem.style.color = "red";
+                        verifUsersign = false;
+                        break;
+                    } else {
+                        if (elem.checkValidity()) {
+                            elem.style.borderColor = "green";
+                            elem.style.color = "green";
+                            verifUsersign = true;
+
+                        } else {
+                            elem.style.borderColor = "red";
+                            elem.style.color = "red";
+                            verifUsersign = false;
+                        }
+                    }
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
     }
 }
 
+function limpiarAlertas(id) {
+    document.getElementById(id).innerHTML = "";
+}
+
 function signInUser() {
+
     if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUsersign && verifPassSign) {
         var nuevoCliente = {
             nombreCliente: document.getElementById("firstName").value,
@@ -986,13 +1048,12 @@ function signInUser() {
                 data: nuevoCliente
             })
             .then(function() {
-                //redireccionar('cliente');
-                console.log("guardo el usuario");
+                redireccionar('cliente');
             })
             .catch(function(error) {
                 console.error(error);
             });
-    } else if (verifUsersign == false) {
+    } else if (verifUsersign == false && document.getElementById("usName").value.length >= 3) {
         document.getElementById("alertSignUser").innerHTML = "";
         document.getElementById("alertSignUser").innerHTML +=
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -1001,7 +1062,7 @@ function signInUser() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`;
-    } else if (verifPassSign == false) {
+    } else if (verifPassSign == false && document.getElementById("passwordUser").value.length >= 8) {
         document.getElementById("alertSignUser").innerHTML = "";
         document.getElementById("alertSignUser").innerHTML +=
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -1011,7 +1072,7 @@ function signInUser() {
                 </button>
             </div>`;
 
-    } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red") {
+    } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser").style.color == "red" || document.getElementById("confirmPassUser").style.color == "red") {
         document.getElementById("alertSignUser").innerHTML = "";
         document.getElementById("alertSignUser").innerHTML +=
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -1020,7 +1081,7 @@ function signInUser() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`;
-    } else if (document.getElementById("firstName").style.color == "red" && document.getElementById("lastName").style.color == "red" && document.getElementById("emailUser").style.color == "red" && verifUsersign == null && verifPassSign == null) {
+    } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
         document.getElementById("alertSignUser").innerHTML = "";
         document.getElementById("alertSignUser").innerHTML +=
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -1032,47 +1093,84 @@ function signInUser() {
     }
 }
 
-function limpiarAlertas(id) {
-    document.getElementById(id).innerHTML = "";
-}
-
 function signInComp() {
 
-    var nuevaComp = {
-        nombreEmpresa: document.getElementById("institutionName"),
-        logoEmpresa: '../img/logo.png',
-        banner: '../img/logo.png',
-        pais: document.getElementById("selectPaisEmpresa"),
-        direccion: document.getElementById("direcComp"),
-        longitud: document.getElementById("longComp"),
-        latitud: document.getElementById("latComp"),
-        tipoEmpresa: document.getElementById("institutionDescription"),
-        nombreUsuario: document.getElementById("userComp"),
-        password: document.getElementById("passwordComp"),
-        facebook: document.getElementById("facebookComp"),
-        instagram: document.getElementById("instagramComp"),
-        twitter: document.getElementById("twitterComp"),
-        twitch: document.getElementById("twitchComp"),
-        email: document.getElementById("emailComp"),
-        actual: false,
-        publicaciones: [],
-        calificacionEmpresaDe: [],
-        tipo: "empresa",
-        fechaSignIn: "28\/08\/20"
+    if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUsersign && verifPassSign) {
+        var nuevaComp = {
+            nombreEmpresa: document.getElementById("institutionName").value,
+            logoEmpresa: '../img/logo.png',
+            banner: '../img/logo.png',
+            pais: document.getElementById("selectPaisEmpresa").value,
+            direccion: document.getElementById("direcComp").value,
+            longitud: document.getElementById("longComp").value,
+            latitud: document.getElementById("latComp").value,
+            tipoEmpresa: document.getElementById("institutionDescription").value,
+            nombreUsuario: document.getElementById("userComp").value,
+            password: document.getElementById("passwordComp").value,
+            facebook: document.getElementById("facebookComp").value,
+            instagram: document.getElementById("instagramComp").value,
+            twitter: document.getElementById("twitterComp").value,
+            twitch: document.getElementById("twitchComp").value,
+            email: document.getElementById("emailComp").value,
+            actual: true,
+            publicaciones: [],
+            calificacionEmpresaDe: [],
+            tipo: "empresa",
+            fechaSignIn: fechaActual()
+        }
+
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                method: 'POST',
+                responseType: 'json',
+                data: nuevaComp
+            })
+            .then(function() {
+                redireccionar('empresa');
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    } else if (verifUsersign == false && document.getElementById("userComp").value.length >= 3) {
+        document.getElementById("alertSignComp").innerHTML = "";
+        document.getElementById("alertSignComp").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>User is already in use!, </strong>Please try with another user name.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (verifPassSign == false && document.getElementById("passwordComp").value.length >= 8) {
+        document.getElementById("alertSignComp").innerHTML = "";
+        document.getElementById("alertSignComp").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Passwords do not match!, </strong>Please check the passwords.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+
+    } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+        document.getElementById("alertSignComp").innerHTML = "";
+        document.getElementById("alertSignComp").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+        document.getElementById("passwordComp").value == 0) {
+        document.getElementById("alertSignComp").innerHTML = "";
+        document.getElementById("alertSignComp").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Form incomplete!, </strong>Please fill all the fields.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
     }
 
-    axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
-            method: 'POST',
-            responseType: 'json',
-            data: nuevoComp
-        })
-        .then(function() {
-            redireccionar('empresa');
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
 }
 
 function fechaActual() {

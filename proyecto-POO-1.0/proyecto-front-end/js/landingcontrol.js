@@ -190,14 +190,7 @@ function revisionFinal(verifUser, verifPass) {
                 </button>
             </div>`;
     } else if (verifUser === false && verifPass === false) {
-        //redireccionar(selecciono);
-        /*let pubs = "";
-        for (let i = 0; i < selec.publicacionesFav.length; i++) {
-            pubs += JSON.stringify(selec.publicacionesFav[i]) + ", ";
-
-        }
-        console.log(pubs);*/
-        console.log("llego aki");
+        redireccionar(selecciono);
     }
 }
 
