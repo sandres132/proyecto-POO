@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif, 'Courier New', Courier, monospace;
+}
+
+.middleSignIn {
+    background-image: url(../img/despedida.jpg);
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
+.navbar {
+    height: 75px;
+    padding: .0rem 3rem;
+}
+
+.navbar-brand img {
+    max-width: 180px;
+    height: auto;
+    max-height: 70px;
+}
+
+.bg-dark.scrolled {
+    background: rgba(36, 35, 33, 0.718) !important;
+}
+
+.rad {
+    border-radius: 20px !important;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.mt-5,
+.my-5 {
+    margin-top: 7rem !important;
+}
+
+.form-control {
+    background-color: transparent !important;
+    border: 1.5px solid #ced4da;
+}
+
+.trans {
+    background-color: transparent !important;
+}

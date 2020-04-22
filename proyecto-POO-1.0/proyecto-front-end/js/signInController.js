@@ -1,10 +1,19 @@
 var selec;
 var selecciono;
 var verifPassSign = null;
-var verifUsersign = null;
-
+var verifUserSign = null;
 document.getElementById("posCardUser").innerHTML = "";
 document.getElementById("posCardComp").innerHTML = "";
+
+function checkInput(id) {
+    let elem = document.getElementById(id).checked;
+    if (elem) {
+        generarSignInComp();
+    } else {
+        generarSignInUser();
+    }
+}
+checkInput('boton');
 
 function generarSignInUser() {
     document.getElementById("posCardComp").innerHTML = "";
@@ -752,8 +761,6 @@ function validar() {
 function revisionFinal(verifUser, verifPass) {
     document.getElementById("alertLog").innerHTML = "";
 
-    console.log("veriff pass en actual " + verifPass);
-
     if (verifUser || verifPass) {
         document.getElementById("userName").style.borderColor = "red";
         document.getElementById("userName").style.color = "red";
@@ -780,6 +787,7 @@ function revisionFinal(verifUser, verifPass) {
 }
 
 function actualizarCliente() {
+    selec.registroAcciones.push(msjParaRegistro('logIn', selec.usuarioCliente));
     let clienteModif = {
         usuarioClienteModif: selec.usuarioCliente,
         nombreCliente: selec.nombreCliente,
@@ -797,7 +805,8 @@ function actualizarCliente() {
         comprasHechas: selec.comprasHechas,
         comprar: selec.comprar,
         tipo: selec.tipo,
-        fechaSignIn: selec.fechaSignIn
+        fechaSignIn: selec.fechaSignIn,
+        registroAcciones: selec.registroAcciones
     }
 
     axios({
@@ -815,6 +824,7 @@ function actualizarCliente() {
 }
 
 function actualizarEmpresa() {
+    selec.registroAcciones.push(msjParaRegistro('logIn', selec.nombreUsuario));
     let empresaModif = {
         nombreUsuarioModif: selec.nombreUsuario,
         nombreEmpresa: selec.nombreEmpresa,
@@ -835,7 +845,8 @@ function actualizarEmpresa() {
         actual: selec.actual,
         publicaciones: selec.publicaciones,
         calificacionEmpresaDe: selec.calificacionEmpresaDe,
-        tipo: selec.tipo
+        tipo: selec.tipo,
+        registroAcciones: selec.registroAcciones
     }
 
     axios({
@@ -955,18 +966,18 @@ function validarUser(id, descripcion) {
                     if (clientes[i].usuarioCliente == elem.value) {
                         elem.style.borderColor = "red";
                         elem.style.color = "red";
-                        verifUsersign = false;
+                        verifUserSign = false;
                         break;
                     } else {
                         if (elem.checkValidity()) {
                             elem.style.borderColor = "green";
                             elem.style.color = "green";
-                            verifUsersign = true;
+                            verifUserSign = true;
 
                         } else {
                             elem.style.borderColor = "red";
                             elem.style.color = "red";
-                            verifUsersign = false;
+                            verifUserSign = false;
                         }
                     }
                 }
@@ -994,18 +1005,18 @@ function validarUser(id, descripcion) {
                     if (empresas[i].nombreUsuario == elem.value) {
                         elem.style.borderColor = "red";
                         elem.style.color = "red";
-                        verifUsersign = false;
+                        verifUserSign = false;
                         break;
                     } else {
                         if (elem.checkValidity()) {
                             elem.style.borderColor = "green";
                             elem.style.color = "green";
-                            verifUsersign = true;
+                            verifUserSign = true;
 
                         } else {
                             elem.style.borderColor = "red";
                             elem.style.color = "red";
-                            verifUsersign = false;
+                            verifUserSign = false;
                         }
                     }
                 }
@@ -1022,7 +1033,7 @@ function limpiarAlertas(id) {
 
 function signInUser() {
 
-    if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUsersign && verifPassSign) {
+    if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUserSign && verifPassSign) {
         var nuevoCliente = {
             nombreCliente: document.getElementById("firstName").value,
             apellidoCliente: document.getElementById("lastName").value,
@@ -1039,7 +1050,9 @@ function signInUser() {
             comprasHechas: [],
             comprar: [],
             tipo: "cliente",
-            fechaSignIn: fechaActual()
+            fechaSignIn: fechaActual(),
+            registroAcciones: [msjParaRegistro('signIn', document.getElementById("usName"))]
+
         }
         axios({
                 url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
@@ -1116,7 +1129,8 @@ function signInComp() {
             publicaciones: [],
             calificacionEmpresaDe: [],
             tipo: "empresa",
-            fechaSignIn: fechaActual()
+            fechaSignIn: fechaActual(),
+            registroAcciones: [msjParaRegistro("sigIn", document.getElementById("userComp"))]
         }
 
         axios({
@@ -1175,8 +1189,23 @@ function signInComp() {
 
 function fechaActual() {
     var f = new Date();
-    var fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+    var fecha = f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate();
     return fecha;
+}
+
+function msjParaRegistro(descripcion, nombre) {
+    let f = new Date();
+    let msj;
+    if (descripcion == "signIn") {
+        msj = {
+            registro: "The user " + nombre + " was registered with the date and time of registration: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "logIn") {
+        msj = {
+            inicioSesion: "User " + nombre + " login with login date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    }
+    return msj;
 }
 
 $(window).scroll(function() {

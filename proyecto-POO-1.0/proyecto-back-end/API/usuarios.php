@@ -23,7 +23,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['comprasHechas'],
                 $_POST['comprar'],
                 $_POST['tipo'],
-                $_POST['fechaSignIn']
+                $_POST['fechaSignIn'],
+                $_POST['registroAcciones']
             );
             $usuario->guardarCliente();
 
@@ -48,7 +49,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $_POST['publicaciones'],
                 $_POST['calificacionEmpresaDe'],
                 $_POST['tipo'],
-                $_POST['fechaSignIn']
+                $_POST['fechaSignIn'],
+                $_POST['registroAcciones']
             );
             $empresa->guardarEmpresa();
             $resultado["mensaje"] = "La empresa se guardo exitosamente";
@@ -97,7 +99,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['comprasHechas'],
                     $_PUT['comprar'],
                     $_PUT['tipo'],
-                    $_POST['fechaSignIn']
+                    $_PUT['fechaSignIn'],
+                    $_PUT['registroAcciones']
                 );
                 $usuario->actualizarCliente($_PUT['usuarioClienteModif']);
                 $resultado["mensaje"] = "El cliente se actualizo exitosamente";
@@ -125,7 +128,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['publicaciones'],
                     $_PUT['calificacionEmpresaDe'],
                     $_PUT['tipo'],
-                    $_POST['fechaSignIn']
+                    $_PUT['fechaSignIn'],
+                    $_PUT['registroAcciones']
                 );
                 $empresa->actualizarEmpresa($_PUT['nombreUsuarioModif']);
                 $resultado["mensaje"] = "ELa empresa se actualizo exitosamente";

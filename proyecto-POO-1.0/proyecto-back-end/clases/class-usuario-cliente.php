@@ -18,8 +18,9 @@ class Cliente
     private $comprar;
     private $tipo;
     private $fechaSignIn;
+    private $registroAcciones;
 
-    public function __construct($nombreCliente, $apellidoCliente, $usuarioCliente, $emailCliente, $passwordCliente, $actual, $fechaNacimiento, $fotoCliente, $genero, $pais, $companiasFav, $publicacionesFav, $comprasHechas, $comprar, $tipo, $fechaSignIn)
+    public function __construct($nombreCliente, $apellidoCliente, $usuarioCliente, $emailCliente, $passwordCliente, $actual, $fechaNacimiento, $fotoCliente, $genero, $pais, $companiasFav, $publicacionesFav, $comprasHechas, $comprar, $tipo, $fechaSignIn, $registroAcciones)
     {
         $this->nombreCliente = $nombreCliente;
         $this->apellidoCliente = $apellidoCliente;
@@ -37,6 +38,7 @@ class Cliente
         $this->comprar = $comprar;
         $this->tipo = $tipo;
         $this->fechaSignIn = $fechaSignIn;
+        $this->registroAcciones=$registroAcciones;
     }
 
     public function getNombreCliente()
@@ -231,6 +233,18 @@ class Cliente
         return $this;
     }
 
+    public function getRegistroAcciones()
+    {
+        return $this->registroAcciones;
+    }
+
+    public function setRegistroAcciones($registroAcciones)
+    {
+        $this->registroAcciones = $registroAcciones;
+
+        return $this;
+    }
+
     public function guardarCliente()
     {
         //guardar cliente
@@ -252,7 +266,8 @@ class Cliente
             "comprasHechas" => $this->comprasHechas,
             "comprar" => $this->comprar,
             "tipo" => $this->tipo,
-            "fechaSignIn" => $this-> fechaSignIn
+            "fechaSignIn" => $this-> fechaSignIn,
+            "registroAcciones" => $this-> registroAcciones
         );
         $archivo = fopen('../data/usuariosClientes.json', 'w');
         fwrite($archivo, json_encode($usuariosClientes));
@@ -306,7 +321,8 @@ class Cliente
             "comprasHechas" => $this->comprasHechas,
             "comprar" => $this->comprar,
             "tipo" => $this->tipo,
-            "fechaSignIn" => $this-> fechaSignIn
+            "fechaSignIn" => $this-> fechaSignIn,
+            "registroAcciones" => $this-> registroAcciones
         );
 
         $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');

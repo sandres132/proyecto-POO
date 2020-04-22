@@ -1,5 +1,8 @@
 var publicacionSeleccionada;
 var clienteSeleccionado;
+var verifUser = true;
+var verifPass = null;
+var verifPassUser = false;
 
 function obtenerCliente() {
     console.log("entro a obtener cliente");
@@ -353,17 +356,17 @@ function generarModalPerfil(cliente) {
                                         <fieldset>
                                             <div class="form-row py-1">
                                                 <label for="firstName"><b><i class="fa fa-edit"> First Name</i></b></label>
-                                                <input type="text" id="firstName" value="${cliente.nombreCliente}" class="form-control" aria-describedby="firstNameHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
+                                                <input type="text" id="firstName" value="${cliente.nombreCliente}" class="form-control" aria-describedby="firstNameHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
                                                 <small id="firstNameHelp" class="text-muted"> Julian Andres</small>
                                             </div>
                                             <div class="form-row py-1">
                                                 <label for="lastName"><b><i class="fa fa-edit"> Last Name</i></b></label>
-                                                <input type="text" id="lastName" value="${cliente.apellidoCliente}" class="form-control" aria-describedby="lastNameHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
+                                                <input type="text" id="lastName" value="${cliente.apellidoCliente}" class="form-control" aria-describedby="lastNameHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
                                                 <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
                                             </div>
                                             <div class="form-row py-1">
                                                 <label for="emailUser"><b><i class=" fa fa-envelope"> Email</i></b></label>
-                                                <input type="email" id="emailUser" value="${cliente.emailCliente}" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                                <input type="email" id="emailUser" value="${cliente.emailCliente}" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
                                                 <small id="emailHelp" class="text-muted ">andresjulian@yahoo.es</small>
                                             </div>
                                             <div class="form-row py-1 ">
@@ -373,7 +376,7 @@ function generarModalPerfil(cliente) {
                                             </div>
                                             <div class="form-row py-1 ">
                                                 <label for="genero"><b><i class="fa fa-transgender-alt"> Gender</i></b></label>
-                                                <select class="form-control" id="genero" value="${cliente.genero}" onfocus="limpiarAlertas('alertSignUser')" onchange="cambiar('genero');">
+                                                <select class="form-control" id="genero" value="${cliente.genero}" onfocus="limpiarAlertas('alertModifUser')" onchange="cambiar('genero');">
                                                     <option value="Male" id="male">Male</i></option>
                                                     <option value="Female" id="female">Female</></option>
                                                     <option selected="true" value="Other" id="otro">I prefer not to specify</i></option>
@@ -381,29 +384,29 @@ function generarModalPerfil(cliente) {
                                             </div>
                                             <div class="form-row py-1">
                                                 <label for="usName"><b><i class="fa fa-user"> User Name</i></b></label>
-                                                <input type="text" id="usName" value="${cliente.usuarioCliente}" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validarUser('usName','cliente')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                                <input type="text" id="usName" value="${cliente.usuarioCliente}" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validarUser('usName', ${cliente.usuarioCliente})" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
                                                 <small id="userHelp" class="text-muted">Put the name you want as a user</small>
                                             </div>
                                             <div class="form-row py-1 ">
                                                 <label for="newPasswordUser"><b><i class="fa fa-lock ">New Password</i></b> (If you want to change else let the two field above in blanc)</label>
-                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validacion('passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                                <small id="passwordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
+                                                <input type="password" id="newPasswordUser" class="form-control" aria-describedby="newPasswordHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('newPasswordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
                                             </div>
                                             <div class="form-row py-1 ">
                                                 <label for="confirmNewPassUser"><b><i class="fa fa-lock "> Confirm your new password</i></b></label>
-                                                <input type="password" id="confirmPassUser" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="alertar('passwordUser','confirmPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                                <small id="confirmHelp" class="text-muted ">Repeat your password.</small>
+                                                <input type="password" id="confirmNewPassUser" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="alertar('passwordUser','confirmPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <small id="confirmHelp" class="text-muted ">Repeat your new password.</small>
                                             </div>
                                             <hr>
                                             <div class="form-row py-1 ">
-                                                <label for="passwordUser"><b><i class="fa fa-lock ">New Password</i></b></label>
-                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertSignUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                                <small id="passwordHelp" class="text-muted">Ypo most privide your actual password to confirm the changes.</small>
+                                                <label for="passwordUser"><b><i class="fa fa-lock ">Actual Password</i></b></label>
+                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="verifPassCliente(${cliente}, 'passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                                <small id="passwordHelp" class="text-muted">You most privide your actual password to confirm the changes.</small>
                                             </div>
                                         </fieldset>
                                     </form>
                                 </div>
-                                <div id="alertSignUser">
+                                <div id="alertModifUser">
 
                                 </div>
                                 <div class="card-footer">
@@ -418,74 +421,140 @@ function generarModalPerfil(cliente) {
 }
 
 function modifUser(cliente) {
-    if (verifUser && verifPass && document.getElementById("lastName").value.length != 0 && document.getElementById("emailUser").value.length != 0 && document.getElementById("firstName").value.length != 0) {
-        var nuevoCliente = {
-            nombreCliente: document.getElementById("firstName").value,
-            apellidoCliente: document.getElementById("lastName").value,
-            usuarioCliente: document.getElementById("usName").value,
-            emailCliente: document.getElementById("emailUser").value,
-            passwordCliente: document.getElementById("passwordUser").value,
-            actual: true,
-            fechaNacimiento: document.getElementById("dateUser").value,
-            fotoCliente: "../img/user-logo-png-4.png",
-            companiasFav: [],
-            publicacionesFav: [],
-            comprasHechas: [],
-            comprar: []
-        }
-        clientes.push(nuevoCliente);
-        localStorage.setItem('clientes', JSON.stringify(clientes));
-    } else if (verifUser == false || verifPass == false || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("firstName").value.length == 0) {
-        document.getElementById("alert").innerHTML = "";
-        document.getElementById("alert").innerHTML +=
+    if (verifPassUser == false) {
+        document.getElementById("alertModifUser").innerHTML = "";
+        document.getElementById("alertModifUser").innerHTML +=
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Incomplete! , </strong>Please fill all the fields.
+                <strong>Password do not match!, </strong>Please make sure it is your current password.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`;
+    } else if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && document.getElementById("newPasswordUser").value.length == 0 && document.getElementById("confirmNewPassUser").value.length == 0) {
+        cliente.registroAcciones.push(msjParaRegistro("modifUser", cliente.usuarioCliente, document.getElementById("usName")));
+        let clienteModif = {
+            usuarioClienteModif: cliente.usuarioCliente,
+            nombreCliente: document.getElementById("firstName").value,
+            apellidoCliente: document.getElementById("lastName").value,
+            usuarioCliente: document.getElementById("usName").value,
+            emailCliente: document.getElementById("emailUser").value,
+            passwordCliente: cliente.passwordCliente,
+            actual: cliente.actual,
+            fechaNacimiento: document.getElementById("dateUser").value,
+            fotoCliente: cliente.fotoCliente,
+            genero: document.getElementById("genero").value,
+            pais: cliente.pais,
+            companiasFav: cliente.companiasFav,
+            publicacionesFav: cliente.publicacionesFav,
+            comprasHechas: cliente.comprasHechas,
+            comprar: cliente.comprar,
+            tipo: cliente.tipo,
+            fechaSignIn: cliente.fechaSignIn,
+            registroAcciones: cliente.registroAcciones
+        }
+
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                method: 'PUT',
+                responseType: 'json',
+                data: clienteModif
+            })
+            .then(function(res) {
+                console.log(res)
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    } else if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && verifPass) {
+        cliente.registroAcciones.push(msjParaRegistro("modifUser", cliente.usuarioCliente, document.getElementById("usName")));
+        let clienteModif = {
+            usuarioClienteModif: cliente.usuarioCliente,
+            nombreCliente: document.getElementById("firstName").value,
+            apellidoCliente: document.getElementById("lastName").value,
+            usuarioCliente: document.getElementById("usName").value,
+            emailCliente: document.getElementById("emailUser").value,
+            passwordCliente: document.getElementById("newPasswordUser").value,
+            actual: cliente.actual,
+            fechaNacimiento: document.getElementById("dateUser").value,
+            fotoCliente: cliente.fotoCliente,
+            genero: document.getElementById("genero").value,
+            pais: cliente.pais,
+            companiasFav: cliente.companiasFav,
+            publicacionesFav: cliente.publicacionesFav,
+            comprasHechas: cliente.comprasHechas,
+            comprar: cliente.comprar,
+            tipo: cliente.tipo,
+            fechaSignIn: cliente.fechaSignIn,
+            registroAcciones: cliente.registroAcciones
+        }
+
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                method: 'PUT',
+                responseType: 'json',
+                data: clienteModif
+            })
+            .then(function(res) {
+                console.log(res)
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+
+    } else if (verifUser == false && document.getElementById("usName").value.length >= 3) {
+        document.getElementById("alertModifUser").innerHTML = "";
+        document.getElementById("alertModifUser").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>User is already in use!, </strong>Please try with another user name.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (verifPass == false && document.getElementById("passwordUser").value.length >= 8) {
+        document.getElementById("alertModifUser").innerHTML = "";
+        document.getElementById("alertModifUser").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Passwords do not match!, </strong>Please check the passwords.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+
+    } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser")) {
+        document.getElementById("alertModifUser").innerHTML = "";
+        document.getElementById("alertModifUser").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
+        document.getElementById("alertModifUser").innerHTML = "";
+        document.getElementById("alertModifUser").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Form incomplete!, </strong>Please fill all the fields.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (document.getElementById("newPasswordUser").value.length == 0 || document.getElementById("confirmNewPassUser").value.length == 0) {
+
     }
 }
 
-function actualizarCliente() {
-    let clienteModif = {
-        usuarioClienteModif: selec.usuarioCliente,
-        nombreCliente: selec.nombreCliente,
-        usuarioCliente: selec.usuarioCliente,
-        apellidoCliente: selec.apellidoCliente,
-        emailCliente: selec.emailCliente,
-        passwordCliente: selec.passwordCliente,
-        actual: selec.actual,
-        fechaNacimiento: selec.fechaNacimiento,
-        fotoCliente: selec.fotoCliente,
-        genero: selec.genero,
-        pais: selec.pais,
-        companiasFav: selec.companiasFav,
-        publicacionesFav: selec.publicacionesFav,
-        comprasHechas: selec.comprasHechas,
-        comprar: selec.comprar,
-        tipo: selec.tipo,
-        fechaSignIn: selec.fechaSignIn
+function verifPassCliente(cliente, id) {
+    if (cliente.passwordCliente == document.getElementById(id).value) {
+        verifPassUser = true;
+    } else {
+        verifPassUser = false;
     }
-
-    axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
-            method: 'PUT',
-            responseType: 'json',
-            data: clienteModif
-        })
-        .then(function(res) {
-            console.log(res)
-        })
-        .catch(function(error) {
-            console.error(error);
-        });
 }
 
 function validacion(id) {
     var elem = document.getElementById(id);
     if (id == 'dateUser') {
-        limpiarAlertas('alertSignUser');
+        limpiarAlertas('alertModifUser');
         if (elem.checkValidity()) {
             elem.style.borderColor = "green";
             elem.style.color = "green";
@@ -519,100 +588,66 @@ function alertar(id1, id2) {
         if (elem2.checkValidity()) {
             elem2.style.borderColor = "green";
             elem2.style.color = "green";
-            verifPassSign = true;
+            verifPass = true;
         } else {
             elem2.style.borderColor = "red";
             elem2.style.color = "red";
-            verifPassSign = false;
+            verifPass = false;
         }
     } else {
         elem2.style.borderColor = "red";
         elem2.style.color = "red";
-        verifPassSign = false;
+        verifPass = false;
     }
 
 }
 
-function validarUser(id, descripcion) {
+function validarUser(id, usCliente) {
     var elem = document.getElementById(id);
-    if (descripcion == 'cliente') {
-        axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
-                method: 'GET',
-                responseType: 'json',
-                params: {
-                    tipo: "cliente",
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            method: 'GET',
+            responseType: 'json',
+            params: {
+                tipo: "cliente",
+            }
+        })
+        .then(function(res) {
+            var clientes = res.data;
+            var clientesLength = 0;
+            clientes.map(item => {
+                clientesLength++;
+            });
+            for (let i = 0; i < clientesLength; i++) {
+                if (clientes[i].usuarioCliente == elem.value && clientes[i].usuarioCliente == usCliente) {
+                    elem.style.borderColor = "green";
+                    elem.style.color = "green";
+                    verifUser = true;
+                    break;
                 }
-            })
-            .then(function(res) {
-                var clientes = res.data;
-                var clientesLength = 0;
-                clientes.map(item => {
-                    clientesLength++;
-                });
-                for (let i = 0; i < clientesLength; i++) {
-                    if (clientes[i].usuarioCliente == elem.value) {
+                if (clientes[i].usuarioCliente == elem.value) {
+                    elem.style.borderColor = "red";
+                    elem.style.color = "red";
+                    verifUser = false;
+                    break;
+                } else {
+                    if (elem.checkValidity()) {
+                        elem.style.borderColor = "green";
+                        elem.style.color = "green";
+                        verifUser = true;
+
+                    } else {
                         elem.style.borderColor = "red";
                         elem.style.color = "red";
-                        verifUsersign = false;
-                        break;
-                    } else {
-                        if (elem.checkValidity()) {
-                            elem.style.borderColor = "green";
-                            elem.style.color = "green";
-                            verifUsersign = true;
-
-                        } else {
-                            elem.style.borderColor = "red";
-                            elem.style.color = "red";
-                            verifUsersign = false;
-                        }
+                        verifUser = false;
                     }
                 }
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
 
-    } else if (descripcion == 'empresa') {
-        axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
-                method: 'GET',
-                responseType: 'json',
-                params: {
-                    tipo: "empresa",
-                }
-            })
-            .then(function(res) {
-                var empresas = res.data;
-                var empresasLength = 0;
-                empresas.map(item => {
-                    empresasLength++;
-                });
-                for (let i = 0; i < empresasLength; i++) {
-                    if (empresas[i].nombreUsuario == elem.value) {
-                        elem.style.borderColor = "red";
-                        elem.style.color = "red";
-                        verifUsersign = false;
-                        break;
-                    } else {
-                        if (elem.checkValidity()) {
-                            elem.style.borderColor = "green";
-                            elem.style.color = "green";
-                            verifUsersign = true;
-
-                        } else {
-                            elem.style.borderColor = "red";
-                            elem.style.color = "red";
-                            verifUsersign = false;
-                        }
-                    }
-                }
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
-    }
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
 }
 
 function logOut() {
@@ -620,12 +655,43 @@ function logOut() {
         clienteSeleccionado.comprar.splice(j, 1);
     }
 
-    localStorage.setItem('clientes', JSON.stringify(clientes));
-    clienteSeleccionado.actual = false;
-    localStorage.setItem("clientes", JSON.stringify(clientes));
+    clienteSeleccionado.registroAcciones.push(msjParaRegistro("logOut", clienteSeleccionado.usuarioCliente, "nada"));
+    let clienteModif = {
+        usuarioClienteModif: clienteSeleccionado.usuarioCliente,
+        nombreCliente: clienteSeleccionado.nombreCliente,
+        apellidoCliente: clienteSeleccionado.apellidoCliente,
+        usuarioCliente: clienteSeleccionado.usuarioCliente,
+        emailCliente: clienteSeleccionado.emailCliente,
+        passwordCliente: clienteSeleccionado.passwordCliente,
+        actual: false,
+        fechaNacimiento: clienteSeleccionado.fechaNacimiento,
+        fotoCliente: clienteSeleccionado.fotoCliente,
+        genero: clienteSeleccionado.genero,
+        pais: clienteSeleccionado.pais,
+        companiasFav: clienteSeleccionado.companiasFav,
+        publicacionesFav: clienteSeleccionado.publicacionesFav,
+        comprasHechas: clienteSeleccionado.comprasHechas,
+        comprar: clienteSeleccionado.comprar,
+        tipo: clienteSeleccionado.tipo,
+        fechaSignIn: clienteSeleccionado.fechaSignIn,
+        registroAcciones: clienteSeleccionado.registroAcciones
+    }
+
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            method: 'PUT',
+            responseType: 'json',
+            data: clienteModif
+        })
+        .then(function(res) {
+            top.location.href = "../index.html";
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
 }
 
-function pubFavorita(conta, indiceEmp, indicePub) {
+/*function pubFavorita(conta, indiceEmp, indicePub) {
     var verif = false;
     var indiceEncontrado;
 
@@ -748,11 +814,11 @@ function borrarCompra(indiceCompra) {
     document.getElementById("alerModalComp").innerHTML = "";
     document.getElementById("alerModalComp").innerHTML +=
         `<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Delete successfull!</strong> go and look for more offers!.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>`;
+            <strong>Delete successfull!</strong> go and look for more offers!.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>`;
 }
 
 function comprarPub(cliente) {
@@ -879,13 +945,36 @@ function generarModalTarjeta(indiceEmp, indicePub) {
 
 function guardarTarjeta() {
     alert("I Keep Lying Card");
-}
+}*/
 
 function fechaActual() {
     var f = new Date();
-    var fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
+    var fecha = f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate();
     return fecha;
-} * /
+}
+
+function limpiarAlertas(id) {
+    document.getElementById(id).innerHTML = "";
+}
+
+function msjParaRegistro(descripcion, nombre, nombreNuevo) {
+    let f = new Date();
+    let msj;
+    if (descripcion == "modifUser") {
+        msj = {
+            modifUsuario: "The user " + nombre + " changed to " + nombreNuevo + " with date and time of modification: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "logOut") {
+        msj = {
+            cerrarSesion: "User " + nombre + " closed session with session closing date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "delete") {
+        msj = {
+            borrarUsuario: "User " + nombre + " deleted his account with deletion date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    }
+    return msj;
+}
 
 var swiper = new Swiper('.swiper-container', {
     effect: 'coverflow',

@@ -10,6 +10,7 @@ function redireccionar(seleccion) {
 }
 
 function actualizarCliente() {
+    selec.registroAcciones.push(msjParaRegistro('logIn', selec.usuarioCliente));
     let clienteModif = {
         usuarioClienteModif: selec.usuarioCliente,
         nombreCliente: selec.nombreCliente,
@@ -26,7 +27,9 @@ function actualizarCliente() {
         publicacionesFav: selec.publicacionesFav,
         comprasHechas: selec.comprasHechas,
         comprar: selec.comprar,
-        tipo: selec.tipo
+        tipo: selec.tipo,
+        fechaSignIn: selec.fechaSignIn,
+        registroAcciones: selec.registroAcciones
     }
 
     axios({
@@ -44,6 +47,7 @@ function actualizarCliente() {
 }
 
 function actualizarEmpresa() {
+    selec.registroAcciones.push(msjParaRegistro('logIn', selec.nombreUsuario));
     let empresaModif = {
         nombreUsuarioModif: selec.nombreUsuario,
         nombreEmpresa: selec.nombreEmpresa,
@@ -64,7 +68,9 @@ function actualizarEmpresa() {
         actual: selec.actual,
         publicaciones: selec.publicaciones,
         calificacionEmpresaDe: selec.calificacionEmpresaDe,
-        tipo: selec.tipo
+        tipo: selec.tipo,
+        fechaSignIn: selec.fechaSignIn,
+        registroAcciones: selec.registroAcciones
     }
 
     axios({
@@ -192,6 +198,21 @@ function revisionFinal(verifUser, verifPass) {
     } else if (verifUser === false && verifPass === false) {
         redireccionar(selecciono);
     }
+}
+
+function msjParaRegistro(descripcion, nombre) {
+    let f = new Date();
+    let msj;
+    if (descripcion == "signIn") {
+        msj = {
+            registro: "The user " + nombre + " was registered with the date and time of registration: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "logIn") {
+        msj = {
+            inicioSesion: "User " + nombre + " login with login date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    }
+    return msj;
 }
 
 $(window).scroll(function() {

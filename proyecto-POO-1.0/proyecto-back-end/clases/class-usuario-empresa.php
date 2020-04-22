@@ -22,8 +22,9 @@ class Empresa
     private $calificacionEmpresaDe;
     private $tipo;
     private $fechaSignIn;
+    private $registroAcciones;
 
-    public function __construct($nombreEmpresa, $logoEmpresa, $banner, $pais, $direccion, $longitud, $latitud, $tipoEmpresa, $nombreUsuario, $password, $facebook, $instagram, $twitter, $twitch, $email, $actual, $publicaciones, $calificacionEmpresaDe, $tipo, $fechaSignIn)
+    public function __construct($nombreEmpresa, $logoEmpresa, $banner, $pais, $direccion, $longitud, $latitud, $tipoEmpresa, $nombreUsuario, $password, $facebook, $instagram, $twitter, $twitch, $email, $actual, $publicaciones, $calificacionEmpresaDe, $tipo, $fechaSignIn, $registroAcciones)
     {
         $this->nombreEmpresa = $nombreEmpresa;
         $this->logoEmpresa = $logoEmpresa;
@@ -45,6 +46,7 @@ class Empresa
         $this->calificacionEmpresaDe = $calificacionEmpresaDe;
         $this->tipo = $tipo;
         $this->fechaSignIn=$fechaSignIn;
+        $this->registroAcciones=$registroAcciones;
     }
 
     public function getNombreEmpresa()
@@ -287,6 +289,18 @@ class Empresa
         return $this;
     }
 
+    public function getRegistroAcciones()
+    {
+        return $this->registroAcciones;
+    }
+
+    public function setRegistroAcciones($registroAcciones)
+    {
+        $this->registroAcciones = $registroAcciones;
+
+        return $this;
+    }
+
     public function guardarEmpresa()
     {
         //guardar Empresa
@@ -312,7 +326,8 @@ class Empresa
             "publicaciones" => $this->publicaciones,
             "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
-            "fechaSignIn"=> $this-> fechaSignIn
+            "fechaSignIn"=> $this-> fechaSignIn,
+            "registroAcciones"=> $this-> registroAcciones
         );
         $archivo = fopen('../data/usuariosEmpresas.json', 'w');
         fwrite($archivo, json_encode($usuariosEmpresas));
@@ -370,7 +385,8 @@ class Empresa
             "publicaciones" => $this->publicaciones,
             "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
-            "fechaSignIn"=> $this-> fechaSignIn
+            "fechaSignIn"=> $this-> fechaSignIn,
+            "registroAcciones"=> $this-> registroAcciones
         );
 
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
@@ -418,7 +434,6 @@ class Empresa
         }
         echo json_encode($publicaciones);
     }
-
 }
 
 ?>
