@@ -100,7 +100,6 @@ function validar() {
     var verifPass;
     let elem1 = document.getElementById('userName');
     let elem2 = document.getElementById('password');
-    console.log(elem1.value.length + " && " + elem2.value.length);
 
     if (elem1.value.length != 0 && elem2.value.length != 0) {
         axios({

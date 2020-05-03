@@ -49,6 +49,13 @@ function generarSignInUser() {
                                 <input type="date" min="1920-01-01" max="2008-12-31" value="1980-01-01" id="dateUser" class="form-control " aria-describedby="datelHelp" onfocus="validacion('dateUser')" required>
                                 <small id="dateHelp" class="text-muted">Put your birth date here</small>
                             </div>
+                            <div class="form-row py-1">
+                                <label for="imagenUs"><b><i class="fa fa-fa-photo"> User Photo</i></b></label>
+                                <form id="formUser" name="formUser" method="post" enctype="multipart/form-data">
+                                    <input type="file" id="imagenUs" name="imagen" accept="image/*" class="form-control" aria-describedby="imagenUsHelp">
+                                </form>
+                                <small id="imagenUsHelp" class="text-muted"> Here goes your photo</small>
+                            </div>
                             <div class="form-row py-1 ">
                                 <label for="genero"><b><i class="fa fa-transgender-alt"> Gender</i></b></label>
                                 <select class="form-control" id="genero" onfocus="limpiarAlertas('alertSignUser')" onchange="cambiar('genero');">
@@ -301,7 +308,7 @@ function generarSignInUser() {
                             </div>
                             <div class="form-row py-1">
                                 <label for="usName"><b><i class="fa fa-user"> User Name</i></b></label>
-                                <input type="text" id="usName" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertSignUser')" oninput="validarUser('usName','cliente')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                <input type="text" id="usName" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertSignUser')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
                                 <small id="userHelp" class="text-muted">Put the name you want as a user</small>
                             </div>
                             <div class="form-row py-1 ">
@@ -326,7 +333,7 @@ function generarSignInUser() {
                             <a href="#" class="nav-link mr-auto font-weight-bold" data-toggle="modal" data-target="#logIn">You alredy has an account?</a>
                         </div>
                         <div class="col-3">
-                            <button type="submit" onclick="signInUser();" class="btn btn-info">Sign In</button>
+                            <button type="submit" onclick="validarUser('usName','cliente'); signInUser();" class="btn btn-info">Sign In</button>
                         </div>
                     </div>
                 </div>
@@ -354,6 +361,20 @@ function generarSignInComp() {
                                         <label for="institutionName"><b><i class="fa fa-institution"> Company Name</i></b></label>
                                         <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('institutionName')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionNameHelp" class="text-muted ">Ganguitas</small>
                                     </div>
+                                    <div class="form-row py-1">
+                                        <label for="imagenCompany"><b><i class="fa fa-file-photo-o"> Logo Company</i></b></label>
+                                        <form id="form2" name="form2" method="post" enctype="multipart/form-data">
+                                            <input type="file" id="imagenCompany" name="imagen" accept="image/*" class="form-control" aria-describedby="imagenCompanyHelp">
+                                        </form>
+                                        <small id="imagenCompanyHelp" class="text-muted"> Here goes your company logo</small>
+                                    </div>  
+                                    <div class="form-row py-1">
+                                        <label for="bannerCompany"><b><i class="fa fa-file-photo-o"> Logo Company</i></b></label>
+                                        <form id="form3" name="form3" method="post" enctype="multipart/form-data">
+                                            <input type="file" id="bannerCompany" name="imagen" accept="image/*" class="form-control" aria-describedby="bannerCompanyHelp">
+                                        </form>
+                                        <small id="bannerCompanyHelp" class="text-muted"> Here goes your company logo</small>
+                                    </div> 
                                     <div class="form-row py-1">
                                         <label for="institutionDescription"><b><i class="fa fa-institution"> Company Description</i></b></label>
                                         <input type="text" id="institutionDescription" class="form-control" aria-describedby="institutionDescriptionHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('institutionDescription')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionDescriptionHelp" class="text-muted ">What describes your company as example "fast food"</small>
@@ -949,7 +970,7 @@ function validarUser(id, descripcion) {
     var elem = document.getElementById(id);
     if (descripcion == 'cliente') {
         axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
                 method: 'GET',
                 responseType: 'json',
                 params: {
@@ -957,12 +978,11 @@ function validarUser(id, descripcion) {
                 }
             })
             .then(function(res) {
+                console.log(res.data);
+
                 var clientes = res.data;
-                var clientesLength = 0;
-                clientes.map(item => {
-                    clientesLength++;
-                });
-                for (let i = 0; i < clientesLength; i++) {
+
+                for (let i = 0; i < clientes.length; i++) {
                     if (clientes[i].usuarioCliente == elem.value) {
                         elem.style.borderColor = "red";
                         elem.style.color = "red";
@@ -988,7 +1008,7 @@ function validarUser(id, descripcion) {
 
     } else if (descripcion == 'empresa') {
         axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
                 method: 'GET',
                 responseType: 'json',
                 params: {
@@ -1032,159 +1052,504 @@ function limpiarAlertas(id) {
 }
 
 function signInUser() {
+    if (document.getElementById('imagenUs').value != null) {
+        var frm = $('#form1');
+        let formData = new FormData(frm[0]);
+        axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+            .then(res => {
+                //console.log(res);
+                if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUserSign && verifPassSign) {
+                    var nuevoCliente = {
+                        nombreCliente: document.getElementById("firstName").value,
+                        apellidoCliente: document.getElementById("lastName").value,
+                        usuarioCliente: document.getElementById("usName").value,
+                        emailCliente: document.getElementById("emailUser").value,
+                        passwordCliente: document.getElementById("passwordUser").value,
+                        actual: true,
+                        fechaNacimiento: document.getElementById("dateUser").value,
+                        fotoCliente: "../" + res.data,
+                        genero: document.getElementById("genero").value,
+                        pais: document.getElementById("selectPaisCliente").value,
+                        companiasFav: [],
+                        publicacionesFav: [],
+                        comprasHechas: [],
+                        comprar: [],
+                        tipo: "cliente",
+                        fechaSignIn: fechaActual(),
+                        registroAcciones: [msjParaRegistro('signIn', document.getElementById("usName"))]
 
-    if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUserSign && verifPassSign) {
-        var nuevoCliente = {
-            nombreCliente: document.getElementById("firstName").value,
-            apellidoCliente: document.getElementById("lastName").value,
-            usuarioCliente: document.getElementById("usName").value,
-            emailCliente: document.getElementById("emailUser").value,
-            passwordCliente: document.getElementById("passwordUser").value,
-            actual: true,
-            fechaNacimiento: document.getElementById("dateUser").value,
-            fotoCliente: "../img/user-logo-png-4.png",
-            genero: document.getElementById("genero").value,
-            pais: document.getElementById("selectPaisCliente").value,
-            companiasFav: [],
-            publicacionesFav: [],
-            comprasHechas: [],
-            comprar: [],
-            tipo: "cliente",
-            fechaSignIn: fechaActual(),
-            registroAcciones: [msjParaRegistro('signIn', document.getElementById("usName"))]
+                    }
+                    axios({
+                            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                            method: 'POST',
+                            responseType: 'json',
+                            data: nuevoCliente
+                        })
+                        .then(function() {
+                            redireccionar('cliente');
+                        })
+                        .catch(function(error) {
+                            console.error(error);
+                        });
+                } else if (verifUsersign == false && document.getElementById("usName").value.length >= 3) {
+                    document.getElementById("alertSignUser").innerHTML = "";
+                    document.getElementById("alertSignUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>User is already in use!, </strong>Please try with another user name.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                } else if (verifPassSign == false && document.getElementById("passwordUser").value.length >= 8) {
+                    document.getElementById("alertSignUser").innerHTML = "";
+                    document.getElementById("alertSignUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Passwords do not match!, </strong>Please check the passwords.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
 
-        }
-        axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
-                method: 'POST',
-                responseType: 'json',
-                data: nuevoCliente
-            })
-            .then(function() {
-                redireccionar('cliente');
-            })
-            .catch(function(error) {
-                console.error(error);
+                } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser").style.color == "red" || document.getElementById("confirmPassUser").style.color == "red") {
+                    document.getElementById("alertSignUser").innerHTML = "";
+                    document.getElementById("alertSignUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
+                    document.getElementById("alertSignUser").innerHTML = "";
+                    document.getElementById("alertSignUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Form incomplete!, </strong>Please fill all the fields.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                }
+
+            }).catch(err => {
+                console.error(err);
             });
-    } else if (verifUsersign == false && document.getElementById("usName").value.length >= 3) {
-        document.getElementById("alertSignUser").innerHTML = "";
-        document.getElementById("alertSignUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>User is already in use!, </strong>Please try with another user name.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (verifPassSign == false && document.getElementById("passwordUser").value.length >= 8) {
-        document.getElementById("alertSignUser").innerHTML = "";
-        document.getElementById("alertSignUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Passwords do not match!, </strong>Please check the passwords.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
+    } else {
+        if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUserSign && verifPassSign) {
+            var nuevoCliente = {
+                nombreCliente: document.getElementById("firstName").value,
+                apellidoCliente: document.getElementById("lastName").value,
+                usuarioCliente: document.getElementById("usName").value,
+                emailCliente: document.getElementById("emailUser").value,
+                passwordCliente: document.getElementById("passwordUser").value,
+                actual: true,
+                fechaNacimiento: document.getElementById("dateUser").value,
+                fotoCliente: "../" + res.data,
+                genero: document.getElementById("genero").value,
+                pais: document.getElementById("selectPaisCliente").value,
+                companiasFav: [],
+                publicacionesFav: [],
+                comprasHechas: [],
+                comprar: [],
+                tipo: "cliente",
+                fechaSignIn: fechaActual(),
+                registroAcciones: [msjParaRegistro('signIn', document.getElementById("usName"))]
 
-    } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser").style.color == "red" || document.getElementById("confirmPassUser").style.color == "red") {
-        document.getElementById("alertSignUser").innerHTML = "";
-        document.getElementById("alertSignUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
-        document.getElementById("alertSignUser").innerHTML = "";
-        document.getElementById("alertSignUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Form incomplete!, </strong>Please fill all the fields.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
+            }
+            axios({
+                    url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                    method: 'POST',
+                    responseType: 'json',
+                    data: nuevoCliente
+                })
+                .then(function() {
+                    redireccionar('cliente');
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        } else if (verifUsersign == false && document.getElementById("usName").value.length >= 3) {
+            document.getElementById("alertSignUser").innerHTML = "";
+            document.getElementById("alertSignUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>User is already in use!, </strong>Please try with another user name.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+        } else if (verifPassSign == false && document.getElementById("passwordUser").value.length >= 8) {
+            document.getElementById("alertSignUser").innerHTML = "";
+            document.getElementById("alertSignUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Passwords do not match!, </strong>Please check the passwords.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+
+        } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser").style.color == "red" || document.getElementById("confirmPassUser").style.color == "red") {
+            document.getElementById("alertSignUser").innerHTML = "";
+            document.getElementById("alertSignUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+        } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
+            document.getElementById("alertSignUser").innerHTML = "";
+            document.getElementById("alertSignUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Form incomplete!, </strong>Please fill all the fields.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+        }
     }
+
+
 }
 
 function signInComp() {
+    if (document.getElementById('imagenCompany').value != null) {
+        var frm = $('#form2');
+        let formData = new FormData(frm[0]);
+        axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+            .then(res => {
+                //console.log(res);
+                if (document.getElementById('bannerCompany').value != null) {
+                    var frm1 = $('#form3');
+                    let frmData = new frmData(frm1[0]);
+                    axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+                        .then(resa => {
+                            //console.log(res);
+                            if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUsersign && verifPassSign) {
+                                var nuevaComp = {
+                                    nombreEmpresa: document.getElementById("institutionName").value,
+                                    logoEmpresa: '../' + res.data,
+                                    banner: '../' + resa.data,
+                                    pais: document.getElementById("selectPaisEmpresa").value,
+                                    direccion: document.getElementById("direcComp").value,
+                                    longitud: document.getElementById("longComp").value,
+                                    latitud: document.getElementById("latComp").value,
+                                    tipoEmpresa: document.getElementById("institutionDescription").value,
+                                    nombreUsuario: document.getElementById("userComp").value,
+                                    password: document.getElementById("passwordComp").value,
+                                    facebook: document.getElementById("facebookComp").value,
+                                    instagram: document.getElementById("instagramComp").value,
+                                    twitter: document.getElementById("twitterComp").value,
+                                    twitch: document.getElementById("twitchComp").value,
+                                    email: document.getElementById("emailComp").value,
+                                    actual: true,
+                                    publicaciones: [],
+                                    calificacionEmpresaDe: [],
+                                    tipo: "empresa",
+                                    fechaSignIn: fechaActual(),
+                                    registroAcciones: [msjParaRegistro("sigIn", document.getElementById("userComp"))]
+                                }
 
-    if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUsersign && verifPassSign) {
-        var nuevaComp = {
-            nombreEmpresa: document.getElementById("institutionName").value,
-            logoEmpresa: '../img/logo.png',
-            banner: '../img/logo.png',
-            pais: document.getElementById("selectPaisEmpresa").value,
-            direccion: document.getElementById("direcComp").value,
-            longitud: document.getElementById("longComp").value,
-            latitud: document.getElementById("latComp").value,
-            tipoEmpresa: document.getElementById("institutionDescription").value,
-            nombreUsuario: document.getElementById("userComp").value,
-            password: document.getElementById("passwordComp").value,
-            facebook: document.getElementById("facebookComp").value,
-            instagram: document.getElementById("instagramComp").value,
-            twitter: document.getElementById("twitterComp").value,
-            twitch: document.getElementById("twitchComp").value,
-            email: document.getElementById("emailComp").value,
-            actual: true,
-            publicaciones: [],
-            calificacionEmpresaDe: [],
-            tipo: "empresa",
-            fechaSignIn: fechaActual(),
-            registroAcciones: [msjParaRegistro("sigIn", document.getElementById("userComp"))]
-        }
+                                axios({
+                                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                        method: 'POST',
+                                        responseType: 'json',
+                                        data: nuevaComp
+                                    })
+                                    .then(function() {
+                                        redireccionar('empresa');
+                                    })
+                                    .catch(function(error) {
+                                        console.error(error);
+                                    });
+                            } else if (verifUsersign == false && document.getElementById("userComp").value.length >= 3) {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>User is already in use!, </strong>Please try with another user name.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            } else if (verifPassSign == false && document.getElementById("passwordComp").value.length >= 8) {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Passwords do not match!, </strong>Please check the passwords.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
 
-        axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
-                method: 'POST',
-                responseType: 'json',
-                data: nuevaComp
-            })
-            .then(function() {
-                redireccionar('empresa');
-            })
-            .catch(function(error) {
-                console.error(error);
+                            } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                                document.getElementById("passwordComp").value == 0) {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Form incomplete!, </strong>Please fill all the fields.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            }
+                        }).catch(err => {
+                            console.error(err);
+                        });
+                } else {
+                    if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUsersign && verifPassSign) {
+                        var nuevaComp = {
+                            nombreEmpresa: document.getElementById("institutionName").value,
+                            logoEmpresa: '../' + res.data,
+                            banner: '../img/logo.png',
+                            pais: document.getElementById("selectPaisEmpresa").value,
+                            direccion: document.getElementById("direcComp").value,
+                            longitud: document.getElementById("longComp").value,
+                            latitud: document.getElementById("latComp").value,
+                            tipoEmpresa: document.getElementById("institutionDescription").value,
+                            nombreUsuario: document.getElementById("userComp").value,
+                            password: document.getElementById("passwordComp").value,
+                            facebook: document.getElementById("facebookComp").value,
+                            instagram: document.getElementById("instagramComp").value,
+                            twitter: document.getElementById("twitterComp").value,
+                            twitch: document.getElementById("twitchComp").value,
+                            email: document.getElementById("emailComp").value,
+                            actual: true,
+                            publicaciones: [],
+                            calificacionEmpresaDe: [],
+                            tipo: "empresa",
+                            fechaSignIn: fechaActual(),
+                            registroAcciones: [msjParaRegistro("sigIn", document.getElementById("userComp"))]
+                        }
+
+                        axios({
+                                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                method: 'POST',
+                                responseType: 'json',
+                                data: nuevaComp
+                            })
+                            .then(function() {
+                                redireccionar('empresa');
+                            })
+                            .catch(function(error) {
+                                console.error(error);
+                            });
+                    } else if (verifUsersign == false && document.getElementById("userComp").value.length >= 3) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>User is already in use!, </strong>Please try with another user name.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (verifPassSign == false && document.getElementById("passwordComp").value.length >= 8) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Passwords do not match!, </strong>Please check the passwords.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+
+                    } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                        document.getElementById("passwordComp").value == 0) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Form incomplete!, </strong>Please fill all the fields.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    }
+                }
+
+            }).catch(err => {
+                console.error(err);
             });
-    } else if (verifUsersign == false && document.getElementById("userComp").value.length >= 3) {
-        document.getElementById("alertSignComp").innerHTML = "";
-        document.getElementById("alertSignComp").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>User is already in use!, </strong>Please try with another user name.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (verifPassSign == false && document.getElementById("passwordComp").value.length >= 8) {
-        document.getElementById("alertSignComp").innerHTML = "";
-        document.getElementById("alertSignComp").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Passwords do not match!, </strong>Please check the passwords.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
 
-    } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
-        document.getElementById("alertSignComp").innerHTML = "";
-        document.getElementById("alertSignComp").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
-        document.getElementById("passwordComp").value == 0) {
-        document.getElementById("alertSignComp").innerHTML = "";
-        document.getElementById("alertSignComp").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Form incomplete!, </strong>Please fill all the fields.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
+    } else {
+        if (document.getElementById('bannerCompany').value != null) {
+            var frm1 = $('#form3');
+            let frmData = new frmData(frm1[0]);
+            axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+                .then(resa => {
+                    //console.log(res);
+                    if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUsersign && verifPassSign) {
+                        var nuevaComp = {
+                            nombreEmpresa: document.getElementById("institutionName").value,
+                            logoEmpresa: '../logo.png',
+                            banner: '../' + resa.data,
+                            pais: document.getElementById("selectPaisEmpresa").value,
+                            direccion: document.getElementById("direcComp").value,
+                            longitud: document.getElementById("longComp").value,
+                            latitud: document.getElementById("latComp").value,
+                            tipoEmpresa: document.getElementById("institutionDescription").value,
+                            nombreUsuario: document.getElementById("userComp").value,
+                            password: document.getElementById("passwordComp").value,
+                            facebook: document.getElementById("facebookComp").value,
+                            instagram: document.getElementById("instagramComp").value,
+                            twitter: document.getElementById("twitterComp").value,
+                            twitch: document.getElementById("twitchComp").value,
+                            email: document.getElementById("emailComp").value,
+                            actual: true,
+                            publicaciones: [],
+                            calificacionEmpresaDe: [],
+                            tipo: "empresa",
+                            fechaSignIn: fechaActual(),
+                            registroAcciones: [msjParaRegistro("sigIn", document.getElementById("userComp"))]
+                        }
+
+                        axios({
+                                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                method: 'POST',
+                                responseType: 'json',
+                                data: nuevaComp
+                            })
+                            .then(function() {
+                                redireccionar('empresa');
+                            })
+                            .catch(function(error) {
+                                console.error(error);
+                            });
+                    } else if (verifUsersign == false && document.getElementById("userComp").value.length >= 3) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>User is already in use!, </strong>Please try with another user name.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (verifPassSign == false && document.getElementById("passwordComp").value.length >= 8) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Passwords do not match!, </strong>Please check the passwords.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+
+                    } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                        document.getElementById("passwordComp").value == 0) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Form incomplete!, </strong>Please fill all the fields.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    }
+                }).catch(err => {
+                    console.error(err);
+                });
+        } else {
+            if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUsersign && verifPassSign) {
+                var nuevaComp = {
+                    nombreEmpresa: document.getElementById("institutionName").value,
+                    logoEmpresa: '../logo.png',
+                    banner: '../img/logo.png',
+                    pais: document.getElementById("selectPaisEmpresa").value,
+                    direccion: document.getElementById("direcComp").value,
+                    longitud: document.getElementById("longComp").value,
+                    latitud: document.getElementById("latComp").value,
+                    tipoEmpresa: document.getElementById("institutionDescription").value,
+                    nombreUsuario: document.getElementById("userComp").value,
+                    password: document.getElementById("passwordComp").value,
+                    facebook: document.getElementById("facebookComp").value,
+                    instagram: document.getElementById("instagramComp").value,
+                    twitter: document.getElementById("twitterComp").value,
+                    twitch: document.getElementById("twitchComp").value,
+                    email: document.getElementById("emailComp").value,
+                    actual: true,
+                    publicaciones: [],
+                    calificacionEmpresaDe: [],
+                    tipo: "empresa",
+                    fechaSignIn: fechaActual(),
+                    registroAcciones: [msjParaRegistro("sigIn", document.getElementById("userComp"))]
+                }
+
+                axios({
+                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                        method: 'POST',
+                        responseType: 'json',
+                        data: nuevaComp
+                    })
+                    .then(function() {
+                        redireccionar('empresa');
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+            } else if (verifUsersign == false && document.getElementById("userComp").value.length >= 3) {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>User is already in use!, </strong>Please try with another user name.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+            } else if (verifPassSign == false && document.getElementById("passwordComp").value.length >= 8) {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Passwords do not match!, </strong>Please check the passwords.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+
+            } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+            } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                document.getElementById("passwordComp").value == 0) {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Form incomplete!, </strong>Please fill all the fields.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+            }
+        }
     }
-
 }
 
 function fechaActual() {
