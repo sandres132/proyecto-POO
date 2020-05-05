@@ -1,7 +1,7 @@
 <?php
 
 header("content-Type: application/json");
-include_once ("../clases/class-usuario-empresa.php");
+include_once ("../class/class-usuario-empresa.php");
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $_POST = json_decode(file_get_contents('php://input'), true);
@@ -32,18 +32,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $empresa->guardarEmpresa();
             $resultado["mensaje"] = "La empresa se guardo exitosamente";
             echo json_encode($resultado);
+        }else if($_POST['tipo'] == 'pub') {
+            Empresa::nuevaPub($_POST);
         }
         break;
 
     case 'GET':
         if ($_GET['tipo'] == 'empresa'){
-            if(isset($_GET['nombreUsuario'])){
+            if(isset($_GET['actual'])){
+                Empresa::obtenerEmpresaActual();
+                
+            } else if(isset($_GET['nombreUsuario'])){
                 if(isset($_GET['peticion'])){
                     Empresa::obtenerPublicacionesDeEmpresa($_GET['nombreUsuario']);
                 }else{
                     Empresa::obtenerEmpresa($_GET['nombreUsuario']);
                 }
-                
             } else {
                 Empresa::obtenerEmpresas();
             }
@@ -81,6 +85,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 $resultado["mensaje"] = "ELa empresa se actualizo exitosamente";
                 echo json_encode($resultado);
             }
+        }else if($_PUT['tipo'] == 'pub') {
+            if(isset($_PUT['indice'])) {
+                Empresa::actualizarPub($_PUT);
+            }
         }
         break;
 
@@ -91,6 +99,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 Empresa::eliminarEmpresa($_GET['nombreUsuario']);
                 $resultado["mensaje"] = "La empresa se elimino exitosamente";
                 echo json_encode($resultado);
+            }
+        }else if($_GET['tipo'] == 'pub') {
+            if(isset($_GET['indice'])) {
+                Empresa::eliminarPub($_GET['nombreEmpresa'], $_GET['indice']);
             }
         }
         break;

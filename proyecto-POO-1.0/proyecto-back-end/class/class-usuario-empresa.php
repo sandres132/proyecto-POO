@@ -49,6 +49,247 @@ class Empresa
         $this->registroAcciones=$registroAcciones;
     }
 
+    public function guardarEmpresa()
+    {
+        //guardar Empresa
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $usuariosEmpresas = json_decode($contenidoArchivo, true);
+        $usuariosEmpresas[] = array(
+            "nombreEmpresa" => $this->nombreEmpresa,
+            "logoEmpresa" => $this->logoEmpresa,
+            "banner" => $this->banner,
+            "pais" => $this->pais,
+            "direccion" => $this->direccion,
+            "longitud" => $this->longitud,
+            "latitud" => $this->latitud,
+            "tipoEmpresa" => $this->tipoEmpresa,
+            "nombreUsuario" => $this->nombreUsuario,
+            "password" => $this->password,
+            "facebook" => $this->facebook,
+            "instagram" => $this->instagram,
+            "twitter" => $this->twitter,
+            "twitch" => $this->twitch,
+            "email" => $this->email,
+            "actual" => $this->actual,
+            "publicaciones" => $this->publicaciones,
+            "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
+            "tipo" => $this->tipo,
+            "fechaSignIn"=> $this-> fechaSignIn,
+            "registroAcciones"=> $this-> registroAcciones
+        );
+        $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+        fwrite($archivo, json_encode($usuariosEmpresas));
+        fclose($archivo);
+    }
+
+    public static function obtenerEmpresas()
+    {
+        //retornar todas las empresas
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        echo json_encode($contenidoArchivo);
+    }
+
+    public static function obtenerEmpresa($nombEmpresa)
+    {
+        $verif=false;
+        //retornar la empresa con nombre de empresa 'nombEmpresa'
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                echo json_encode($empresas[$i]);
+                $verif=false;
+                break;
+            } else {
+                $verif=true;
+            }
+        }
+        if ($verif) {
+                $resultado["nombreUsuario"] = "no se encontro";
+                echo json_encode($resultado);
+        }
+    }
+
+    public function actualizarEmpresa($nombEmpresa)
+    {
+        //actualizar la empresa con nombre de empresa 'nombEmpresa'
+        $empresaModif = array(
+            "nombreEmpresa" => $this->nombreEmpresa,
+            "logoEmpresa" => $this->logoEmpresa,
+            "banner" => $this->banner,
+            "pais" => $this->pais,
+            "direccion" => $this->direccion,
+            "longitud" => $this->longitud,
+            "latitud" => $this->latitud,
+            "tipoEmpresa" => $this->tipoEmpresa,
+            "nombreUsuario" => $this->nombreUsuario,
+            "password" => $this->password,
+            "facebook" => $this->facebook,
+            "instagram" => $this->instagram,
+            "twitter" => $this->twitter,
+            "twitch" => $this->twitch,
+            "email" => $this->email,
+            "actual" => $this->actual,
+            "publicaciones" => $this->publicaciones,
+            "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
+            "tipo" => $this->tipo,
+            "fechaSignIn"=> $this-> fechaSignIn,
+            "registroAcciones"=> $this-> registroAcciones
+        );
+
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                $empresas[$i] = $empresaModif;
+                $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                fwrite($archivo, json_encode($empresas));
+                fclose($archivo);
+                break;
+            }
+        }
+    }
+
+    public static function obtenerPublicacionesDeEmpresa($nombEmpresa)
+    {
+        $publicaciones = array();
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($nombEmpresa == $empresas[$i]['nombreUsuario']) {
+                for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
+                    $publicaciones[] = $empresas[$i]['publicaciones'][$j];
+                }
+            }
+
+        }
+        echo json_encode($publicaciones);
+    }
+
+    public static function obtenerEmpresaActual()
+    {
+        $verif=false;
+        //retornar la empresa con el atributo actual igual que true
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['actual'] == true) {
+                echo json_encode($empresas[$i]);
+                $verif=false;
+                break;
+            } else {
+                $verif=true;
+            }
+        }
+        if ($verif) {
+                $resultado["actual"] = "no se encontro";
+                echo json_encode($resultado);
+        }
+    }
+
+    public static function actualizarPub($pub) {
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $pub['empresa']) {
+                for ($j=0; $j < sizeof($empresas[$i]['publicaciones']); $j++) { 
+                    if ($empresas[$i]['publicaciones'][$j]==$pub['indice']) {
+                        $modifPub = array(
+                            "nombreEmpresa"=>$pub['nombreEmpresa'],
+                            "imagenGanga" => $pub['imagenGanga'],
+                            "nombreGanga" => $pub['nombreGanga'],
+                            "descripcionGanga" => $pub['descripcionGanga'],
+                            "fechaMax" => $pub['fechaMax'],
+                            "horaMax" => $pub['horaMax'],
+                            "ofertasDisponibles" => $pub['ofertasDisponibles'],
+                            "horaInicio" => $pub['horaInicio'],
+                            "fechaInicio" => $pub['fechaInicio'],
+                            "porcentDesc" => $pub['porcentDesc'],
+                            "precio" => $pub['precio'],
+                            "venta" => $pub['venta'],
+                            "comentarios" => $pub['comentarios'],
+                            "pubFavoritaDe" => $pub['pubFavoritaDe'],
+                            "calificacionPublicacionDe"=>$pub['calificacionPublicacionDe']
+                        );
+                        $empresas[$i]['publicaciones'][$j] = $modifPub;
+                        $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                        fwrite($archivo, json_encode($empresas));
+                        fclose($archivo);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    public static function nuevaPub($pub) {
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $pub['empresa']) {
+                $nuevaPub = array(
+                    "nombreEmpresa"=>$pub['nombreEmpresa'],
+                    "imagenGanga" => $pub['imagenGanga'],
+                    "nombreGanga" => $pub['nombreGanga'],
+                    "descripcionGanga" => $pub['descripcionGanga'],
+                    "fechaMax" => $pub['fechaMax'],
+                    "horaMax" => $pub['horaMax'],
+                    "ofertasDisponibles" => $pub['ofertasDisponibles'],
+                    "horaInicio" => $pub['horaInicio'],
+                    "fechaInicio" => $pub['fechaInicio'],
+                    "porcentDesc" => $pub['porcentDesc'],
+                    "precio" => $pub['precio'],
+                    "venta" => $pub['venta'],
+                    "comentarios" => $pub['comentarios'],
+                    "pubFavoritaDe" => $pub['pubFavoritaDe'],
+                    "calificacionPublicacionDe"=>$pub['calificacionPublicacionDe']
+                );
+                $empresas[$i]['publicaciones'][]=$nuevaPub;
+                $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                fwrite($archivo, json_encode($empresas));
+                fclose($archivo);
+                break;
+            }
+        }
+    }
+
+    public static function eliminarEmpresa($nombEmpresa)
+    {
+        //eliminar la empresa con nombre de empresa 'nombEmpresa'
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                array_splice($empresas, $i, 1);
+                $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                fwrite($archivo, json_encode($empresas));
+                fclose($archivo);
+                break;
+            }
+        }
+    }
+
+    public static function eliminarPub($nombEmpresa, $indicePub)
+    {
+        //eliminar la publicacion con indice 'indicePub'
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                for ($j=0; $j < sizeof($empresas[$i]['publicaciones']); $j++) { 
+                    if ($empresas[$i]['publicaciones'][$j]==$indicePub) {
+                        array_splice($empresas[$i]['publicaciones'], $j, 1);
+                        $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                        fwrite($archivo, json_encode($empresas));
+                        fclose($archivo);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public function getNombreEmpresa()
     {
         return $this->nombreEmpresa;
@@ -299,140 +540,6 @@ class Empresa
         $this->registroAcciones = $registroAcciones;
 
         return $this;
-    }
-
-    public function guardarEmpresa()
-    {
-        //guardar Empresa
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $usuariosEmpresas = json_decode($contenidoArchivo, true);
-        $usuariosEmpresas[] = array(
-            "nombreEmpresa" => $this->nombreEmpresa,
-            "logoEmpresa" => $this->logoEmpresa,
-            "banner" => $this->banner,
-            "pais" => $this->pais,
-            "direccion" => $this->direccion,
-            "longitud" => $this->longitud,
-            "latitud" => $this->latitud,
-            "tipoEmpresa" => $this->tipoEmpresa,
-            "nombreUsuario" => $this->nombreUsuario,
-            "password" => $this->password,
-            "facebook" => $this->facebook,
-            "instagram" => $this->instagram,
-            "twitter" => $this->twitter,
-            "twitch" => $this->twitch,
-            "email" => $this->email,
-            "actual" => $this->actual,
-            "publicaciones" => $this->publicaciones,
-            "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
-            "tipo" => $this->tipo,
-            "fechaSignIn"=> $this-> fechaSignIn,
-            "registroAcciones"=> $this-> registroAcciones
-        );
-        $archivo = fopen('../data/usuariosEmpresas.json', 'w');
-        fwrite($archivo, json_encode($usuariosEmpresas));
-        fclose($archivo);
-    }
-
-    public static function obtenerEmpresas()
-    {
-        //retornar todas las empresas
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        echo json_encode($contenidoArchivo);
-    }
-
-    public static function obtenerEmpresa($nombEmpresa)
-    {
-        $verif=false;
-        //retornar la empresa con nombre de empresa 'nombEmpresa'
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $empresas = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($empresas); $i++) {
-            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
-                echo json_encode($empresas[$i]);
-                $verif=false;
-                break;
-            } else {
-                $verif=true;
-            }
-        }
-        if ($verif) {
-                $resultado["nombreUsuario"] = "no se encontro";
-                echo json_encode($resultado);
-        }
-    }
-
-    public function actualizarEmpresa($nombEmpresa)
-    {
-        //actualizar la empresa con nombre de empresa 'nombEmpresa'
-        $empresaModif = array(
-            "nombreEmpresa" => $this->nombreEmpresa,
-            "logoEmpresa" => $this->logoEmpresa,
-            "banner" => $this->banner,
-            "pais" => $this->pais,
-            "direccion" => $this->direccion,
-            "longitud" => $this->longitud,
-            "latitud" => $this->latitud,
-            "tipoEmpresa" => $this->tipoEmpresa,
-            "nombreUsuario" => $this->nombreUsuario,
-            "password" => $this->password,
-            "facebook" => $this->facebook,
-            "instagram" => $this->instagram,
-            "twitter" => $this->twitter,
-            "twitch" => $this->twitch,
-            "email" => $this->email,
-            "actual" => $this->actual,
-            "publicaciones" => $this->publicaciones,
-            "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
-            "tipo" => $this->tipo,
-            "fechaSignIn"=> $this-> fechaSignIn,
-            "registroAcciones"=> $this-> registroAcciones
-        );
-
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $empresas = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($empresas); $i++) {
-            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
-                $empresas[$i] = $empresaModif;
-                $archivo = fopen('../data/usuariosEmpresas.json', 'w');
-                fwrite($archivo, json_encode($empresas));
-                fclose($archivo);
-                break;
-            }
-        }
-    }
-
-    public static function eliminarEmpresa($nombEmpresa)
-    {
-        //eliminar la empresa con nombre de empresa 'nombEmpresa'
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $empresas = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($empresas); $i++) {
-            if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
-                array_splice($empresas, $i, 1);
-                $archivo = fopen('../data/usuariosEmpresas.json', 'w');
-                fwrite($archivo, json_encode($empresas));
-                fclose($archivo);
-                break;
-            }
-        }
-    }
-
-    public static function obtenerPublicacionesDeEmpresa($nombEmpresa)
-    {
-        $publicaciones = array();
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $empresas = json_decode($contenidoArchivo, true);
-
-        for ($i = 0; $i < sizeof($empresas); $i++) {
-            if ($nombEmpresa == $empresas[$i]['nombreUsuario']) {
-                for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
-                    $publicaciones[] = $empresas[$i]['publicaciones'][$j];
-                }
-            }
-
-        }
-        echo json_encode($publicaciones);
     }
 }
 

@@ -66,10 +66,18 @@
             "nomCliente": "ache",
             "califDeEmp": 4,
             "comentCliente": "\u00a1Me gusta Diunsa!",
-            "fechaCalif": "20\/06\/20"
+            "fechaCalif": "2020\/6\/20",
+            "respuestas": [{
+                "nomCliente": "Diunsa",
+                "comentCliente": "Thank you for supporting us, we continue to grow to provide a better service.",
+                "fechaCalif": "2020\/5\/3"
+            }]
         }],
         "tipo": "empresa",
-        "fechaSignIn": "28\/08\/20"
+        "fechaSignIn": "2020\/5\/3",
+        "registroAcciones": [{
+            "registro": "The user diunsahn was registered with the date and time of registration: 2020\/5\/3 18:31:10"
+        }]
     },
     {
         "nombreEmpresa": "Samsung",
@@ -132,7 +140,10 @@
         ],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
-        "fechaSignIn": "28\/08\/20"
+        "fechaSignIn": "2020\/5\/3",
+        "registroAcciones": [{
+            "registro": "The user samsunghn was registered with the date and time of registration: 2020\/5\/3 18:40:52"
+        }]
     },
     {
         "nombreEmpresa": "Lady Lee",
@@ -188,7 +199,10 @@
         ],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
-        "fechaSignIn": "28\/08\/20"
+        "fechaSignIn": "2020\/5\/3",
+        "registroAcciones": [{
+            "registro": "The user ladyleehn was registered with the date and time of registration: 2020\/5\/3 19:05:22"
+        }]
     },
     {
         "nombreEmpresa": "Burger King",
@@ -244,6 +258,34 @@
         ],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
-        "fechaSignIn": "28\/08\/20"
+        "fechaSignIn": "2020\/5\/3",
+        "registroAcciones": [{
+            "registro": "The user burgerkinghn was registered with the date and time of registration: 2020\/5\/3 19:33:15"
+        }]
+    },
+    {
+        "nombreEmpresa": "Ganguitas",
+        "logoEmpresa": "..\/img\/logo-color-g.png",
+        "banner": "..\/img\/logo-color.png",
+        "pais": "Honduras",
+        "direccion": "Col. Miramontes",
+        "longitud": "41.40338",
+        "latitud": "2.17403",
+        "tipoEmpresa": "fast food",
+        "nombreUsuario": "gangas",
+        "password": "ganga123",
+        "facebook": "ganguitas_facebook@gmail.com",
+        "instagram": "ganguitas_instagram@gmail.com",
+        "twitter": "ganguitas_twitter@gmail.com",
+        "twitch": "ganguitas_twitch@gmail.com",
+        "email": "ganguitas@gmail.com",
+        "actual": true,
+        "publicaciones": [],
+        "calificacionEmpresaDe": [],
+        "tipo": "empresa",
+        "fechaSignIn": "2020\/5\/3",
+        "registroAcciones": [{
+            "registro": "The user gangas was registered with the date and time of registration: 2020\/5\/3 20:31:10"
+        }]
     }
 ]

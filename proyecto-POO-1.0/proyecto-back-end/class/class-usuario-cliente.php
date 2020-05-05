@@ -41,6 +41,115 @@ class Cliente
         $this->registroAcciones=$registroAcciones;
     }
 
+    public function guardarCliente()
+    {
+        //guardar cliente
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        $usuariosClientes = json_decode($contenidoArchivo, true);
+        $usuariosClientes[] = array(
+            "nombreCliente" => $this->nombreCliente,
+            "apellidoCliente" => $this->apellidoCliente,
+            "usuarioCliente" => $this->usuarioCliente,
+            "emailCliente" => $this->emailCliente,
+            "passwordCliente" => $this->passwordCliente,
+            "actual" => $this->actual,
+            "fechaNacimiento" => $this->fechaNacimiento,
+            "fotoCliente" => $this->fotoCliente,
+            "genero" => $this->genero,
+            "pais" => $this->pais,
+            "companiasFav" => $this->companiasFav,
+            "publicacionesFav" => $this->publicacionesFav,
+            "comprasHechas" => $this->comprasHechas,
+            "comprar" => $this->comprar,
+            "tipo" => $this->tipo,
+            "fechaSignIn" => $this-> fechaSignIn,
+            "registroAcciones" => $this-> registroAcciones
+        );
+        $archivo = fopen('../data/usuariosClientes.json', 'w');
+        fwrite($archivo, json_encode($usuariosClientes));
+        fclose($archivo);
+    }
+
+    public static function obtenerclientes()
+    {
+        //retornar todos los clientes
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        echo json_encode($contenidoArchivo);
+    }
+
+    public static function obtenerCliente($nombCliente)
+    {
+        $verif=false;
+        //retornar el cliente con nombre de cliente 'nombCliente'
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        $usuarios = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($usuarios); $i++) {
+            if ($usuarios[$i]['usuarioCliente'] == $nombCliente) {
+                echo json_encode($usuarios[$i]);
+                $verif=false;
+                break;
+            } else {
+                $verif=true;
+            }
+        }
+        if ($verif) {
+                $resultado["usuarioCliente"] = "no se encontro";
+                echo json_encode($resultado);
+        }
+    }
+
+    public function actualizarCliente($nombCliente)
+    {
+        //actualizar el cliente con nombre de cliente 'nombCliente'
+        $usuarioModif = array(
+            "nombreCliente" => $this->nombreCliente,
+            "apellidoCliente" => $this->apellidoCliente,
+            "usuarioCliente" => $this->usuarioCliente,
+            "emailCliente" => $this->emailCliente,
+            "passwordCliente" => $this->passwordCliente,
+            "actual" => $this->actual,
+            "fechaNacimiento" => $this->fechaNacimiento,
+            "fotoCliente" => $this->fotoCliente,
+            "genero" => $this->genero,
+            "pais" => $this->pais,
+            "companiasFav" => $this->companiasFav,
+            "publicacionesFav" => $this->publicacionesFav,
+            "comprasHechas" => $this->comprasHechas,
+            "comprar" => $this->comprar,
+            "tipo" => $this->tipo,
+            "fechaSignIn" => $this-> fechaSignIn,
+            "registroAcciones" => $this-> registroAcciones
+        );
+
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        $usuarios = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($usuarios); $i++) {
+            if ($usuarios[$i]['usuarioCliente'] == $nombCliente) {
+                $usuarios[$i] = $usuarioModif;
+                $archivo = fopen('../data/usuariosClientes.json', 'w');
+                fwrite($archivo, json_encode($usuarios));
+                fclose($archivo);
+                break;
+            }
+        }
+    }
+
+    public static function eliminarCliente($nombCliente)
+    {
+        //eliminar el cliente con nombre de cliente 'nombCliente'
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        $usuarios = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($usuarios); $i++) {
+            if ($usuarios[$i]['usuarioCliente'] == $nombCliente) {
+                array_splice($usuarios, $i, 1);
+                $archivo = fopen('../data/usuariosClientes.json', 'w');
+                fwrite($archivo, json_encode($usuarios));
+                fclose($archivo);
+                break;
+            }
+        }
+    }
+
     public function getNombreCliente()
     {
         return $this->nombreCliente;
@@ -243,114 +352,5 @@ class Cliente
         $this->registroAcciones = $registroAcciones;
 
         return $this;
-    }
-
-    public function guardarCliente()
-    {
-        //guardar cliente
-        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
-        $usuariosClientes = json_decode($contenidoArchivo, true);
-        $usuariosClientes[] = array(
-            "nombreCliente" => $this->nombreCliente,
-            "apellidoCliente" => $this->apellidoCliente,
-            "usuarioCliente" => $this->usuarioCliente,
-            "emailCliente" => $this->emailCliente,
-            "passwordCliente" => $this->passwordCliente,
-            "actual" => $this->actual,
-            "fechaNacimiento" => $this->fechaNacimiento,
-            "fotoCliente" => $this->fotoCliente,
-            "genero" => $this->genero,
-            "pais" => $this->pais,
-            "companiasFav" => $this->companiasFav,
-            "publicacionesFav" => $this->publicacionesFav,
-            "comprasHechas" => $this->comprasHechas,
-            "comprar" => $this->comprar,
-            "tipo" => $this->tipo,
-            "fechaSignIn" => $this-> fechaSignIn,
-            "registroAcciones" => $this-> registroAcciones
-        );
-        $archivo = fopen('../data/usuariosClientes.json', 'w');
-        fwrite($archivo, json_encode($usuariosClientes));
-        fclose($archivo);
-    }
-
-    public static function obtenerclientes()
-    {
-        //retornar todos los clientes
-        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
-        echo json_encode($contenidoArchivo);
-    }
-
-    public static function obtenerCliente($nombCliente)
-    {
-        $verif=false;
-        //retornar el cliente con nombre de cliente 'nombCliente'
-        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
-        $usuarios = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($usuarios); $i++) {
-            if ($usuarios[$i]['usuarioCliente'] == $nombCliente) {
-                echo json_encode($usuarios[$i]);
-                $verif=false;
-                break;
-            } else {
-                $verif=true;
-            }
-        }
-        if ($verif) {
-                $resultado["usuarioCliente"] = "no se encontro";
-                echo json_encode($resultado);
-        }
-    }
-
-    public function actualizarCliente($nombCliente)
-    {
-        //actualizar el cliente con nombre de cliente 'nombCliente'
-        $usuarioModif = array(
-            "nombreCliente" => $this->nombreCliente,
-            "apellidoCliente" => $this->apellidoCliente,
-            "usuarioCliente" => $this->usuarioCliente,
-            "emailCliente" => $this->emailCliente,
-            "passwordCliente" => $this->passwordCliente,
-            "actual" => $this->actual,
-            "fechaNacimiento" => $this->fechaNacimiento,
-            "fotoCliente" => $this->fotoCliente,
-            "genero" => $this->genero,
-            "pais" => $this->pais,
-            "companiasFav" => $this->companiasFav,
-            "publicacionesFav" => $this->publicacionesFav,
-            "comprasHechas" => $this->comprasHechas,
-            "comprar" => $this->comprar,
-            "tipo" => $this->tipo,
-            "fechaSignIn" => $this-> fechaSignIn,
-            "registroAcciones" => $this-> registroAcciones
-        );
-
-        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
-        $usuarios = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($usuarios); $i++) {
-            if ($usuarios[$i]['usuarioCliente'] == $nombCliente) {
-                $usuarios[$i] = $usuarioModif;
-                $archivo = fopen('../data/usuariosClientes.json', 'w');
-                fwrite($archivo, json_encode($usuarios));
-                fclose($archivo);
-                break;
-            }
-        }
-    }
-
-    public static function eliminarCliente($nombCliente)
-    {
-        //eliminar el cliente con nombre de cliente 'nombCliente'
-        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
-        $usuarios = json_decode($contenidoArchivo, true);
-        for ($i = 0; $i < sizeof($usuarios); $i++) {
-            if ($usuarios[$i]['usuarioCliente'] == $nombCliente) {
-                array_splice($usuarios, $i, 1);
-                $archivo = fopen('../data/usuariosClientes.json', 'w');
-                fwrite($archivo, json_encode($usuarios));
-                fclose($archivo);
-                break;
-            }
-        }
     }
 }

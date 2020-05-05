@@ -1,25 +1,30 @@
 var empresaSeleccionada;
-var empresas;
-var feActual = "";
+var verifUser = null;
+var verifPass = null;
+var verifPassUser = null;
 
-//llena la variable empresas con las empresas existentes
-function obtenerEmpresas() {
-    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios', {
-            params: { tipo: "empresa" }
+function obtenerEmpresaActual() {
+    axios.get('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas', {
+            params: { tipo: "empresa", actual: "actual" }
         })
         .then(function(res) {
-            empresas = res.data;
+            empresaSeleccionada = res.data;
+            generarNombre();
+            generarPerfil();
+            generarEditPerfil();
+            generarAddCard();
+            generarPublicaciones();
         })
         .catch(function(err) {
             console.error(err);
         });
 }
-obtenerEmpresas();
+obtenerEmpresaActual();
 
 function fechaActual() {
     var fecha;
     fecha = new Date();
-    feActual = fecha.getFullYear + "-" + fecha.getMonth + "-" + fecha.getDay;
+    return fecha.getFullYear + "-" + fecha.getMonth + "-" + fecha.getDay;
 }
 
 function horaAct() {
@@ -28,29 +33,14 @@ function horaAct() {
     hora = f.getHours() + ":" + f.getMinutes();
 }
 
-function obtenerClienteActual(param) {
-
-}
-
-for (let i = 0; i < empresas.length; i++) {
-    if (empresas[i].actual == true) {
-        empresaSeleccionada = empresas[i];
-        generarNombre();
-        generarPerfil();
-        generarEditPerfil();
-        generarAddCard();
-    }
-}
-
 function generarNombre() {
     document.getElementById("nombreDeEmpresa").innerHTML = "";
     document.getElementById("nombreDeEmpresa").innerHTML =
-        `<a class="nav-link" href="#profile" role="tab" data-toggle="tab"><i class="fa fa-institution"></i>${empresaSeleccionada.nombreEmpresa}</a>`;
+        `<a class="nav-link" href="#profile" role="tab" data-toggle="tab"><i class="fa fa-institution"></i>${empresaSeleccionada.nombreUsuario}</a>`;
 }
 
 function generarPublicaciones() {
     let cont = 0;
-
     document.getElementById("publicaciones").innerHTML = '';
     for (let i = 0; i < empresaSeleccionada.publicaciones.length; i++) {
         let coments = "";
@@ -135,44 +125,46 @@ function generarPublicaciones() {
                     <div class="tab-pane" role="tabpanel" id="editPub${cont}">
                         <div class="card-body">
                             <div class="form-control">
-                                <div class="form-row py-1">
-                                    <label for="imaGanga${cont}"><b><i class="fa fa-image"> Ganga Image</i></b></label>
-                                    <input type="file" id="imaGanga${cont}" accept class="form-control" aria-describedby="imaGangaHelp${cont}">
+                                <div class="form-control py-1">
+                                    <label for="imaGanga${cont}"><b><i class="fa fa-photo"> User Photo</i></b></label>
+                                    <form id="form${cont}" name="form${cont}" method="post" enctype="multipart/form-data">
+                                        <input type="file" name="imagen" id="imaGanga${cont}" accept="image/*" aria-describedby="imaGangaHelp${cont}"/>
+                                    </form>
                                     <small id="imaGangaHelp${cont}" class="text-muted"> Publication Photo</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="gangNameEditPublication${cont}"><b><i class="fa fa-edit"> Publication Name</i></b></label>
-                                    <input type="text" id="gangNameEditPublication${cont}" class="form-control" aria-describedby="gangNameEditPublicationHelp${cont}">
+                                    <input type="text" id="gangNameEditPublication${cont}" value="${empresaSeleccionada.publicaciones[i].nombreGanga}" class="form-control" aria-describedby="gangNameEditPublicationHelp${cont}">
                                     <small id="gangNameEditPublicationHelp${cont}" class="text-muted">Publication Name</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="pubDescrip${cont}"><b><i class="fa fa-edit"> Publication Description</i></b></label>
-                                    <textarea name="" id="pubDescrip${cont}" cols="30" rows="3" class="form-control" aria-describedby="pubDescripHelp${cont}"></textarea>
+                                    <textarea id="pubDescrip${cont}" cols="30" rows="3" value="${empresaSeleccionada.publicaciones[i].descripcionGanga}" class="form-control" aria-describedby="pubDescripHelp${cont}"></textarea>
                                     <small id="pubDescripHelp${cont}" class="text-muted">Information of the publication</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="pubMaxDat${cont}"><b><i class="fa fa-edit"> Max date</i></b></label>
-                                    <input type="date" id="pubMaxDat${cont}" class="form-control" aria-describedby="pubMaxDatHelp${cont}">
+                                    <input type="date" id="pubMaxDat${cont}" value="${empresaSeleccionada.publicaciones[i].fechaMax}" class="form-control" aria-describedby="pubMaxDatHelp${cont}">
                                     <small id="pubMaxDatHelp${cont}" class="text-muted">Publication max date</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="pubMaxHour${cont}"><b><i class="fa fa-edit"> Max Hour</i></b></label>
-                                    <input type="time" id="pubMaxHour${cont}" class="form-control" aria-describedby="pubMaxHourHelp${cont}">
+                                    <input type="time" id="pubMaxHour${cont}" value="${empresaSeleccionada.publicaciones[i].horaMax}" class="form-control" aria-describedby="pubMaxHourHelp${cont}">
                                     <small id="pubMaxHourHelp${cont}" class="text-muted">Publication max hour</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="oferDisp${cont}"><b><i class="fa fa-edit"> Offers available</i></b></label>
-                                    <input type="number" min="0" value="0" name="" id="oferDisp${cont}" class="form-control" aria-describedby="oferDispHelp${cont}">
+                                    <input type="number" min="1" name="" id="oferDisp${cont}" value="${empresaSeleccionada.publicaciones[i].ofertasDisponibles}" class="form-control" aria-describedby="oferDispHelp${cont}">
                                     <small id="oferDispHelp${cont}" class="text-muted">how many offers available you have</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="pricePub${cont}"><b><i class="fa fa-edit"> Price</i></b></label>
-                                    <input type="number" min="0.1" value="1.00" steps="0.1" id="pricePub${cont}" class="form-control" aria-describedby="pricePubHelp${cont}">
+                                    <input type="number" min="0.1" steps="0.1" value="${empresaSeleccionada.publicaciones[i].precio}" id="pricePub${cont}" class="form-control" aria-describedby="pricePubHelp${cont}">
                                     <small id="pricePubHelp${cont}" class="text-muted">What is the price?</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="porcent${cont}"><b><i class="fa fa-edit">Discount porcentage</i></b></label>
-                                    <input type="number" min="0" max="100" value="0" name="" id="porcent${cont}" class="form-control" aria-describedby="porcentHelp${cont}">
+                                    <input type="number" min="1" max="100" id="porcent${cont}" value="${empresaSeleccionada.publicaciones[i].porcentDesc}" class="form-control" aria-describedby="porcentHelp${cont}">
                                     <small id="porcentHelp${cont}" class="text-muted">discount rate</small>
                                 </div>
                             </div>
@@ -187,60 +179,269 @@ function generarPublicaciones() {
 
     }
 }
-generarPublicaciones();
+
+function actualizarEmpresa() {
+    let empresaModif = {
+        nombreUsuarioModif: empresaSeleccionada.nombreUsuario,
+        nombreEmpresa: empresaSeleccionada.nombreEmpresa,
+        logoEmpresa: empresaSeleccionada.logoEmpresa,
+        banner: empresaSeleccionada.banner,
+        pais: empresaSeleccionada.pais,
+        direccion: empresaSeleccionada.direccion,
+        longitud: empresaSeleccionada.longitud,
+        latitud: empresaSeleccionada.latitud,
+        tipoEmpresa: empresaSeleccionada.tipoEmpresa,
+        nombreUsuario: empresaSeleccionada.nombreUsuario,
+        password: empresaSeleccionada.password,
+        facebook: empresaSeleccionada.facebook,
+        instagram: empresaSeleccionada.instagram,
+        twitter: empresaSeleccionada.twitter,
+        twitch: empresaSeleccionada.twitch,
+        email: empresaSeleccionada.email,
+        actual: empresaSeleccionada.actual,
+        publicaciones: empresaSeleccionada.publicaciones,
+        calificacionEmpresaDe: empresaSeleccionada.calificacionEmpresaDe,
+        tipo: empresaSeleccionada.tipo,
+        fechaSignIn: empresaSeleccionada.fechaSignIn,
+        registroAcciones: empresaSeleccionada.registroAcciones
+    }
+
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+            method: 'PUT',
+            responseType: 'json',
+            data: empresaModif
+        })
+        .then(function(res) {
+            console.log(res)
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+}
 
 function modifPub(cont, indicePub) {
-    if (document.getElementById("gangNameEditPublication" + cont).value.length != 0 && document.getElementById("pubDescrip" + cont).value.length != 0) {
-        var modifPub = {
-            imagenGanga: '../img/logo.png',
-            nombreGanga: document.getElementById("gangNameEditPublication" + cont).value,
-            descripcionGanga: document.getElementById("pubDescrip" + cont).value,
-            fechaMax: document.getElementById("pubMaxDat" + cont).value,
-            horaMax: document.getElementById("pubMaxHour" + cont).value,
-            ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
-            horaInicio: horaAct(),
-            fechaInicio: fechaActual(),
-            porcentDesc: document.getElementById("porcent" + cont).value,
-            precio: document.getElementById("pricePub" + cont).value,
-            venta: [],
-            comentarios: [],
-            pubFavoritaDe: []
-        }
+    if (document.getElementById('imaGanga' + cont).value != null) {
+        var frm = $('#form' + cont);
+        let formData = new FormData(frm[0]);
+        console.log(frm[0]);
 
-        for (let i = 0; i < clientes.length; i++) {
-            for (let j = 0; j < clientes[i].publicacionesFav.length; j++) {
-                if (clientes[i].publicacionesFav[j].nombreGan == empresaSeleccionada.publicaciones[indicePub].nombreGanga) {
-                    clientes[i].publicacionesFav[j].nombreGan = modifPub.nombreGanga;
-                    break;
+        axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube.php', formData)
+            .then(res => {
+                console.log(res.data);
+                if (document.getElementById("gangNameEditPublication" + cont).value.length != 0 && document.getElementById("pubDescrip" + cont).value.length != 0) {
+                    var modifPub = {
+                        tipo: "pub",
+                        indice: indicePub,
+                        nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                        imagenGanga: '../' + res.data,
+                        nombreGanga: document.getElementById("gangNameEditPublication" + cont).value,
+                        descripcionGanga: document.getElementById("pubDescrip" + cont).value,
+                        fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                        horaMax: document.getElementById("pubMaxHour" + cont).value,
+                        ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                        horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                        fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                        porcentDesc: document.getElementById("porcent" + cont).value,
+                        precio: document.getElementById("pricePub" + cont).value,
+                        venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                        comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                        pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                        calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+                    }
+                } else if (document.getElementById("gangNameEditPublication" + cont).value.length == 0 && document.getElementById("pubDescrip" + cont).value.length != 0) {
+                    var modifPub = {
+                        tipo: "pub",
+                        indice: indicePub,
+                        nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                        imagenGanga: '../' + res.data,
+                        nombreGanga: empresaSeleccionada.publicaciones[indicePub].nombreGanga,
+                        descripcionGanga: document.getElementById("pubDescrip" + cont).value,
+                        fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                        horaMax: document.getElementById("pubMaxHour" + cont).value,
+                        ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                        horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                        fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                        porcentDesc: document.getElementById("porcent" + cont).value,
+                        precio: document.getElementById("pricePub" + cont).value,
+                        venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                        comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                        pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                        calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+                    }
+                } else if (document.getElementById("pubDescrip" + cont).value.length == 0 && document.getElementById("gangNameEditPublication" + cont).value.length != 0) {
+                    var modifPub = {
+                        tipo: "pub",
+                        indice: indicePub,
+                        nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                        imagenGanga: '../' + res.data,
+                        nombreGanga: document.getElementById("gangNameEditPublication" + cont).value,
+                        descripcionGanga: empresaSeleccionada.publicaciones[indicePub].descripcionGanga,
+                        fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                        horaMax: document.getElementById("pubMaxHour" + cont).value,
+                        ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                        horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                        fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                        porcentDesc: document.getElementById("porcent" + cont).value,
+                        precio: document.getElementById("pricePub" + cont).value,
+                        venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                        comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                        pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                        calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+                    }
                 }
+                axios({
+                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                        method: 'PUT',
+                        responseType: 'json',
+                        data: modifPub
+                    })
+                    .then(function(res) {
+                        console.log(res)
+                        empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
+                        actualizarEmpresa();
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+
+            }).catch(err => {
+                console.error(err);
+            });
+
+    } else {
+        if (document.getElementById("gangNameEditPublication" + cont).value.length != 0 && document.getElementById("pubDescrip" + cont).value.length != 0) {
+            var modifPub = {
+                tipo: "pub",
+                indice: indicePub,
+                nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                imagenGanga: empresaSeleccionada.publicaciones[indicePub].imagenGanga,
+                nombreGanga: document.getElementById("gangNameEditPublication" + cont).value,
+                descripcionGanga: document.getElementById("pubDescrip" + cont).value,
+                fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                horaMax: document.getElementById("pubMaxHour" + cont).value,
+                ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                porcentDesc: document.getElementById("porcent" + cont).value,
+                precio: document.getElementById("pricePub" + cont).value,
+                venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+            }
+        } else if (document.getElementById("gangNameEditPublication" + cont).value.length == 0 && document.getElementById("pubDescrip" + cont).value.length != 0) {
+            var modifPub = {
+                tipo: "pub",
+                indice: indicePub,
+                nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                imagenGanga: empresaSeleccionada.publicaciones[indicePub].imagenGanga,
+                nombreGanga: empresaSeleccionada.publicaciones[indicePub].nombreGanga,
+                descripcionGanga: document.getElementById("pubDescrip" + cont).value,
+                fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                horaMax: document.getElementById("pubMaxHour" + cont).value,
+                ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                porcentDesc: document.getElementById("porcent" + cont).value,
+                precio: document.getElementById("pricePub" + cont).value,
+                venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+            }
+        } else if (document.getElementById("pubDescrip" + cont).value.length == 0 && document.getElementById("gangNameEditPublication" + cont).value.length != 0) {
+            var modifPub = {
+                tipo: "pub",
+                indice: indicePub,
+                nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                imagenGanga: empresaSeleccionada.publicaciones[indicePub].imagenGanga,
+                nombreGanga: document.getElementById("gangNameEditPublication" + cont).value,
+                descripcionGanga: empresaSeleccionada.publicaciones[indicePub].descripcionGanga,
+                fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                horaMax: document.getElementById("pubMaxHour" + cont).value,
+                ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                porcentDesc: document.getElementById("porcent" + cont).value,
+                precio: document.getElementById("pricePub" + cont).value,
+                venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
             }
         }
-
-        empresaSeleccionada.publicaciones[indicePub].imagenGanga = modifPub.imagenGanga;
-        empresaSeleccionada.publicaciones[indicePub].nombreGanga = modifPub.nombreGanga;
-        empresaSeleccionada.publicaciones[indicePub].descripcionGanga = modifPub.descripcionGanga;
-        empresaSeleccionada.publicaciones[indicePub].fechaMax = modifPub.fechaMax;
-        empresaSeleccionada.publicaciones[indicePub].horaMax = modifPub.horaMax;
-        empresaSeleccionada.publicaciones[indicePub].ofertasDisponibles = modifPub.ofertasDisponibles;
-        empresaSeleccionada.publicaciones[indicePub].porcentDesc = modifPub.porcentDesc;
-        empresaSeleccionada.publicaciones[indicePub].precio = modifPub.precio;
-
-        localStorage.setItem('empresas', JSON.stringify(empresas));
-        localStorage.setItem('clientes', JSON.stringify(clientes));
-        top.location.reload();
-    } else if (document.getElementById("gangNameEditPublication" + cont).value.length == 0 || document.getElementById("pubDescrip" + cont).value.length == 0) {
-        document.getElementById("alertPubNueva" + cont).innerHTML = "";
-        document.getElementById("alertPubNueva" + cont).innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Incomplete or wrong information! , </strong>Please check all the fields.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
+        empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
+        axios({
+                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                method: 'PUT',
+                responseType: 'json',
+                data: modifPub
+            })
+            .then(function(res) {
+                console.log(res)
+                empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
+                actualizarEmpresa();
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
     }
 }
 
 function generarPerfil() {
+    let coments = "";
+    let respuestas = "";
+    for (let i = 0; i < empresaSeleccionada.calificacionEmpresaDe.length; i++) {
+        const element = empresaSeleccionada.calificacionEmpresaDe[i];
+        for (let j = 0; j < element.respuestas.length; j++) {
+            const elem = element.respuestas[j];
+            respuestas +=
+                `
+                <div class="form-control py-1" style="background-color: aquamarine;">
+                    <div>
+                        <h4><b><i class="fa fa-user-circle-o">${elem.nomCliente}</i></b></h4><br>
+                        <small class="text-muted">${elem.fechaCalif}</small>
+                    </div>
+                    <hr>
+                    <div>
+                        <h4><i class="fa fa-comments-o"> ${elem.comentCliente}</i></h4>
+                    </div>
+                </div>`;
+        }
+        coments +=
+            `
+            <div class="form-control py-1" style="background-color: bisque;">
+                <div>
+                    <h4><b><i class="fa fa-user-circle-o">${element.nomCliente}</i></b><span>${element.califDeEmp}</span></h4><br>
+                    <small class="text-muted">${element.fechaCalif}</small>
+                </div>
+                <hr>
+                <div>
+                    <h4><i class="fa fa-comments-o"> ${element.comentCliente}</i></h4>
+                </div>
+            </div>
+            <hr>
+            <button class="btn btn-sm btn-info" data-toggle="collapse" data-target="#comCalif${i}" aria-expanded="false" aria-controls="comCalif${i}"><i class="fa fa-commenting-o"> Comment</i></button>
+                <div class="collapse" id="comCalif${i}">
+                    <div class="card-body m-0">
+                        <div class="form-row py-1">
+                            <label for="responderCalif${i}"><b><i class="fa fa-commenting-o"> Post</i></b></label>
+                            <textarea type="text" id="responderCalif${i}" class="form-control" aria-describedby="responderCalif${i}Help" rows="3" required></textarea>
+                            <small id="responderCalif${i}Help" class="text-muted">Answer to the clients</small>
+                        </small>
+                        <div class="container mb-3">
+                            <button onclick="comentCalif('paraComentCalif${i}','responderCalif${i}',${i});" class="btn btn-sm btn-info float-right"><i class="fa fa-commenting-o"> Post</i></button>
+                        </div>
+                    </div>
+                </div>
+            <hr>
+            <div id="paraComentCalif${i}">
+                ${respuestas}
+            </div>`;
+
+    }
+
     document.getElementById("profile").innerHTML = "";
     document.getElementById("profile").innerHTML =
         `<div class="card my-5">
@@ -297,6 +498,21 @@ function generarPerfil() {
                         </div>
                     </form>
                 </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-info" id="verComentars" type="button" data-toggle="collapse" data-target="#comentars" aria-expanded="false" aria-controls="contCard">
+                    <i class="fa fa-eye"> View Ratings</i>
+                </button>
+                <div class="collapse" id="comentars">
+                    <div class="card-body m-0">
+                        <h4><b><i class="fa fa-comment-o"></i>Comments</b></h4>
+                        <hr> 
+                        <div id="paraComentCalifUser${i}">
+                            ${coments}
+                        </div>
+                        <hr>
+                    </div>
+                </div>
             </div>        
         </div>`;
 }
@@ -305,375 +521,448 @@ function generarEditPerfil() {
     document.getElementById("editEmpresa").innerHTML = "";
     document.getElementById("editEmpresa").innerHTML +=
         `<div class="card my-4">
-            <div class="card-body p-2">
-                <div class="container">
-                    <form class="form-control py-0 row mx-0">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-row py-1">
-                                        <label for="institutionName"><b><i class="fa fa-institution"> Company Name</i></b></label>
-                                        <input type="text" id="institutionName" class="form-control" aria-describedby="institutionNameHelp" oninput="validacion('institutionName')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionNameHelp" class="text-muted ">Ganguitas</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="institutionDescription"><b><i class="fa fa-institution"> Company Description</i></b></label>
-                                        <input type="text" id="institutionDescription" class="form-control" aria-describedby="institutionDescriptionHelp" oninput="validacion('institutionDescription')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required><small id="institutionDescriptionHelp" class="text-muted ">What describes your company as example "fast food"</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="direcComp"><b><i class="fa fa-institution"> Company Address</i></b></label>
-                                        <input type="text" id="direcComp" class="form-control" aria-describedby="direcCompHelp" oninput="validacion('direcComp')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,50}" required><small id="direcCompHelp" class="text-muted ">Put your company address as an example: Col. Miramontes</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="longComp"><b><i class="fa fa-institution"> Company longitude</i></b></label>
-                                        <input type="text" id="longComp" class="form-control" aria-describedby="longCompHelp" oninput="validacion('longComp')" pattern="[0-9.]{5,50}" required><small id="longCompHelp" class="text-muted ">Put your company longitude as an example: 41.40338</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="latComp"><b><i class="fa fa-institution"> Company latitude</i></b></label>
-                                        <input type="text" id="latComp" class="form-control" aria-describedby="latCompHelp" oninput="validacion('latComp')" pattern="[0-9.]{5,50}" required><small id="latCompHelp" class="text-muted ">Put your company latitude as an example: 2.17403</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="selectPais"><i class="fa fa-flag-checkered"> Select Country</i></label>
-                                        <select class="form-control" id="selectPais" onchange="cambiar("selectPais");">
-                                            <option value="Elegir" disabled="disabled" id="AF">Elegir País</option>
-                                            <option value="Afganistán" id="AF">Afganistán</option>
-                                            <option value="Albania" id="AL">Albania</option>
-                                            <option value="Alemania" id="DE">Alemania</option>
-                                            <option value="Andorra" id="AD">Andorra</option>
-                                            <option value="Angola" id="AO">Angola</option>
-                                            <option value="Anguila" id="AI">Anguila</option>
-                                            <option value="Antártida" id="AQ">Antártida</option>
-                                            <option value="Antigua y Barbuda" id="AG">Antigua y Barbuda</option>
-                                            <option value="Antillas holandesas" id="AN">Antillas holandesas</option>
-                                            <option value="Arabia Saudí" id="SA">Arabia Saudí</option>
-                                            <option value="Argelia" id="DZ">Argelia</option>
-                                            <option value="Argentina" id="AR">Argentina</option>
-                                            <option value="Armenia" id="AM">Armenia</option>
-                                            <option value="Aruba" id="AW">Aruba</option>
-                                            <option value="Australia" id="AU">Australia</option>
-                                            <option value="Austria" id="AT">Austria</option>
-                                            <option value="Azerbaiyán" id="AZ">Azerbaiyán</option>
-                                            <option value="Bahamas" id="BS">Bahamas</option>
-                                            <option value="Bahrein" id="BH">Bahrein</option>
-                                            <option value="Bangladesh" id="BD">Bangladesh</option>
-                                            <option value="Barbados" id="BB">Barbados</option>
-                                            <option value="Bélgica" id="BE">Bélgica</option>
-                                            <option value="Belice" id="BZ">Belice</option>
-                                            <option value="Benín" id="BJ">Benín</option>
-                                            <option value="Bermudas" id="BM">Bermudas</option>
-                                            <option value="Bhután" id="BT">Bhután</option>
-                                            <option value="Bielorrusia" id="BY">Bielorrusia</option>
-                                            <option value="Birmania" id="MM">Birmania</option>
-                                            <option value="Bolivia" id="BO">Bolivia</option>
-                                            <option value="Bosnia y Herzegovina" id="BA">Bosnia y Herzegovina</option>
-                                            <option value="Botsuana" id="BW">Botsuana</option>
-                                            <option value="Brasil" id="BR">Brasil</option>
-                                            <option value="Brunei" id="BN">Brunei</option>
-                                            <option value="Bulgaria" id="BG">Bulgaria</option>
-                                            <option value="Burkina Faso" id="BF">Burkina Faso</option>
-                                            <option value="Burundi" id="BI">Burundi</option>
-                                            <option value="Cabo Verde" id="CV">Cabo Verde</option>
-                                            <option value="Camboya" id="KH">Camboya</option>
-                                            <option value="Camerún" id="CM">Camerún</option>
-                                            <option value="Canadá" id="CA">Canadá</option>
-                                            <option value="Chad" id="TD">Chad</option>
-                                            <option value="Chile" id="CL">Chile</option>
-                                            <option value="China" id="CN">China</option>
-                                            <option value="Chipre" id="CY">Chipre</option>
-                                            <option value="Ciudad estado del Vaticano" id="VA">Ciudad estado del Vaticano</option>
-                                            <option value="Colombia" id="CO">Colombia</option>
-                                            <option value="Comores" id="KM">Comores</option>
-                                            <option value="Congo" id="CG">Congo</option>
-                                            <option value="Corea" id="KR">Corea</option>
-                                            <option value="Corea del Norte" id="KP">Corea del Norte</option>
-                                            <option value="Costa del Marfíl" id="CI">Costa del Marfíl</option>
-                                            <option value="Costa Rica" id="CR">Costa Rica</option>
-                                            <option value="Croacia" id="HR">Croacia</option>
-                                            <option value="Cuba" id="CU">Cuba</option>
-                                            <option value="Dinamarca" id="DK">Dinamarca</option>
-                                            <option value="Djibouri" id="DJ">Djibouri</option>
-                                            <option value="Dominica" id="DM">Dominica</option>
-                                            <option value="Ecuador" id="EC">Ecuador</option>
-                                            <option value="Egipto" id="EG">Egipto</option>
-                                            <option value="El Salvador" id="SV">El Salvador</option>
-                                            <option value="Emiratos Arabes Unidos" id="AE">Emiratos Arabes Unidos</option>
-                                            <option value="Eritrea" id="ER">Eritrea</option>
-                                            <option value="Eslovaquia" id="SK">Eslovaquia</option>
-                                            <option value="Eslovenia" id="SI">Eslovenia</option>
-                                            <option value="España" id="ES">España</option>
-                                            <option value="Estados Unidos" id="US">Estados Unidos</option>
-                                            <option value="Estonia" id="EE">Estonia</option>
-                                            <option value="c" id="ET">Etiopía</option>
-                                            <option value="Ex-República Yugoslava de Macedonia" id="MK">Ex-República Yugoslava de Macedonia</option>
-                                            <option value="Filipinas" id="PH">Filipinas</option>
-                                            <option value="Finlandia" id="FI">Finlandia</option>
-                                            <option value="Francia" id="FR">Francia</option>
-                                            <option value="Gabón" id="GA">Gabón</option>
-                                            <option value="Gambia" id="GM">Gambia</option>
-                                            <option value="Georgia" id="GE">Georgia</option>
-                                            <option value="Georgia del Sur y las islas Sandwich del Sur" id="GS">Georgia del Sur y las islas Sandwich del Sur</option>
-                                            <option value="Ghana" id="GH">Ghana</option>
-                                            <option value="Gibraltar" id="GI">Gibraltar</option>
-                                            <option value="Granada" id="GD">Granada</option>
-                                            <option value="Grecia" id="GR">Grecia</option>
-                                            <option value="Groenlandia" id="GL">Groenlandia</option>
-                                            <option value="Guadalupe" id="GP">Guadalupe</option>
-                                            <option value="Guam" id="GU">Guam</option>
-                                            <option value="Guatemala" id="GT">Guatemala</option>
-                                            <option value="Guayana" id="GY">Guayana</option>
-                                            <option value="Guayana francesa" id="GF">Guayana francesa</option>
-                                            <option value="Guinea" id="GN">Guinea</option>
-                                            <option value="Guinea Ecuatorial" id="GQ">Guinea Ecuatorial</option>
-                                            <option value="Guinea-Bissau" id="GW">Guinea-Bissau</option>
-                                            <option value="Haití" id="HT">Haití</option>
-                                            <option value="Holanda" id="NL">Holanda</option>
-                                            <option selected="true" value="Honduras" id="HN">Honduras</option>
-                                            <option value="Hong Kong R. A. E" id="HK">Hong Kong R. A. E</option>
-                                            <option value="Hungría" id="HU">Hungría</option>
-                                            <option value="India" id="IN">India</option>
-                                            <option value="Indonesia" id="ID">Indonesia</option>
-                                            <option value="Irak" id="IQ">Irak</option>
-                                            <option value="Irán" id="IR">Irán</option>
-                                            <option value="Irlanda" id="IE">Irlanda</option>
-                                            <option value="Isla Bouvet" id="BV">Isla Bouvet</option>
-                                            <option value="Isla Christmas" id="CX">Isla Christmas</option>
-                                            <option value="Isla Heard e Islas McDonald" id="HM">Isla Heard e Islas McDonald</option>
-                                            <option value="Islandia" id="IS">Islandia</option>
-                                            <option value="Islas Caimán" id="KY">Islas Caimán</option>
-                                            <option value="Islas Cook" id="CK">Islas Cook</option>
-                                            <option value="Islas de Cocos o Keeling" id="CC">Islas de Cocos o Keeling</option>
-                                            <option value="Islas Faroe" id="FO">Islas Faroe</option>
-                                            <option value="Islas Fiyi" id="FJ">Islas Fiyi</option>
-                                            <option value="Islas Malvinas Islas Falkland" id="FK">Islas Malvinas Islas Falkland</option>
-                                            <option value="Islas Marianas del norte" id="MP">Islas Marianas del norte</option>
-                                            <option value="Islas Marshall" id="MH">Islas Marshall</option>
-                                            <option value="Islas menores de Estados Unidos" id="UM">Islas menores de Estados Unidos</option>
-                                            <option value="Islas Palau" id="PW">Islas Palau</option>
-                                            <option value="Islas Salomón" d="SB">Islas Salomón</option>
-                                            <option value="Islas Tokelau" id="TK">Islas Tokelau</option>
-                                            <option value="Islas Turks y Caicos" id="TC">Islas Turks y Caicos</option>
-                                            <option value="Islas Vírgenes EE.UU." id="VI">Islas Vírgenes EE.UU.</option>
-                                            <option value="Islas Vírgenes Reino Unido" id="VG">Islas Vírgenes Reino Unido</option>
-                                            <option value="Israel" id="IL">Israel</option>
-                                            <option value="Italia" id="IT">Italia</option>
-                                            <option value="Jamaica" id="JM">Jamaica</option>
-                                            <option value="Japón" id="JP">Japón</option>
-                                            <option value="Jordania" id="JO">Jordania</option>
-                                            <option value="Kazajistán" id="KZ">Kazajistán</option>
-                                            <option value="Kenia" id="KE">Kenia</option>
-                                            <option value="Kirguizistán" id="KG">Kirguizistán</option>
-                                            <option value="Kiribati" id="KI">Kiribati</option>
-                                            <option value="Kuwait" id="KW">Kuwait</option>
-                                            <option value="Laos" id="LA">Laos</option>
-                                            <option value="Lesoto" id="LS">Lesoto</option>
-                                            <option value="Letonia" id="LV">Letonia</option>
-                                            <option value="Líbano" id="LB">Líbano</option>
-                                            <option value="Liberia" id="LR">Liberia</option>
-                                            <option value="Libia" id="LY">Libia</option>
-                                            <option value="Liechtenstein" id="LI">Liechtenstein</option>
-                                            <option value="Lituania" id="LT">Lituania</option>
-                                            <option value="Luxemburgo" id="LU">Luxemburgo</option>
-                                            <option value="Macao R. A. E" id="MO">Macao R. A. E</option>
-                                            <option value="Madagascar" id="MG">Madagascar</option>
-                                            <option value="Malasia" id="MY">Malasia</option>
-                                            <option value="Malawi" id="MW">Malawi</option>
-                                            <option value="Maldivas" id="MV">Maldivas</option>
-                                            <option value="Malí" id="ML">Malí</option>
-                                            <option value="Malta" id="MT">Malta</option>
-                                            <option value="Marruecos" id="MA">Marruecos</option>
-                                            <option value="Martinica" id="MQ">Martinica</option>
-                                            <option value="Mauricio" id="MU">Mauricio</option>
-                                            <option value="Mauritania" id="MR">Mauritania</option>
-                                            <option value="Mayotte" id="YT">Mayotte</option>
-                                            <option value="México" id="MX">México</option>
-                                            <option value="Micronesia" id="FM">Micronesia</option>
-                                            <option value="Moldavia" id="MD">Moldavia</option>
-                                            <option value="Mónaco" id="MC">Mónaco</option>
-                                            <option value="Mongolia" id="MN">Mongolia</option>
-                                            <option value="Montserrat" id="MS">Montserrat</option>
-                                            <option value="Mozambique" id="MZ">Mozambique</option>
-                                            <option value="Namibia" id="NA">Namibia</option>
-                                            <option value="Nauru" id="NR">Nauru</option>
-                                            <option value="Nepal" id="NP">Nepal</option>
-                                            <option value="Nicaragua" id="NI">Nicaragua</option>
-                                            <option value="Níger" id="NE">Níger</option>
-                                            <option value="Nigeria" id="NG">Nigeria</option>
-                                            <option value="Niue" id="NU">Niue</option>
-                                            <option value="Norfolk" id="NF">Norfolk</option>
-                                            <option value="Noruega" id="NO">Noruega</option>
-                                            <option value="Nueva Caledonia" id="NC">Nueva Caledonia</option>
-                                            <option value="Nueva Zelanda" id="NZ">Nueva Zelanda</option>
-                                            <option value="Omán" id="OM">Omán</option>
-                                            <option value="Panamá" id="PA">Panamá</option>
-                                            <option value="Papua Nueva Guinea" id="PG">Papua Nueva Guinea</option>
-                                            <option value="Paquistán" id="PK">Paquistán</option>
-                                            <option value="Paraguay" id="PY">Paraguay</option>
-                                            <option value="Perú" id="PE">Perú</option>
-                                            <option value="Pitcairn" id="PN">Pitcairn</option>
-                                            <option value="Polinesia francesa" id="PF">Polinesia francesa</option>
-                                            <option value="Polonia" id="PL">Polonia</option>
-                                            <option value="Portugal" id="PT">Portugal</option>
-                                            <option value="Puerto Rico" id="PR">Puerto Rico</option>
-                                            <option value="Qatar" id="QA">Qatar</option>
-                                            <option value="Reino Unido" id="UK">Reino Unido</option>
-                                            <option value="República Centroafricana" id="CF">República Centroafricana</option>
-                                            <option value="República Checa" id="CZ">República Checa</option>
-                                            <option value="República de Sudáfrica" id="ZA">República de Sudáfrica</option>
-                                            <option value="República Democrática del Congo Zaire" id="CD">República Democrática del Congo Zaire</option>
-                                            <option value="República Dominicana" id="DO">República Dominicana</option>
-                                            <option value="Reunión" id="RE">Reunión</option>
-                                            <option value="Ruanda" id="RW">Ruanda</option>
-                                            <option value="Rumania" id="RO">Rumania</option>
-                                            <option value="Rusia" id="RU">Rusia</option>
-                                            <option value="Samoa" id="WS">Samoa</option>
-                                            <option value="Samoa occidental" id="AS">Samoa occidental</option>
-                                            <option value="San Kitts y Nevis" id="KN">San Kitts y Nevis</option>
-                                            <option value="San Marino" id="SM">San Marino</option>
-                                            <option value="San Pierre y Miquelon" id="PM">San Pierre y Miquelon</option>
-                                            <option value="San Vicente e Islas Granadinas" id="VC">San Vicente e Islas Granadinas</option>
-                                            <option value="Santa Helena" id="SH">Santa Helena</option>
-                                            <option value="Santa Lucía" id="LC">Santa Lucía</option>
-                                            <option value="Santo Tomé y Príncipe" id="ST">Santo Tomé y Príncipe</option>
-                                            <option value="Senegal" id="SN">Senegal</option>
-                                            <option value="Serbia y Montenegro" id="YU">Serbia y Montenegro</option>
-                                            <option value="Sychelles" id="SC">Seychelles</option>
-                                            <option value="Sierra Leona" id="SL">Sierra Leona</option>
-                                            <option value="Singapur" id="SG">Singapur</option>
-                                            <option value="Siria" id="SY">Siria</option>
-                                            <option value="Somalia" id="SO">Somalia</option>
-                                            <option value="Sri Lanka" id="LK">Sri Lanka</option>
-                                            <option value="Suazilandia" id="SZ">Suazilandia</option>
-                                            <option value="Sudán" id="SD">Sudán</option>
-                                            <option value="Suecia" id="SE">Suecia</option>
-                                            <option value="Suiza" id="CH">Suiza</option>
-                                            <option value="Surinam" id="SR">Surinam</option>
-                                            <option value="Svalbard" id="SJ">Svalbard</option>
-                                            <option value="Tailandia" id="TH">Tailandia</option>
-                                            <option value="Taiwán" id="TW">Taiwán</option>
-                                            <option value="Tanzania" id="TZ">Tanzania</option>
-                                            <option value="Tayikistán" id="TJ">Tayikistán</option>
-                                            <option value="Territorios británicos del océano Indico" id="IO">Territorios británicos del océano Indico</option>
-                                            <option value="Territorios franceses del sur" id="TF">Territorios franceses del sur</option>
-                                            <option value="Timor Oriental" id="TP">Timor Oriental</option>
-                                            <option value="Togo" id="TG">Togo</option>
-                                            <option value="Tonga" id="TO">Tonga</option>
-                                            <option value="Trinidad y Tobago" id="TT">Trinidad y Tobago</option>
-                                            <option value="Túnez" id="TN">Túnez</option>
-                                            <option value="Turkmenistán" id="TM">Turkmenistán</option>
-                                            <option value="Turquía" id="TR">Turquía</option>
-                                            <option value="Tuvalu" id="TV">Tuvalu</option>
-                                            <option value="Ucrania" id="UA">Ucrania</option>
-                                            <option value="Uganda" id="UG">Uganda</option>
-                                            <option value="Uruguay" id="UY">Uruguay</option>
-                                            <option value="Uzbekistán" id="UZ">Uzbekistán</option>
-                                            <option value="Vanuatu" id="VU">Vanuatu</option>
-                                            <option value="Venezuela" id="VE">Venezuela</option>
-                                            <option value="Vietnam" id="VN">Vietnam</option>
-                                            <option value="Wallis y Futuna" id="WF">Wallis y Futuna</option>
-                                            <option value="Yemen" id="YE">Yemen</option>
-                                            <option value="Zambia" id="ZM">Zambia</option>
-                                            <option value="Zimbabue" id="ZW">Zimbabue</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="emailComp"><b><i class="fa fa-envelope"> Email</i></b></label>
-                                        <input type="email" id="emailComp" class="form-control" aria-describedby="emailHelp" oninput="validacion('emailComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
-                                        <small id="emailHelp" class="text-muted ">ganguitas@gmail.com</small>
-                                    </div>
+            <div class="card-body pb-0 mb-0">
+                <div class="form-control py-0 row">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-row py-1">
+                                    <label for="institutionName"><b><i class="fa fa-institution"> Company Name</i></b></label>
+                                    <input type="text" id="institutionName" value="${empresaSeleccionada.nombreEmpresa}" style="border-color: green; color: green;" class="form-control" aria-describedby="institutionNameHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('institutionName')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}"
+                                        required><small id="institutionNameHelp" class="text-muted ">Ganguitas</small>
                                 </div>
-                                <div class="col">
-                                    <div class="form-row py-1">
-                                        <label for="facebookComp"><b><i class="fa fa-facebook"> Facebook</i></b></label>
-                                        <input type="email" id="facebookComp" class="form-control" aria-describedby="facebookHelp" oninput="validacion('facebookComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
-                                        <small id="facebookHelp" class="text-muted ">ganguitas_facebook@gmail.com</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="instagramComp"><b><i class="fa fa-instagram"> Instagram</i></b></label>
-                                        <input type="email" id="instagramComp" class="form-control" aria-describedby="instagramHelp" oninput="validacion('instagramComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
-                                        <small id="instagramHelp" class="text-muted ">ganguitas_instagram@gmail.com</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="twitterComp"><b><i class="fa fa-twitter"> Twitter</i></b></label>
-                                        <input type="email" id="twitterComp" class="form-control" aria-describedby="twitterHelp" oninput="validacion('twitterComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
-                                        <small id="twitterHelp" class="text-muted ">ganguitas_twitter@gmail.com</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="twitchComp"><b><i class="fa fa-twitch"> Twitch</i></b></label>
-                                        <input type="email" id="twitchComp" class="form-control" aria-describedby="twitchHelp" oninput="validacion('twitchComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
-                                        <small id="twitchHelp" class="text-muted ">ganguitas_twitch@gmail.com</small>
-                                    </div>
-                                    <div class="form-row py-1 ">
-                                        <label for="userComp"><b><i class="fa fa-user"> User Name</i></b></label>
-                                        <input type="text" id="userComp" class="form-control" aria-describedby="userCompHelp" oninput="validarUser('userComp','compañia')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
-                                        <small id="userCompHelp" class="text-muted"> Put the name you want as a user</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="passwordComp"><b><i class="fa fa-lock"> Password</i></b></label>
-                                        <input type="password" id="passwordComp" class="form-control" aria-describedby="passwordHelp" oninput="validacion('passwordComp')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                        <small id="passwordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
-                                    </div>
-                                    <div class="form-row py-1">
-                                        <label for="confirmPassComp"><b><i class="fa fa-lock"> Confirm your password</i></b></label>
-                                        <input type="password" id="confirmPassComp" class="form-control" aria-describedby="confirmHelp" oninput="alertar('passwordComp','confirmPassComp');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                        <small id="confirmHelp" class="text-muted">Repeat your password.</small>
-                                    </div>
+                                <div class="form-row py-1">
+                                    <label for="institutionDescription"><b><i class="fa fa-institution"> Company Description</i></b></label>
+                                    <input type="text" id="institutionDescription" value="${empresaSeleccionada.descripcion}" style="border-color: green; color: green;" class="form-control" aria-describedby="institutionDescriptionHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('institutionDescription')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}"
+                                        required><small id="institutionDescriptionHelp" class="text-muted ">What describes your company as example "fast food"</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="direcComp"><b><i class="fa fa-map-marker"> Company Address</i></b></label>
+                                    <input type="text" id="direcComp" value="${empresaSeleccionada.direccion}" style="border-color: green; color: green;" class="form-control" aria-describedby="direcCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('direcComp')" pattern="[a-zA-Z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,50}"
+                                        required><small id="direcCompHelp" class="text-muted ">Put your company address as an example: Col. Miramontes</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="longComp"><b><i class="fa fa-location-arrow"> Company longitude</i></b></label>
+                                    <input type="text" id="longComp" value="${empresaSeleccionada.longitud}" style="border-color: green; color: green;" class="form-control" aria-describedby="longCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('longComp')" pattern="[0-9.]{5,50}" required><small id="longCompHelp"
+                                        class="text-muted ">Put your company longitude as an example: 41.40338</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="latComp"><b><i class="fa fa-location-arrow"> Company latitude</i></b></label>
+                                    <input type="text" id="latComp" value="${empresaSeleccionada.latitud}" style="border-color: green; color: green;" class="form-control" aria-describedby="latCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('latComp')" pattern="[0-9.]{5,50}" required><small id="latCompHelp" class="text-muted ">Put your company latitude as an example: 2.17403</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="emailComp"><b><i class="fa fa-envelope"> Email</i></b></label>
+                                    <input type="email" id="emailComp" value="${empresaSeleccionada.email}" style="border-color: green; color: green;" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('emailComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                    <small id="emailHelp" class="text-muted ">ganguitas@gmail.com</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="facebookComp"><b><i class="fa fa-facebook"> Facebook</i></b></label>
+                                    <input type="email" id="facebookComp" value="${empresaSeleccionada.facebook}" style="border-color: green; color: green;" class="form-control" aria-describedby="facebookHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('facebookComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                    <small id="facebookHelp" class="text-muted ">ganguitas_facebook@gmail.com</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="instagramComp"><b><i class="fa fa-instagram"> Instagram</i></b></label>
+                                    <input type="email" id="instagramComp" value="${empresaSeleccionada.instagram}" style="border-color: green; color: green;" class="form-control" aria-describedby="instagramHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('instagramComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                    <small id="instagramHelp" class="text-muted ">ganguitas_instagram@gmail.com</small>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-row py-1">
+                                    <label for="twitterComp"><b><i class="fa fa-twitter"> Twitter</i></b></label>
+                                    <input type="email" id="twitterComp" value="${empresaSeleccionada.twitter}" style="border-color: green; color: green;" class="form-control" aria-describedby="twitterHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('twitterComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                    <small id="twitterHelp" class="text-muted ">ganguitas_twitter@gmail.com</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="twitchComp"><b><i class="fa fa-twitch"> Twitch</i></b></label>
+                                    <input type="email" id="twitchComp" value="${empresaSeleccionada.twitch}" style="border-color: green; color: green;" class="form-control" aria-describedby="twitchHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('twitchComp')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                    <small id="twitchHelp" class="text-muted ">ganguitas_twitch@gmail.com</small>
+                                </div>
+                                <div class="form-row py-1 ">
+                                    <label for="userComp"><b><i class="fa fa-user"> User Name</i></b></label>
+                                    <input type="text" id="userComp" value="${empresaSeleccionada.nombreUsuario}" style="border-color: green; color: green;" class="form-control" aria-describedby="userCompHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validarUser('userComp','empresa')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                    <small id="userCompHelp" class="text-muted"> Put the name you want as a user</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="newPasswordComp"><b><i class="fa fa-lock"> New Password</i></b></label>
+                                    <input type="password" id="newPasswordComp" class="form-control" aria-describedby="newPasswordHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="validacion('newPasswordComp')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                    <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="confirmNewPassComp"><b><i class="fa fa-lock"> Confirm your New Password</i></b></label>
+                                    <input type="password" id="confirmNewPassComp" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="alertar('newPasswordComp','confirmNewPassComp');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                    <small id="confirmHelp" class="text-muted">Repeat your new password.</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="form2"><b><i class="fa fa-file-photo-o"> Logo Company</i></b></label>
+                                    <form id="form2" name="form2" method="post" enctype="multipart/form-data" aria-describedby="form2Help">
+                                        <input type="file" name="imagen" id="imagenCompany" accept="image/*" class="form-control">
+                                    </form>
+                                    <small id="form2Help" class="text-muted"> Here goes your company logo</small>
+                                </div>
+                                <div class="form-row py-1">
+                                    <label for="form3"><b><i class="fa fa-file-photo-o"> Banner Company</i></b></label>
+                                    <form id="form3" name="form3" method="post" enctype="multipart/form-data" aria-describedby="form3Help">
+                                        <input type="file" name="imagen" id="bannerCompany" accept="image/*" class="form-control">
+                                    </form>
+                                    <small id="form3Help" class="text-muted"> Here goes your company Banner</small>
+                                </div>
+                                <hr>
+                                <div class="form-row py-1 ">
+                                    <label for="passwordComp"><b><i class="fa fa-lock ">Actual Password</i></b></label>
+                                    <input type="password" id="passwordComp" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertSignComp')" oninput="verifPassEmp('passwordComp')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                    <small id="passwordHelp" class="text-muted">You most privide your actual password to confirm the changes.</small>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <div class="card-footer">
-                <button onclick="savePerfil();" class="btn btn-sm btn-info float-right mr-2"><i class="fa fa-save"> Save Chanches</i></button>
+                <button onclick="savePerfil();" class="btn btn-sm btn-info float-right mr-2"><i class="fa fa-save"> Save Changes</i></button>
             </div>
         </div>`;
 }
 
 function savePerfil() {
-    var modifPerfil = {
-        nombreEmpresa: document.getElementById("institutionName"),
-        logoEmpresa: '../img/logo.png',
-        banner: '../img/logo.png',
-        pais: document.getElementById("selectPais"),
-        direccion: document.getElementById("direcComp"),
-        longitud: document.getElementById("longComp"),
-        latitud: document.getElementById("latComp"),
-        tipoEmpresa: document.getElementById("institutionDescription"),
-        nombreUsuario: document.getElementById("userComp"),
-        password: document.getElementById("passwordComp"),
-        facebook: document.getElementById("facebookComp"),
-        instagram: document.getElementById("instagramComp"),
-        twitter: document.getElementById("twitterComp"),
-        twitch: document.getElementById("twitchComp"),
-        email: document.getElementById("emailComp"),
-        actual: true,
-        publicaciones: []
-    }
-    for (let i = 0; i < clientes.length; i++) {
-        for (let j = 0; j < clientes[i].companiasFav.length; j++) {
-            if (clientes[i].companiasFav[j].nombreEmp == empresaSeleccionada.nombreEmpresa) {
-                clientes[i].companiasFav[j].nombreEmp = modifPerfil.nombreEmpresa;
-                break;
+    if (document.getElementById('imagenCompany').value != null) {
+        var frm = $('#form2');
+        let formData = new FormData(frm[0]);
+        axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+            .then(res => {
+                //console.log(res);
+                if (document.getElementById('bannerCompany').value != null) {
+                    var frm1 = $('#form3');
+                    let frmData = new FormData(frm1[0]);
+                    axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', frmData)
+                        .then(resa => {
+                            //console.log(res);
+                            if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUser && verifPass && verifPassUser) {
+                                var modifComp = {
+                                    nombreEmpresa: document.getElementById("institutionName").value,
+                                    logoEmpresa: '../' + res.data,
+                                    banner: '../' + resa.data,
+                                    pais: document.getElementById("selectPaisEmpresa").value,
+                                    direccion: document.getElementById("direcComp").value,
+                                    longitud: document.getElementById("longComp").value,
+                                    latitud: document.getElementById("latComp").value,
+                                    tipoEmpresa: document.getElementById("institutionDescription").value,
+                                    nombreUsuario: document.getElementById("userComp").value,
+                                    password: document.getElementById("newPasswordComp").value,
+                                    facebook: document.getElementById("facebookComp").value,
+                                    instagram: document.getElementById("instagramComp").value,
+                                    twitter: document.getElementById("twitterComp").value,
+                                    twitch: document.getElementById("twitchComp").value,
+                                    email: document.getElementById("emailComp").value,
+                                    actual: true,
+                                    publicaciones: empresaSeleccionada.publicaciones,
+                                    calificacionEmpresaDe: empresaSeleccionada.calificacionEmpresaDe,
+                                    tipo: "empresa",
+                                    fechaSignIn: fechaActual(),
+                                    registroAcciones: empresaSeleccionada.registroAcciones
+                                }
+
+                                axios({
+                                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                        method: 'POST',
+                                        responseType: 'json',
+                                        data: modifComp
+                                    })
+                                    .then(function() {
+                                        redireccionar('empresa');
+                                    })
+                                    .catch(function(error) {
+                                        console.error(error);
+                                    });
+                            } else if (verifUser == false && document.getElementById("userComp").value.length >= 3) {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>User is already in use!, </strong>Please try with another user name.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            } else if (verifPass == false && document.getElementById("passwordComp").value.length >= 8) {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Passwords do not match!, </strong>Please check the passwords.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+
+                            } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                                document.getElementById("passwordComp").value == 0) {
+                                document.getElementById("alertSignComp").innerHTML = "";
+                                document.getElementById("alertSignComp").innerHTML +=
+                                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Form incomplete!, </strong>Please fill all the fields.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                            }
+                        }).catch(err => {
+                            console.error(err);
+                        });
+                } else {
+                    if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUser && verifPass) {
+                        var modifComp = {
+                            nombreEmpresa: document.getElementById("institutionName").value,
+                            logoEmpresa: '../' + res.data,
+                            banner: '../img/logo.png',
+                            pais: document.getElementById("selectPaisEmpresa").value,
+                            direccion: document.getElementById("direcComp").value,
+                            longitud: document.getElementById("longComp").value,
+                            latitud: document.getElementById("latComp").value,
+                            tipoEmpresa: document.getElementById("institutionDescription").value,
+                            nombreUsuario: document.getElementById("userComp").value,
+                            password: document.getElementById("passwordComp").value,
+                            facebook: document.getElementById("facebookComp").value,
+                            instagram: document.getElementById("instagramComp").value,
+                            twitter: document.getElementById("twitterComp").value,
+                            twitch: document.getElementById("twitchComp").value,
+                            email: document.getElementById("emailComp").value,
+                            actual: true,
+                            publicaciones: [],
+                            calificacionEmpresaDe: [],
+                            tipo: "empresa",
+                            fechaSignIn: fechaActual(),
+                            registroAcciones: [msjParaRegistro("signIn", document.getElementById("userComp").value)]
+                        }
+
+                        axios({
+                                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                method: 'POST',
+                                responseType: 'json',
+                                data: modifComp
+                            })
+                            .then(function() {
+                                redireccionar('empresa');
+                            })
+                            .catch(function(error) {
+                                console.error(error);
+                            });
+                    } else if (verifUser == false && document.getElementById("userComp").value.length >= 3) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>User is already in use!, </strong>Please try with another user name.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (verifPass == false && document.getElementById("passwordComp").value.length >= 8) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Passwords do not match!, </strong>Please check the passwords.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+
+                    } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                        document.getElementById("passwordComp").value == 0) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Form incomplete!, </strong>Please fill all the fields.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    }
+                }
+
+            }).catch(err => {
+                console.error(err);
+            });
+
+    } else {
+        if (document.getElementById('bannerCompany').value != null) {
+            var frm1 = $('#form3');
+            let frmData = new frmData(frm1[0]);
+            axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+                .then(resa => {
+                    //console.log(res);
+                    if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUser && verifPass) {
+                        var modifComp = {
+                            nombreEmpresa: document.getElementById("institutionName").value,
+                            logoEmpresa: '../logo.png',
+                            banner: '../' + resa.data,
+                            pais: document.getElementById("selectPaisEmpresa").value,
+                            direccion: document.getElementById("direcComp").value,
+                            longitud: document.getElementById("longComp").value,
+                            latitud: document.getElementById("latComp").value,
+                            tipoEmpresa: document.getElementById("institutionDescription").value,
+                            nombreUsuario: document.getElementById("userComp").value,
+                            password: document.getElementById("passwordComp").value,
+                            facebook: document.getElementById("facebookComp").value,
+                            instagram: document.getElementById("instagramComp").value,
+                            twitter: document.getElementById("twitterComp").value,
+                            twitch: document.getElementById("twitchComp").value,
+                            email: document.getElementById("emailComp").value,
+                            actual: true,
+                            publicaciones: [],
+                            calificacionEmpresaDe: [],
+                            tipo: "empresa",
+                            fechaSignIn: fechaActual(),
+                            registroAcciones: [msjParaRegistro("signIn", document.getElementById("userComp").value)]
+                        }
+
+                        axios({
+                                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                method: 'POST',
+                                responseType: 'json',
+                                data: modifComp
+                            })
+                            .then(function() {
+                                redireccionar('empresa');
+                            })
+                            .catch(function(error) {
+                                console.error(error);
+                            });
+                    } else if (verifUser == false && document.getElementById("userComp").value.length >= 3) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>User is already in use!, </strong>Please try with another user name.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (verifPass == false && document.getElementById("passwordComp").value.length >= 8) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Passwords do not match!, </strong>Please check the passwords.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+
+                    } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                        document.getElementById("passwordComp").value == 0) {
+                        document.getElementById("alertSignComp").innerHTML = "";
+                        document.getElementById("alertSignComp").innerHTML +=
+                            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Form incomplete!, </strong>Please fill all the fields.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+                    }
+                }).catch(err => {
+                    console.error(err);
+                });
+        } else {
+            if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUser && verifPass) {
+                var modifComp = {
+                    nombreEmpresa: document.getElementById("institutionName").value,
+                    logoEmpresa: '../logo.png',
+                    banner: '../img/logo.png',
+                    pais: document.getElementById("selectPaisEmpresa").value,
+                    direccion: document.getElementById("direcComp").value,
+                    longitud: document.getElementById("longComp").value,
+                    latitud: document.getElementById("latComp").value,
+                    tipoEmpresa: document.getElementById("institutionDescription").value,
+                    nombreUsuario: document.getElementById("userComp").value,
+                    password: document.getElementById("passwordComp").value,
+                    facebook: document.getElementById("facebookComp").value,
+                    instagram: document.getElementById("instagramComp").value,
+                    twitter: document.getElementById("twitterComp").value,
+                    twitch: document.getElementById("twitchComp").value,
+                    email: document.getElementById("emailComp").value,
+                    actual: true,
+                    publicaciones: [],
+                    calificacionEmpresaDe: [],
+                    tipo: "empresa",
+                    fechaSignIn: fechaActual(),
+                    registroAcciones: [msjParaRegistro("signIn", document.getElementById("userComp").value)]
+                }
+
+                axios({
+                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                        method: 'POST',
+                        responseType: 'json',
+                        data: modifComp
+                    })
+                    .then(function() {
+                        redireccionar('empresa');
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                    });
+            } else if (verifUser == false && document.getElementById("userComp").value.length >= 3) {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>User is already in use!, </strong>Please try with another user name.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+            } else if (verifPass == false && document.getElementById("passwordComp").value.length >= 8) {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Passwords do not match!, </strong>Please check the passwords.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+
+            } else if (document.getElementById("institutionName").style.color == "red" || document.getElementById("direcComp").style.color == "red" || document.getElementById("longComp").style.color == "red" || document.getElementById("latComp").style.color == "red" || document.getElementById("institutionDescription").style.color == "red" || document.getElementById("facebookComp").style.color == "red" || document.getElementById("instagramComp").style.color == "red" || document.getElementById("twitterComp").style.color == "red" || document.getElementById("twitchComp").style.color == "red" || document.getElementById("emailComp").style.color == "red" || document.getElementById("userComp").style.color == "red" || document.getElementById("passwordComp").style.color == "red") {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+            } else if (document.getElementById("institutionName").value.length == 0 || document.getElementById("direcComp").value.length == 0 || document.getElementById("longComp").value.length == 0 || document.getElementById("latComp").value.length == 0 || document.getElementById("institutionDescription").value.length == 0 || document.getElementById("facebookComp").value.length == 0 || document.getElementById("instagramComp").value.length == 0 || document.getElementById("twitterComp").value.length == 0 || document.getElementById("twitchComp").value.length == 0 || document.getElementById("emailComp").value.length == 0 || document.getElementById("userComp").value == 0 ||
+                document.getElementById("passwordComp").value == 0) {
+                document.getElementById("alertSignComp").innerHTML = "";
+                document.getElementById("alertSignComp").innerHTML +=
+                    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Form incomplete!, </strong>Please fill all the fields.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
             }
         }
     }
-
-    empresaSeleccionada.nombreEmpresa = modifPerfil.nombreEmpresa;
-    empresaSeleccionada.pais = modifPerfil.pais;
-    empresaSeleccionada.direccion = modifPerfil.direccion;
-    empresaSeleccionada.longitud = modifPerfil.longitud;
-    empresaSeleccionada.latitud = modifPerfil.latitud;
-    empresaSeleccionada.tipoEmpresa = modifPerfil.tipoEmpresa;
-    empresaSeleccionada.nombreUsuario = modifPerfil.nombreUsuario;
-    empresaSeleccionada.password = modifPerfil.password;
-    empresaSeleccionada.facebook = modifPerfil.facebook;
-    empresaSeleccionada.instagram = modifPerfil.instagram;
-    empresaSeleccionada.twitter = modifPerfil.twitter;
-    empresaSeleccionada.twitch = modifPerfil.twitch;
-    empresaSeleccionada.email = modifPerfil.email;
-
-    localStorage.setItem('empresas', JSON.stringify(empresas));
-    localStorage.setItem('clientes', JSON.stringify(clientes));
-    top.location.reload();
 }
 
 function generarAddCard() {
@@ -797,13 +1086,32 @@ function saveCard() {
 function validacion(id) {
     document.getElementById("alertPubNueva").innerHTML = "";
     var elem = document.getElementById(id);
-    if (elem.checkValidity()) {
-        elem.style.borderColor = "green";
-        elem.style.color = "green";
+    if (id == 'dateUser') {
+        limpiarAlertas('alertModifUser');
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        }
+    } else if (id == 'newPasswordComp') {
+        document.getElementById('confirmNewPassComp').value = "";
+        alertar("newPasswordComp", "confirmNewPassComp");
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     } else {
-        elem.style.borderColor = "red";
-        elem.style.color = "red";
+        if (elem.checkValidity()) {
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     }
+
 }
 
 function cambiar(id) {
@@ -814,23 +1122,48 @@ function cambiar(id) {
 
 function validarUser(id, descripcion) {
     var elem = document.getElementById(id);
-    if (descripcion == 'cliente') {
-        for (let i = 0; i < clientes.length; i++) {
-            if (clientes[i].usuarioCliente == elem.value) {
-                elem.style.borderColor = "red";
-                elem.style.color = "red";
-                break;
-            } else {
-                if (elem.checkValidity()) {
+    axios({
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
+            method: 'GET',
+            responseType: 'json',
+            params: {
+                tipo: descripcion,
+
+            }
+        })
+        .then(function(res) {
+            var clientes = res.data;
+            for (let i = 0; i < clientes.length; i++) {
+                if (clientes[i].usuarioCliente == elem.value && clientes[i].usuarioCliente == usCliente) {
                     elem.style.borderColor = "green";
                     elem.style.color = "green";
-                } else {
+                    verifUser = true;
+                    break;
+                }
+                if (clientes[i].usuarioCliente == elem.value) {
                     elem.style.borderColor = "red";
                     elem.style.color = "red";
+                    verifUser = false;
+                    break;
+                } else {
+                    if (elem.checkValidity()) {
+                        elem.style.borderColor = "green";
+                        elem.style.color = "green";
+                        verifUser = true;
+
+                    } else {
+                        elem.style.borderColor = "red";
+                        elem.style.color = "red";
+                        verifUser = false;
+                    }
                 }
+
             }
-        }
-    } else if (descripcion == 'compañia') {
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+    if (descripcion == 'empresa') {
         for (let i = 0; i < empresas.length; i++) {
             if (empresas[i].nombreUsuario == elem.value) {
                 elem.style.borderColor = "red";
@@ -852,24 +1185,90 @@ function validarUser(id, descripcion) {
 function alertar(id1, id2) {
     var elem1 = document.getElementById(id1);
     var elem2 = document.getElementById(id2);
-    if (elem1.value == elem2.value) {
+    if (elem1.value == elem2.value == "") {
+        elem2.style.borderColor = "none";
+        elem2.style.color = "black";
+        elem1.style.borderColor = "none";
+        elem1.style.color = "black";
+    } else if (elem1.value == elem2.value) {
         if (elem2.checkValidity()) {
             elem2.style.borderColor = "green";
             elem2.style.color = "green";
+            verifPass = true;
         } else {
             elem2.style.borderColor = "red";
             elem2.style.color = "red";
+            verifPass = false;
         }
     } else {
         elem2.style.borderColor = "red";
         elem2.style.color = "red";
+        verifPass = false;
     }
 
+}
+
+function verifPassEmp(id) {
+    if (empresaSeleccionada.password == document.getElementById(id).value) {
+        verifPassUser = true;
+    } else {
+        verifPassUser = false;
+    }
+}
+
+function comentCalif(idParComent, id, indiceCalif) {
+    if (document.getElementById(id).value.length != 0) {
+        let nuevoComenta = {
+            nomCliente: empresaSeleccionada.nombreUsuario,
+            comentCliente: document.getElementById(id).value,
+            fechaComment: fechaActual()
+        }
+        empresaSeleccionada.calificacionEmpresaDe[indiceCalif].respuestas.push(nuevoComenta);
+        actualizarEmpresa();
+
+        document.getElementById(idParComent).innerHTML +=
+            `
+            <div class="form-control py-1" style="background-color: aquamarine;">
+                <div>
+                    <h4><b><i class="fa fa-user-circle-o">${nuevoComenta.nomCliente}</i></b></h4><br>
+                    <small class="text-muted">${nuevoComenta.fechaCalif}</small>
+                </div>
+                <hr>
+                <div>
+                    <h4><i class="fa fa-comments-o"> ${nuevoComenta.comentCliente}</i></h4>
+                </div>
+            </div>`;
+
+        document.getElementById(id).value = "";
+    }
 }
 
 function logOut() {
     empresaSeleccionada.actual = false;
     localStorage.setItem("empresas", JSON.stringify(empresas));
+}
+
+function msjParaRegistro(descripcion, nombre, nombrePub) {
+    let f = new Date();
+    let msj;
+    if (descripcion == "actualizar") {
+        msj = {
+            registro: "The user " + nombre + " was updated with an update date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "logOut") {
+        msj = {
+            cierreSesion: "The user " + nombre + " closed session with session closing date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "nuevaPub") {
+        msj = {
+            nuevaPub: "The user " + nombre + " created a new publication with name " + nombrePub + " and creation date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "actualizarPub") {
+        msj = {
+            actualizarPub: "The user " + nombre + " updated the publication with the name " + nombreEmp + " with an update date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    }
+    return msj;
 }
 
 $(window).scroll(function() {

@@ -74,7 +74,7 @@ function actualizarEmpresa() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
             method: 'PUT',
             responseType: 'json',
             data: empresaModif
@@ -132,7 +132,7 @@ function validar() {
             }
             if (verifUser) {
                 axios({
-                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
                         method: 'GET',
                         responseType: 'json',
                         params: {

@@ -584,7 +584,12 @@ function validacion(id) {
 function alertar(id1, id2) {
     var elem1 = document.getElementById(id1);
     var elem2 = document.getElementById(id2);
-    if (elem1.value == elem2.value) {
+    if (elem1.value == elem2.value == "") {
+        elem2.style.borderColor = "none";
+        elem2.style.color = "black";
+        elem1.style.borderColor = "none";
+        elem1.style.color = "black";
+    } else if (elem1.value == elem2.value) {
         if (elem2.checkValidity()) {
             elem2.style.borderColor = "green";
             elem2.style.color = "green";

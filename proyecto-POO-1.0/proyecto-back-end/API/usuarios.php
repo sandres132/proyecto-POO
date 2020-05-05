@@ -1,7 +1,7 @@
 <?php
 
 header("content-Type: application/json");
-include_once ("../clases/class-usuario-cliente.php");
+include_once ("../class/class-usuario-cliente.php");
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $_POST = json_decode(file_get_contents('php://input'), true);
