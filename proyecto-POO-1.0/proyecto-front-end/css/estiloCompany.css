@@ -99,6 +99,25 @@ body {
     background-color: whitesmoke !important;
 }
 
+.card-img {
+    max-width: -webkit-fill-available;
+    min-width: 240px;
+    height: auto;
+}
+
+.img-thumbnail {
+    max-width: 45px;
+    padding: 0.20rem;
+}
+
+.img-thumbnail-historia {
+    border: 2px solid #ff0062;
+}
+
+.fl {
+    float: left;
+}
+
 .info {
     max-width: 100%;
     height: auto;

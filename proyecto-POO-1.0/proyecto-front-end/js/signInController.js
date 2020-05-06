@@ -32,7 +32,7 @@ function validar() {
 
     if (elem1.value.length != 0 && elem2.value.length != 0) {
         axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            url: '../../proyecto-back-end/API/usuarios',
             method: 'GET',
             responseType: 'json',
             params: {
@@ -61,7 +61,7 @@ function validar() {
             }
             if (verifUser) {
                 axios({
-                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
+                        url: '../../proyecto-back-end/API/empresas',
                         method: 'GET',
                         responseType: 'json',
                         params: {
@@ -157,7 +157,7 @@ function actualizarCliente() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            url: '../../proyecto-back-end/API/usuarios.php',
             method: 'PUT',
             responseType: 'json',
             data: clienteModif
@@ -198,7 +198,7 @@ function actualizarEmpresa() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+            url: '../../proyecto-back-end/API/empresas.php',
             method: 'PUT',
             responseType: 'json',
             data: empresaModif
@@ -297,7 +297,7 @@ function validarUser(id, descripcion) {
     var elem = document.getElementById(id);
     if (descripcion == 'cliente') {
         axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+                url: '../../proyecto-back-end/API/usuarios',
                 method: 'get',
                 responseType: 'json',
                 params: {
@@ -306,6 +306,7 @@ function validarUser(id, descripcion) {
             })
             .then(function(res) {
                 var clientes = res.data;
+
                 for (let i = 0; i < clientes.length; i++) {
                     if (clientes[i].usuarioCliente == elem.value) {
                         elem.style.borderColor = "red";
@@ -333,7 +334,7 @@ function validarUser(id, descripcion) {
     } else if (descripcion == 'empresa') {
 
         axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
+                url: '../../proyecto-back-end/API/empresas',
                 method: 'get',
                 responseType: 'json',
                 params: {
@@ -384,7 +385,7 @@ function signInUser() {
         let formData = new FormData(frm[0]);
         console.log(frm[0]);
 
-        axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube.php', formData)
+        axios.post('../../proyecto-front-end/sube.php', formData)
             .then(res => {
                 console.log(res.data);
                 if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUserSign && verifPassSign) {
@@ -409,7 +410,7 @@ function signInUser() {
 
                     }
                     axios({
-                            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                            url: '../../proyecto-back-end/API/usuarios.php',
                             method: 'POST',
                             responseType: 'json',
                             data: nuevoCliente
@@ -486,7 +487,7 @@ function signInUser() {
 
             }
             axios({
-                    url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                    url: '../../proyecto-back-end/API/usuarios.php',
                     method: 'POST',
                     responseType: 'json',
                     data: nuevoCliente
@@ -543,13 +544,13 @@ function signInComp() {
     if (document.getElementById('imagenCompany').value != null) {
         var frm = $('#form2');
         let formData = new FormData(frm[0]);
-        axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+        axios.post('../../proyecto-front-end/sube', formData)
             .then(res => {
                 //console.log(res);
                 if (document.getElementById('bannerCompany').value != null) {
                     var frm1 = $('#form3');
                     let frmData = new FormData(frm1[0]);
-                    axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', frmData)
+                    axios.post('../../proyecto-front-end/sube', frmData)
                         .then(resa => {
                             //console.log(res);
                             if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUserSign && verifPassSign) {
@@ -578,7 +579,7 @@ function signInComp() {
                                 }
 
                                 axios({
-                                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                        url: '../../proyecto-back-end/API/empresas.php',
                                         method: 'POST',
                                         responseType: 'json',
                                         data: nuevaComp
@@ -658,7 +659,7 @@ function signInComp() {
                         }
 
                         axios({
-                                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                url: '../../proyecto-back-end/API/empresas.php',
                                 method: 'POST',
                                 responseType: 'json',
                                 data: nuevaComp
@@ -718,7 +719,7 @@ function signInComp() {
         if (document.getElementById('bannerCompany').value != null) {
             var frm1 = $('#form3');
             let frmData = new frmData(frm1[0]);
-            axios.post('http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-front-end/sube', formData)
+            axios.post('../../proyecto-front-end/sube', formData)
                 .then(resa => {
                     //console.log(res);
                     if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUserSign && verifPassSign) {
@@ -747,7 +748,7 @@ function signInComp() {
                         }
 
                         axios({
-                                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                                url: '../../proyecto-back-end/API/empresas.php',
                                 method: 'POST',
                                 responseType: 'json',
                                 data: nuevaComp
@@ -827,7 +828,7 @@ function signInComp() {
                 }
 
                 axios({
-                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas.php',
+                        url: '../../proyecto-back-end/API/empresas.php',
                         method: 'POST',
                         responseType: 'json',
                         data: nuevaComp

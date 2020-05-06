@@ -8,7 +8,7 @@ function obtenerCliente() {
     console.log("entro a obtener cliente");
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            url: '../../proyecto-back-end/API/usuarios.php',
             method: 'GET',
             responseType: 'json',
             params: {
@@ -46,7 +46,7 @@ function generarNombre() {
 //
 function ObtenerPublicaciones() {
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            url: '../../proyecto-back-end/API/usuarios.php',
             method: 'GET',
             responseType: 'json',
             params: {
@@ -454,7 +454,7 @@ function modifUser(cliente) {
         }
 
         axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                url: '../../proyecto-back-end/API/usuarios.php',
                 method: 'PUT',
                 responseType: 'json',
                 data: clienteModif
@@ -489,7 +489,7 @@ function modifUser(cliente) {
         }
 
         axios({
-                url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+                url: '../../proyecto-back-end/API/usuarios.php',
                 method: 'PUT',
                 responseType: 'json',
                 data: clienteModif
@@ -610,7 +610,7 @@ function alertar(id1, id2) {
 function validarUser(id, usCliente) {
     var elem = document.getElementById(id);
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            url: '../../proyecto-back-end/API/usuarios',
             method: 'GET',
             responseType: 'json',
             params: {
@@ -683,7 +683,7 @@ function logOut() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            url: '../../proyecto-back-end/API/usuarios.php',
             method: 'PUT',
             responseType: 'json',
             data: clienteModif

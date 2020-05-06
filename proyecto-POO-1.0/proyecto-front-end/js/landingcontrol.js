@@ -33,7 +33,7 @@ function actualizarCliente() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            url: '../../proyecto-back-end/API/usuarios',
             method: 'PUT',
             responseType: 'json',
             data: clienteModif
@@ -74,7 +74,7 @@ function actualizarEmpresa() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
+            url: '../../proyecto-back-end/API/empresas',
             method: 'PUT',
             responseType: 'json',
             data: empresaModif
@@ -103,7 +103,7 @@ function validar() {
 
     if (elem1.value.length != 0 && elem2.value.length != 0) {
         axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
+            url: '../../proyecto-back-end/API/usuarios',
             method: 'GET',
             responseType: 'json',
             params: {
@@ -132,7 +132,7 @@ function validar() {
             }
             if (verifUser) {
                 axios({
-                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/empresas',
+                        url: '../../proyecto-back-end/API/empresas',
                         method: 'GET',
                         responseType: 'json',
                         params: {

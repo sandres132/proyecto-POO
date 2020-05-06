@@ -3,17 +3,20 @@ var selecciono;
 
 function ObtenerPublicaciones() {
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
-            method: 'GET',
+            url: '../../proyecto-back-end/API/empresas.php',
+            method: 'get',
             responseType: 'json',
             params: {
                 tipo: "empresa",
+                pubs: "pubs"
             }
         })
         .then(function(res) {
-            var empresas;
-            empresas = res.data;
-            generarPublicaciones(empresas);
+            var posts;
+            posts = res.data;
+            console.log(posts);
+
+            generarPublicaciones(posts);
         })
         .catch(function(err) {
             console.log(err);
@@ -21,22 +24,14 @@ function ObtenerPublicaciones() {
 }
 ObtenerPublicaciones();
 
-function generarPublicaciones(empresas) {
-    var cont = 0;
-    var empresasLenght = 0;
-    empresas.map(item => {
-        empresasLenght++;
-    });
+function generarPublicaciones(pubs) {
     document.getElementById("publicaciones").innerHTML = '';
-    for (let i = 0; i < empresasLenght; i++) {
-        for (let j = 0; j < empresas[i].publicaciones.length; j++) {
-            imprimirPublicaciones(empresas[i].publicaciones[j], empresas[i], cont);
-            cont++;
-        }
+    for (let i = 0; i < pubs.length; i++) {
+        imprimirPublicaciones(pubs[i], pubs.length, i);
     }
 }
 
-function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
+function imprimirPublicaciones(publicacion, postsLenght, contadorPubs) {
     document.getElementById("publicaciones").innerHTML +=
         `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
             <div class="card">
@@ -97,22 +92,20 @@ function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
                     </div>
                     <div class="tab-pane" role="tabpanel" id="empresa${contadorPubs}">
                         <div class="inner">
-                            <img class="card-img-top" src="${empresa.logoEmpresa}" alt="">
+                            <img class="card-img-top" src="${publicacion.logoEmpresa}" alt="">
                         </div>
                         <div class="card-body">
                             <div class="form-control">
-                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresa.nombreEmpresa}</h4>
-                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresa.tipoEmpresa}</h4>
-                                <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${empresa.pais}</h4>
-                                <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${empresa.direccion}</h4>
-                                <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresa.publicaciones.length}</h4>
-                                <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresa.facebook}</h4>
-                                <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresa.instagram}</h4>
-                                <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresa.twitter}</h4>
-                                <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresa.twitch}</h4>
-                                <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresa.email}</h4>
-                            <div class="form-control">
-                        </div>
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${publicacion.nombreEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${publicacion.tipoEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${publicacion.pais}</h4>
+                                <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${publicacion.direccion}</h4>
+                                <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${postsLenght}</h4>
+                                <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${publicacion.facebook}</h4>
+                                <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${publicacion.instagram}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${publicacion.twitter}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${publicacion.twitch}</h4>
+                                <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${publicacion.email}</h4>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -133,8 +126,8 @@ function validar() {
 
     if (elem1.value.length != 0 && elem2.value.length != 0) {
         axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
-            method: 'GET',
+            url: '../../proyecto-back-end/API/usuarios',
+            method: 'get',
             responseType: 'json',
             params: {
                 tipo: "cliente",
@@ -162,8 +155,8 @@ function validar() {
             }
             if (verifUser) {
                 axios({
-                        url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios',
-                        method: 'GET',
+                        url: '../../proyecto-back-end/API/empresas',
+                        method: 'get',
                         responseType: 'json',
                         params: {
                             tipo: "empresa",
@@ -253,7 +246,7 @@ function actualizarCliente() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            url: '../../proyecto-back-end/API/usuarios.php',
             method: 'PUT',
             responseType: 'json',
             data: clienteModif
@@ -294,7 +287,7 @@ function actualizarEmpresa() {
     }
 
     axios({
-            url: 'http://sitefolder/proyecto-POO/proyecto-POO-1.0/proyecto-back-end/API/usuarios.php',
+            url: '../../proyecto-back-end/API/empresas.php',
             method: 'PUT',
             responseType: 'json',
             data: empresaModif

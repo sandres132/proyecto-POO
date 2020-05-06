@@ -167,6 +167,31 @@ class Empresa
         echo json_encode($publicaciones);
     }
 
+    public static function obtenerPublicaciones()
+    {
+        $publicaciones = array();
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
+                $empresas[$i]['publicaciones'][$j]['logoEmpresa']= $empresas[$i]['logoEmpresa'];
+                $empresas[$i]['publicaciones'][$j]['tipoEmpresa']= $empresas[$i]['tipoEmpresa'];
+                $empresas[$i]['publicaciones'][$j]['pais']= $empresas[$i]['pais'];
+                $empresas[$i]['publicaciones'][$j]['direccion']= $empresas[$i]['direccion'];
+                $empresas[$i]['publicaciones'][$j]['publicaciones']= $empresas[$i]['publicaciones'];
+                $empresas[$i]['publicaciones'][$j]['facebook']= $empresas[$i]['facebook'];
+                $empresas[$i]['publicaciones'][$j]['instagram']= $empresas[$i]['instagram'];
+                $empresas[$i]['publicaciones'][$j]['twitter']= $empresas[$i]['twitter'];
+                $empresas[$i]['publicaciones'][$j]['twitch']= $empresas[$i]['twitch'];
+                $empresas[$i]['publicaciones'][$j]['email']= $empresas[$i]['email'];
+                $publicaciones[] = $empresas[$i]['publicaciones'][$j];
+            }
+
+        }
+        echo json_encode($publicaciones);
+    }
+
     public static function obtenerEmpresaActual()
     {
         $verif=false;
@@ -189,6 +214,7 @@ class Empresa
     }
 
     public static function actualizarPub($pub) {
+        $verif=false;
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
@@ -216,10 +242,17 @@ class Empresa
                         $archivo = fopen('../data/usuariosEmpresas.json', 'w');
                         fwrite($archivo, json_encode($empresas));
                         fclose($archivo);
+                        $verif=true;
+                        $resultado['resultado'] = "actualizado";
+                        echo json_encode($resultado);
                     }
                 }
                 break;
             }
+        }
+        if ($verif==false) {
+            $resultado["resultado"] = "desactualizado";
+            echo json_encode($resultado);
         }
     }
 
