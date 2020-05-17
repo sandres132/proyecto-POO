@@ -150,6 +150,26 @@ class Cliente
         }
     }
 
+    public static function buscarIdUser($nomb){
+        $verif=false;
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        $clientes = json_decode($contenidoArchivo, true);
+        for ($i=0; $i < sizeof($clientes); $i++) { 
+            if ($clientes[$i]['nombreUsuario'] == $nomb) {
+                $resultado["resultado"] = "encontrado";
+                $resultado["nomb"] = $clientes[$i]['usuarioCliente'];
+                echo json_encode($resultado);
+                $verif=true;
+            break;
+            }
+        }
+        if($verif==false){
+            $resultado["resultado"] = "noEncontrado";
+            $resultado["nomb"] = $clientes[$i]['nombreUsuario'];
+            echo json_encode($resultado);
+        }
+    }
+
     public function getNombreCliente()
     {
         return $this->nombreCliente;

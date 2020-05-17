@@ -884,7 +884,16 @@ function signInComp() {
 
 function fechaActual() {
     var f = new Date();
-    var fecha = f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate();
+    if ((f.getMonth() + 1) <= 9 && f.getDate() >= 10) {
+        var fecha = f.getFullYear() + "-0" + (f.getMonth() + 1) + "-" + f.getDate();
+    } else if ((f.getMonth() + 1) <= 9 && f.getDate() <= 9) {
+        var fecha = f.getFullYear() + "-0" + (f.getMonth() + 1) + "-0" + f.getDate();
+    } else if ((f.getMonth() + 1) >= 10 && f.getDate() <= 9) {
+        var fecha = f.getFullYear() + "-" + (f.getMonth() + 1) + "-0" + f.getDate();
+    } else if ((f.getMonth() + 1) >= 10 && f.getDate() >= 10) {
+        var fecha = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate();
+    }
+
     return fecha;
 }
 
@@ -893,11 +902,11 @@ function msjParaRegistro(descripcion, nombre) {
     let msj;
     if (descripcion == "signIn") {
         msj = {
-            registro: "The user " + nombre + " was registered with the date and time of registration: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            registro: "The user " + nombre + " was registered with the date and time of registration: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "logIn") {
         msj = {
-            inicioSesion: "User " + nombre + " login with login date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            inicioSesion: "User " + nombre + " login with login date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     }
     return msj;

@@ -91,8 +91,12 @@ body {
     margin: 20px;
     text-align: center;
     transition: all 0.25s;
-    max-width: 500px !important;
     min-width: 284px !important;
+    min-height: auto !important;
+}
+
+.perfil {
+    text-align: unset !important;
 }
 
 .card-header {
@@ -100,9 +104,9 @@ body {
 }
 
 .card-img {
-    max-width: -webkit-fill-available;
-    min-width: 240px;
-    height: auto;
+    max-width: -webkit-fill-available !important;
+    min-width: 240px !important;
+    min-height: auto !important;
 }
 
 .img-thumbnail {
@@ -116,6 +120,10 @@ body {
 
 .fl {
     float: left;
+}
+
+.fin {
+    text-align: -webkit-right !important;
 }
 
 .info {

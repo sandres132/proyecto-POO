@@ -105,13 +105,12 @@ body {
     margin: 20px;
     text-align: center;
     transition: all 0.25s;
-    max-width: 330px !important;
     min-width: 284px !important;
     max-height: auto !important;
 }
 
 .info {
-    max-width: 100%;
+    max-width: 400px;
     height: auto;
 }
 

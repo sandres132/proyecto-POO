@@ -31,7 +31,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'GET':
         if ($_GET['tipo'] == 'cliente') {
-            if (isset($_GET['usuarioCliente'])) {
+            if(isset($_GET['nombUs'])){
+                Cliente::buscarIdUser($_GET['nombUs']);
+            }else if (isset($_GET['usuarioCliente'])) {
                 Cliente::obtenerCliente($_GET['usuarioCliente']);
             } else {
                 Cliente::obtenerclientes();

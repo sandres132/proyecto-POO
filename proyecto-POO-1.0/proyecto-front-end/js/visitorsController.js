@@ -33,7 +33,7 @@ function generarPublicaciones(pubs) {
 
 function imprimirPublicaciones(publicacion, postsLenght, contadorPubs) {
     document.getElementById("publicaciones").innerHTML +=
-        `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+        `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -321,11 +321,11 @@ function msjParaRegistro(descripcion, nombre) {
     let msj;
     if (descripcion == "signIn") {
         msj = {
-            registro: "The user " + nombre + " was registered with the date and time of registration: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            registro: "The user " + nombre + " was registered with the date and time of registration: " + f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "logIn") {
         msj = {
-            inicioSesion: "User " + nombre + " login with login date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            inicioSesion: "User " + nombre + " login with login date: " + f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     }
     return msj;

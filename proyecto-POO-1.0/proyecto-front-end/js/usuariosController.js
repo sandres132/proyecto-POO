@@ -954,7 +954,7 @@ function guardarTarjeta() {
 
 function fechaActual() {
     var f = new Date();
-    var fecha = f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate();
+    var fecha = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate();
     return fecha;
 }
 
@@ -967,15 +967,15 @@ function msjParaRegistro(descripcion, nombre, nombreNuevo) {
     let msj;
     if (descripcion == "modifUser") {
         msj = {
-            modifUsuario: "The user " + nombre + " changed to " + nombreNuevo + " with date and time of modification: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            modifUsuario: "The user " + nombre + " changed to " + nombreNuevo + " with date and time of modification: " + f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "logOut") {
         msj = {
-            cerrarSesion: "User " + nombre + " closed session with session closing date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            cerrarSesion: "User " + nombre + " closed session with session closing date: " + f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "delete") {
         msj = {
-            borrarUsuario: "User " + nombre + " deleted his account with deletion date: " + f.getFullYear() + "/" + (f.getMonth() + 1) + "/" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            borrarUsuario: "User " + nombre + " deleted his account with deletion date: " + f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     }
     return msj;

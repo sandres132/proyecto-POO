@@ -6,7 +6,7 @@
 		if(file_exists('img')){
 			if(move_uploaded_file($guardado, 'img/'.$nombre)){
 				echo 'img/'.$nombre;
-				return 'img/'.$nombre;
+				//return 'img/'.$nombre;
 			}else{
 				return "nada";
 			}
@@ -14,7 +14,7 @@
 	}else{
 		if(move_uploaded_file($guardado, 'img/'.$nombre)){
 			echo 'img/'.$nombre;
-			return 'img/'.$nombre;
+			//return 'img/'.$nombre;
 		}else{
 			return "nada";
 		}

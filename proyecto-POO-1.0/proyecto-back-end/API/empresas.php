@@ -39,7 +39,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
     case 'GET':
         if ($_GET['tipo'] == 'empresa'){
-            if(isset($_GET['pubs'])){
+            if(isset($_GET['nombUs'])){
+                Empresa::buscarIdUser($_GET['nombUs']);
+            }else if(isset($_GET['pubs'])){
                 Empresa::obtenerPublicaciones();
 
             }else if(isset($_GET['actual'])){

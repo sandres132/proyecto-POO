@@ -323,6 +323,26 @@ class Empresa
         }
     }
 
+    public static function buscarIdUser($nomb){
+        $verif=false;
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i=0; $i < sizeof($empresas); $i++) { 
+            if ($empresas[$i]['nombreUsuario'] == $nomb) {
+                $resultado["resultado"] = "encontrado";
+                $resultado["nomb"] = $empresas[$i]['nombreUsuario'];
+                echo json_encode($resultado);
+                $verif=true;
+            break;
+            }
+        }
+        if($verif==false){
+            $resultado["resultado"] = "noEncontrado";
+            $resultado["nomb"] = $empresas[$i]['nombreUsuario'];
+            echo json_encode($resultado);
+        }
+    }
+
     public function getNombreEmpresa()
     {
         return $this->nombreEmpresa;

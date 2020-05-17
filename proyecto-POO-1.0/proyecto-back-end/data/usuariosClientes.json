@@ -4,7 +4,7 @@
         "usuarioCliente": "ache",
         "emailCliente": "hugoamador@gmail.com",
         "passwordCliente": "Barca1234",
-        "actual": false,
+        "actual": true,
         "fechaNacimiento": "1999\/02\/08",
         "fotoCliente": "..\/img\/user-logo-png-4.png",
         "genero": "Male",
@@ -38,6 +38,9 @@
             },
             {
                 "inicioSesion": "User ache login with login date: 2020\/5\/6 15:31:25"
+            },
+            {
+                "inicioSesion": "User ache login with login date: 2020\/5\/7 15:48:59"
             }
         ]
     },
