@@ -2,6 +2,7 @@ var empresaSeleccionada;
 var verifUser = null;
 var verifPass = null;
 var verifPassUser = null;
+var verifPassHora = null;
 
 function obtenerEmpresaActual() {
     axios.get('../../proyecto-back-end/API/empresas', {
@@ -154,8 +155,16 @@ function generarPublicaciones() {
 
         }
 
+        if (coments == "") {
+            coments +=
+                `
+                <div class="py-5">
+                    <h4>This publication has not been commented yet!</h4>
+                </div>`;
+        }
+
         document.getElementById("publicaciones").innerHTML +=
-            `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
+            `<div class="col-lg-6 col-md-6 col-sm-1Com col-1Com">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -192,6 +201,7 @@ function generarPublicaciones() {
                                 <div class="collapse" id="contCard${cont}">
                                     <div class="card-body m-0">
                                         <h4 class="form-control "><b>Time remaining:</b> ${empresaSeleccionada.publicaciones[i].horaMax}</h4>
+                                        <h4 class="form-control "><b>Max Date:</b> ${empresaSeleccionada.publicaciones[i].fechaMax}</h4>
                                         <h4 class="form-control "><b>Available Offers:</b> ${empresaSeleccionada.publicaciones[i].ofertasDisponibles}</h4>
                                         <h4 class="form-control "><b>Price:</b> ${empresaSeleccionada.publicaciones[i].precio}</h4>
                                         <h4 class="form-control "><b>Posted on:</b> ${empresaSeleccionada.publicaciones[i].fechaInicio}</h4>
@@ -220,40 +230,43 @@ function generarPublicaciones() {
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="gangNameEditPublication${cont}"><b><i class="fa fa-edit"> Publication Name</i></b></label>
-                                        <input type="text" id="gangNameEditPublication${cont}" value="${empresaSeleccionada.publicaciones[i].nombreGanga}" class="form-control" aria-describedby="gangNameEditPublicationHelp${cont}">
+                                        <input type="text" id="gangNameEditPublication${cont}" value="${empresaSeleccionada.publicaciones[i].nombreGanga}" oninput="validacion('gangNameEditPublication${cont}')" class="form-control" aria-describedby="gangNameEditPublicationHelp${cont}">
                                         <small id="gangNameEditPublicationHelp${cont}" class="text-muted">Publication Name</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="pubDescrip${cont}"><b><i class="fa fa-edit"> Publication Description</i></b></label>
-                                        <textarea id="pubDescrip${cont}" cols="30" rows="3" value="${empresaSeleccionada.publicaciones[i].descripcionGanga}" class="form-control" aria-describedby="pubDescripHelp${cont}"></textarea>
+                                        <textarea id="pubDescrip${cont}" cols="30" rows="3" oninput="validacion('pubDescrip${cont}')" class="form-control" aria-describedby="pubDescripHelp${cont}">${empresaSeleccionada.publicaciones[i].descripcionGanga}</textarea>
                                         <small id="pubDescripHelp${cont}" class="text-muted">Information of the publication</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="pubMaxDat${cont}"><b><i class="fa fa-edit"> Max date</i></b></label>
-                                        <input type="date" id="pubMaxDat${cont}" value="${empresaSeleccionada.publicaciones[i].fechaMax}" class="form-control" aria-describedby="pubMaxDatHelp${cont}">
+                                        <input type="date" id="pubMaxDat${cont}" value="${empresaSeleccionada.publicaciones[i].fechaMax}" min="${fechaActual()}" onchange="valid('pubMaxDat${cont}', ${cont})" class="form-control" aria-describedby="pubMaxDatHelp${cont}">
                                         <small id="pubMaxDatHelp${cont}" class="text-muted">Publication max date</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="pubMaxHour${cont}"><b><i class="fa fa-edit"> Max Hour</i></b></label>
-                                        <input type="time" id="pubMaxHour${cont}" value="${empresaSeleccionada.publicaciones[i].horaMax}" class="form-control" aria-describedby="pubMaxHourHelp${cont}">
+                                        <input type="time" id="pubMaxHour${cont}" value="${empresaSeleccionada.publicaciones[i].horaMax}" onchange="validacion('pubMaxHour${cont}')" class="form-control" aria-describedby="pubMaxHourHelp${cont}">
                                         <small id="pubMaxHourHelp${cont}" class="text-muted">Publication max hour</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="oferDisp${cont}"><b><i class="fa fa-edit"> Offers available</i></b></label>
-                                        <input type="number" min="1" name="" id="oferDisp${cont}" value="${empresaSeleccionada.publicaciones[i].ofertasDisponibles}" class="form-control" aria-describedby="oferDispHelp${cont}">
+                                        <input type="number" min="1" name="" id="oferDisp${cont}" value="${empresaSeleccionada.publicaciones[i].ofertasDisponibles}" onchange="cambiar('oferDisp${cont}')" class="form-control" aria-describedby="oferDispHelp${cont}">
                                         <small id="oferDispHelp${cont}" class="text-muted">how many offers available you have</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="pricePub${cont}"><b><i class="fa fa-edit"> Price</i></b></label>
-                                        <input type="number" min="0.1" steps="0.1" value="${empresaSeleccionada.publicaciones[i].precio}" id="pricePub${cont}" class="form-control" aria-describedby="pricePubHelp${cont}">
+                                        <input type="number" min="0.1" step="0.01" value="${empresaSeleccionada.publicaciones[i].precio}" id="pricePub${cont}" onchange="cambiar('pricePub${cont}')" class="form-control" aria-describedby="pricePubHelp${cont}">
                                         <small id="pricePubHelp${cont}" class="text-muted">What is the price?</small>
                                     </div>
                                     <div class="form-row py-1">
                                         <label for="porcent${cont}"><b><i class="fa fa-edit">Discount porcentage</i></b></label>
-                                        <input type="number" min="1" max="100" id="porcent${cont}" value="${empresaSeleccionada.publicaciones[i].porcentDesc}" class="form-control" aria-describedby="porcentHelp${cont}">
+                                        <input type="number" min="1" max="100" id="porcent${cont}" value="${empresaSeleccionada.publicaciones[i].porcentDesc}" onchange="cambiar('porcent${cont}')" class="form-control" aria-describedby="porcentHelp${cont}">
                                         <small id="porcentHelp${cont}" class="text-muted">discount rate</small>
                                     </div>
                                 </div>
+                            </div>
+                            <div id="alertModiPub${cont}">
+                            
                             </div>
                             <div class="card-footer">
                                 <button onclick="modifPub(${cont},${i});" class="btn btn-sm btn-info float-right mr-3 mb-3"><i class="fa fa-save"> Save Changes</i></button>
@@ -302,11 +315,10 @@ function actualizarEmpresa() {
         })
         .then(function(res) {
             console.log(res);
-            return res.resultado;
+            empresaSeleccionada = res.data;
         })
         .catch(function(error) {
             console.error(error);
-            return error;
         });
 }
 
@@ -379,6 +391,26 @@ function modifPub(cont, indicePub) {
                         pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
                         calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
                     }
+                } else if (document.getElementById("pubDescrip" + cont).value.length == 0 && document.getElementById("gangNameEditPublication" + cont).value.length == 0) {
+                    var modifPub = {
+                        tipo: "pub",
+                        indice: indicePub,
+                        nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                        imagenGanga: '../' + res.data,
+                        nombreGanga: empresaSeleccionada.publicaciones[indicePub].nombreGanga,
+                        descripcionGanga: empresaSeleccionada.publicaciones[indicePub].descripcionGanga,
+                        fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                        horaMax: document.getElementById("pubMaxHour" + cont).value,
+                        ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                        horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                        fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                        porcentDesc: document.getElementById("porcent" + cont).value,
+                        precio: document.getElementById("pricePub" + cont).value,
+                        venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                        comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                        pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                        calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+                    }
                 }
                 axios({
                         url: '../../proyecto-back-end/API/empresas.php',
@@ -387,9 +419,50 @@ function modifPub(cont, indicePub) {
                         data: modifPub
                     })
                     .then(function(res) {
-                        console.log(res)
+                        empresaSeleccionada = res.data;
                         empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
                         actualizarEmpresa();
+
+                        document.getElementById("ganga" + cont).innerHTML = "";
+                        document.getElementById("ganga" + cont).innerHTML +=
+                            `
+                            <div class="inner">
+                                <img class="card-img-top" src="${empresaSeleccionada.publicaciones[indicePub].imagenGanga}" alt="">
+                            </div>
+                            <div class="card-body">
+                                <h4>${empresaSeleccionada.publicaciones[indicePub].nombreGanga}</h4>
+                                <p>${empresaSeleccionada.publicaciones[indicePub].descripcionGanga}</p><br>
+                                <div id="alertDePub${cont}">
+                                
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
+                                    <i class="fa fa-eye"> See more</i>
+                                </button>
+                                <button class="btn btn-sm btn-info"  id="delPub${cont}" type="button" onclick="alertarCompany('alertDePub${cont}', ${indicePub})">
+                                    <i class="fa fa-trash"> Delete</i>
+                                </button>
+                                <div class="collapse" id="contCard${cont}">
+                                    <div class="card-body m-0">
+                                        <h4 class="form-control "><b>Time remaining:</b> ${empresaSeleccionada.publicaciones[indicePub].horaMax}</h4>
+                                        <h4 class="form-control "><b>Max Date:</b> ${empresaSeleccionada.publicaciones[indicePub].fechaMax}</h4>
+                                        <h4 class="form-control "><b>Available Offers:</b> ${empresaSeleccionada.publicaciones[indicePub].ofertasDisponibles}</h4>
+                                        <h4 class="form-control "><b>Price:</b> ${empresaSeleccionada.publicaciones[indicePub].precio}</h4>
+                                        <h4 class="form-control "><b>Posted on:</b> ${empresaSeleccionada.publicaciones[indicePub].fechaInicio}</h4>
+                                    </div>
+                                </div>
+                            </div>`;
+
+                        document.getElementById("alertModiPub" + cont).innerHTML = "";
+                        document.getElementById("alertModiPub" + cont).innerHTML +=
+                            `
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Successful!, </strong> Your publication has been updated.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
                     })
                     .catch(function(error) {
                         console.error(error);
@@ -460,8 +533,27 @@ function modifPub(cont, indicePub) {
                 pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
                 calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
             }
+        } else if (document.getElementById("pubDescrip" + cont).value.length == 0 && document.getElementById("gangNameEditPublication" + cont).value.length == 0) {
+            var modifPub = {
+                tipo: "pub",
+                indice: indicePub,
+                nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                imagenGanga: empresaSeleccionada.publicaciones[indicePub].imagenGanga,
+                nombreGanga: empresaSeleccionada.publicaciones[indicePub].nombreGanga,
+                descripcionGanga: empresaSeleccionada.publicaciones[indicePub].descripcionGanga,
+                fechaMax: document.getElementById("pubMaxDat" + cont).value,
+                horaMax: document.getElementById("pubMaxHour" + cont).value,
+                ofertasDisponibles: document.getElementById("oferDisp" + cont).value,
+                horaInicio: empresaSeleccionada.publicaciones[indicePub].horaInicio,
+                fechaInicio: empresaSeleccionada.publicaciones[indicePub].fechaInicio,
+                porcentDesc: document.getElementById("porcent" + cont).value,
+                precio: document.getElementById("pricePub" + cont).value,
+                venta: empresaSeleccionada.publicaciones[indicePub].venta,
+                comentarios: empresaSeleccionada.publicaciones[indicePub].comentarios,
+                pubFavoritaDe: empresaSeleccionada.publicaciones[indicePub].pubFavoritaDe,
+                calificacionPublicacionDe: empresaSeleccionada.publicaciones[indicePub].calificacionPublicacionDe
+            }
         }
-        empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
         axios({
                 url: '../../proyecto-back-end/API/empresas.php',
                 method: 'PUT',
@@ -469,9 +561,50 @@ function modifPub(cont, indicePub) {
                 data: modifPub
             })
             .then(function(res) {
-                console.log(res)
+                empresaSeleccionada = res.data;
                 empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
                 actualizarEmpresa();
+
+                document.getElementById("ganga" + cont).innerHTML = "";
+                document.getElementById("ganga" + cont).innerHTML +=
+                    `
+                    <div class="inner">
+                        <img class="card-img-top" src="${empresaSeleccionada.publicaciones[indicePub].imagenGanga}" alt="">
+                    </div>
+                    <div class="card-body">
+                        <h4>${empresaSeleccionada.publicaciones[indicePub].nombreGanga}</h4>
+                        <p>${empresaSeleccionada.publicaciones[indicePub].descripcionGanga}</p><br>
+                        <div id="alertDePub${cont}">
+                        
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
+                            <i class="fa fa-eye"> See more</i>
+                        </button>
+                        <button class="btn btn-sm btn-info"  id="delPub${cont}" type="button" onclick="alertarCompany('alertDePub${cont}', ${indicePub})">
+                            <i class="fa fa-trash"> Delete</i>
+                        </button>
+                        <div class="collapse" id="contCard${cont}">
+                            <div class="card-body m-0">
+                                <h4 class="form-control "><b>Time remaining:</b> ${empresaSeleccionada.publicaciones[indicePub].horaMax}</h4>
+                                <h4 class="form-control "><b>Max Date:</b> ${empresaSeleccionada.publicaciones[indicePub].fechaMax}</h4>
+                                <h4 class="form-control "><b>Available Offers:</b> ${empresaSeleccionada.publicaciones[indicePub].ofertasDisponibles}</h4>
+                                <h4 class="form-control "><b>Price:</b> ${empresaSeleccionada.publicaciones[indicePub].precio}</h4>
+                                <h4 class="form-control "><b>Posted on:</b> ${empresaSeleccionada.publicaciones[indicePub].fechaInicio}</h4>
+                            </div>
+                        </div>
+                    </div>`;
+
+                document.getElementById("alertModiPub" + cont).innerHTML = "";
+                document.getElementById("alertModiPub" + cont).innerHTML +=
+                    `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Successful!, </strong> Your publication has been updated.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
             })
             .catch(function(error) {
                 console.error(error);
@@ -554,7 +687,7 @@ function generarPerfil() {
 
     document.getElementById("profile").innerHTML =
         `
-        <div class="mx-auto col-lg-6 col-md-6 col-sm-12 col-12 px-0">
+        <div class="mx-auto col-lg-6 col-md-6 col-sm-1Com col-1Com px-0">
             <div class="card perfil">
                 <div class="card-header">
                     <div>
@@ -663,7 +796,7 @@ function generarEditPerfil() {
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="latComp"><b><i class="fa fa-location-arrow"> Company latitude</i></b></label>
-                                    <input type="text" id="latComp" value="${empresaSeleccionada.latitud}" style="border-color: green; color: green;" class="form-control" aria-describedby="latCompHelp" onfocus="limpiarAlertas('alertComp')" oninput="validacion('latComp')" pattern="[0-9.]{5,50}" required><small id="latCompHelp" class="text-muted ">Put your company latitude as an example: 2.17403</small>
+                                    <input type="text" id="latComp" value="${empresaSeleccionada.latitud}" style="border-color: green; color: green;" class="form-control" aria-describedby="latCompHelp" onfocus="limpiarAlertas('alertComp')" oninput="validacion('latComp')" pattern="[0-9.]{5,50}" required><small id="latCompHelp" class="text-muted ">Put your company latitude as an example: Com.17403</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="emailComp"><b><i class="fa fa-envelope"> Email</i></b></label>
@@ -694,37 +827,37 @@ function generarEditPerfil() {
                                 </div>
                                 <div class="form-row py-1 ">
                                     <label for="userComp"><b><i class="fa fa-user"> User Name</i></b></label>
-                                    <input type="text" id="userComp" value="${empresaSeleccionada.nombreUsuario}" style="border-color: green; color: green;" class="form-control" aria-describedby="userCompHelp" onfocus="limpiarAlertas('alertComp')" oninput="validarUser('userComp','empresa')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                    <input type="text" id="userComp" value="${empresaSeleccionada.nombreUsuario}" style="border-color: green; color: green;" class="form-control" aria-describedby="userCompHelp" onfocus="limpiarAlertas('alertComp')" oninput="validarUser('userComp','empresa')" pattern="^([a-z]+[0-9]{0,4}){3,1Com}$" required>
                                     <small id="userCompHelp" class="text-muted"> Put the name you want as a user</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="newPasswordComp"><b><i class="fa fa-lock"> New Password</i></b></label>
-                                    <input type="password" id="newPasswordComp" class="form-control" aria-describedby="newPasswordHelp" onfocus="limpiarAlertas('alertComp')" oninput="validacion('newPasswordComp')" pattern="[A-Za-z0-9!.?-]{8,20}" required autocomplete="on">
-                                    <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
+                                    <input type="password" id="newPasswordComp" class="form-control" aria-describedby="newPasswordHelp" onfocus="limpiarAlertas('alertComp')" oninput="validacion('newPasswordComp')" pattern="[A-Za-z0-9!.?-]{8,Com0}" required autocomplete="on">
+                                    <small id="newPasswordHelp" class="text-muted">Must be 8-Com0 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
                                 </div>
                                 <div class="form-row py-1">
                                     <label for="confirmNewPassComp"><b><i class="fa fa-lock"> Confirm your New Password</i></b></label>
-                                    <input type="password" id="confirmNewPassComp" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertComp')" oninput="alertar('newPasswordComp','confirmNewPassComp');" pattern="[A-Za-z0-9!.?-]{8,20}" required autocomplete="on">
+                                    <input type="password" id="confirmNewPassComp" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertComp')" oninput="alertar('newPasswordComp','confirmNewPassComp');" pattern="[A-Za-z0-9!.?-]{8,Com0}" required autocomplete="on">
                                     <small id="confirmHelp" class="text-muted">Repeat your new password.</small>
                                 </div>
                                 <div class="form-row py-1">
-                                    <label for="form2"><b><i class="fa fa-file-photo-o"> Logo Company</i></b></label>
-                                    <form id="form2" name="form2" method="post" enctype="multipart/form-data" aria-describedby="form2Help">
+                                    <label for="formComCom"><b><i class="fa fa-file-photo-o"> Logo Company</i></b></label>
+                                    <form id="formComCom" name="formComCom" method="post" enctype="multipart/form-data" aria-describedby="formComComHelp">
                                         <input type="file" name="imagen" id="imagenCompany" accept="image/*" class="form-control">
                                     </form>
-                                    <small id="form2Help" class="text-muted"> Here goes your company logo</small>
+                                    <small id="formComComHelp" class="text-muted"> Here goes your company logo</small>
                                 </div>
                                 <div class="form-row py-1">
-                                    <label for="form3"><b><i class="fa fa-file-photo-o"> Banner Company</i></b></label>
-                                    <form id="form3" name="form3" method="post" enctype="multipart/form-data" aria-describedby="form3Help">
+                                    <label for="formCom3"><b><i class="fa fa-file-photo-o"> Banner Company</i></b></label>
+                                    <form id="formCom3" name="formCom3" method="post" enctype="multipart/form-data" aria-describedby="formCom3Help">
                                         <input type="file" name="imagen" id="bannerCompany" accept="image/*" class="form-control">
                                     </form>
-                                    <small id="form3Help" class="text-muted"> Here goes your company Banner</small>
+                                    <small id="formCom3Help" class="text-muted"> Here goes your company Banner</small>
                                 </div>
                                 <hr>
                                 <div class="form-row py-1 ">
                                     <label for="passwordComp"><b><i class="fa fa-lock ">Actual Password</i></b></label>
-                                    <input type="password" id="passwordComp" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertComp')" oninput="verifPassEmp('passwordComp')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                    <input type="password" id="passwordComp" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertComp')" oninput="verifPassEmp('passwordComp')" pattern="[A-Za-z0-9!?-]{8,Com0}" required autocomplete="on">
                                     <small id="passwordHelp" class="text-muted">You most privide your actual password to confirm the changes.</small>
                                 </div>
                             </div>
@@ -736,7 +869,7 @@ function generarEditPerfil() {
                 <div id="alertComp">
                 
                 </div>
-                <button onclick="savePerfil();" class="btn btn-sm btn-info float-right mr-2"><i class="fa fa-save"> Save Changes</i></button>
+                <button onclick="savePerfil();" class="btn btn-sm btn-info float-right mr-Com"><i class="fa fa-save"> Save Changes</i></button>
             </div>
         </div>`;
 }
@@ -752,17 +885,13 @@ function savePerfil() {
                 </button>
             </div>`;
     } else if (document.getElementById('imagenCompany').value != "") {
-        console.log("en elseImagenCompany imagenCompany " + document.getElementById('imagenCompany').value);
-        console.log("en elseImagenCompany bannerCompany " + document.getElementById('bannerCompany').value);
-        var frm = $('#form2');
+        var frm = $('#formCom2');
         let formData = new FormData(frm[0]);
         axios.post('../../proyecto-front-end/sube', formData)
             .then(res => {
                 //console.log(res);
                 if (document.getElementById('bannerCompany').value != "") {
-                    console.log("en elsebannepenult imagenCompany " + document.getElementById('imagenCompany').value);
-                    console.log("en elsebannepenult bannerCompany " + document.getElementById('bannerCompany').value);
-                    var frm1 = $('#form3');
+                    var frm1 = $('#formCom3');
                     let frmData = new FormData(frm1[0]);
                     axios.post('../../proyecto-front-end/sube', frmData)
                         .then(resa => {
@@ -1053,9 +1182,7 @@ function savePerfil() {
 
     } else {
         if (document.getElementById('bannerCompany').value != "") {
-            console.log("en elsebannerCompany imagenCompany " + document.getElementById('imagenCompany').value);
-            console.log("en elsebannerCompany bannerCompany " + document.getElementById('bannerCompany').value);
-            var frm1 = $('#form3');
+            var frm1 = $('#formCom3');
             let frmData = new frmData(frm1[0]);
             axios.post('../../proyecto-front-end/sube', formData)
                 .then(resa => {
@@ -1201,8 +1328,6 @@ function savePerfil() {
                     console.error(err);
                 });
         } else {
-            console.log("en elseFinal imagenCompany " + document.getElementById('imagenCompany').value);
-            console.log("en elseFinal bannerCompany " + document.getElementById('bannerCompany').value);
             if (document.getElementById("institutionName").style.color == "green" && document.getElementById("direcComp").style.color == "green" && document.getElementById("longComp").style.color == "green" && document.getElementById("latComp").style.color == "green" && document.getElementById("institutionDescription").style.color == "green" && document.getElementById("facebookComp").style.color == "green" && document.getElementById("instagramComp").style.color == "green" && document.getElementById("twitterComp").style.color == "green" && document.getElementById("twitchComp").style.color == "green" && document.getElementById("emailComp").style.color == "green" && verifUser && verifPass) {
                 var modifComp = {
                     nombreUsuarioModif: empresaSeleccionada.nombreUsuario,
@@ -1221,12 +1346,12 @@ function savePerfil() {
                     twitter: document.getElementById("twitterComp").value,
                     twitch: document.getElementById("twitchComp").value,
                     email: document.getElementById("emailComp").value,
-                    actual: true,
-                    publicaciones: [],
-                    calificacionEmpresaDe: [],
-                    tipo: "empresa",
-                    fechaSignIn: fechaActual(),
-                    registroAcciones: [msjParaRegistro("signIn", document.getElementById("userComp").value)]
+                    actual: empresaSeleccionada.actual,
+                    publicaciones: empresaSeleccionada.publicaciones,
+                    calificacionEmpresaDe: empresaSeleccionada.calificacionEmpresaDe,
+                    tipo: empresaSeleccionada.tipo,
+                    fechaSignIn: empresaSeleccionada.fechaSignIn,
+                    registroAcciones: empresaSeleccionada.registroAcciones
                 }
 
                 axios({
@@ -1269,12 +1394,12 @@ function savePerfil() {
                     twitter: document.getElementById("twitterComp").value,
                     twitch: document.getElementById("twitchComp").value,
                     email: document.getElementById("emailComp").value,
-                    actual: true,
-                    publicaciones: [],
-                    calificacionEmpresaDe: [],
-                    tipo: "empresa",
-                    fechaSignIn: fechaActual(),
-                    registroAcciones: [msjParaRegistro("signIn", document.getElementById("userComp").value)]
+                    actual: empresaSeleccionada.actual,
+                    publicaciones: empresaSeleccionada.publicaciones,
+                    calificacionEmpresaDe: empresaSeleccionada.calificacionEmpresaDe,
+                    tipo: empresaSeleccionada.tipo,
+                    fechaSignIn: empresaSeleccionada.fechaSignIn,
+                    registroAcciones: empresaSeleccionada.registroAcciones
                 }
 
                 axios({
@@ -1337,9 +1462,6 @@ function savePerfil() {
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>`;
-            } else {
-                console.log("algo anda mal verifUser==" + verifUser + " verifPass==" + verifPass);
-
             }
         }
     }
@@ -1375,22 +1497,22 @@ function generarAddPub() {
                     </div>
                     <div class="form-control py-1">
                         <label for="pubMaxHour"><b><i class="fa fa-edit"> Max Hour</i></b></label>
-                        <input type="time" id="pubMaxHour" class="form-control" aria-describedby="pubMaxHourHelp" onchange="validacion('pubMaxHour')" required>
+                        <input type="time" id="pubMaxHour" value="${horaMin()}" class="form-control" aria-describedby="pubMaxHourHelp" onchange="validacion('pubMaxHour')" required>
                         <small id="pubMaxHourHelp" class="text-muted">Publication max hour</small>
                     </div>
                     <div class="form-control py-1">
                         <label for="oferDisp"><b><i class="fa fa-edit"> Offers available</i></b></label>
-                        <input type="number" min="1" value="1" id="oferDisp" class="form-control" aria-describedby="oferDispHelp" onchange="validacion('oferDisp')" required>
+                        <input type="number" min="1" value="1" id="oferDisp" class="form-control" aria-describedby="oferDispHelp" onchange="cambiar('oferDisp')" required>
                         <small id="oferDispHelp" class="text-muted">how many offers available you have</small>
                     </div>
                     <div class="form-control py-1">
                         <label for="porcent"><b><i class="fa fa-edit">Discount porcentage</i></b></label>
-                        <input type="number" min="1" max="100" value="1" name="" id="porcent" class="form-control" aria-describedby="porcentHelp" onchange="validacion('porcen')" required>
+                        <input type="number" min="1" max="100" value="1" name="" id="porcent" class="form-control" aria-describedby="porcentHelp" onchange="cambiar('porcent')" required>
                         <small id="porcentHelp" class="text-muted">discount rate</small>
                     </div>
                     <div class="form-control py-1">
                         <label for="pubPrecio"><b><i class="fa fa-edit"> Price</i></b></label>
-                        <input type="number" id="pubPrecio" value="1.00" min="0.1" step="0.1" class="form-control" aria-describedby="pubPrecioHelp" oninput="validacion('pubPrecio')" pattern="[0-9.]" required></input>
+                        <input type="number" id="pubPrecio" value="1.00" min="0.1" step="0.1" class="form-control" aria-describedby="pubPrecioHelp" oninput="cambiar('pubPrecio')" pattern="[0-9.]" required></input>
                         <small id="pubPrecioHelp" class="text-muted">Publication Price in dollars</small>
                     </div>
                 </div>
@@ -1408,107 +1530,33 @@ function validarTiempos(id) {
     var hora;
     if (document.getElementById(id).value == fechaActual()) {
         hora = horaMin();
+        verifPassHora = true;
     } else if (document.getElementById(id).value > fechaActual()) {
         hora = "01:00";
+        verifPassHora = true;
+    } else {
+        hora = horaMin();
+        verifPassHora = true;
     }
     return hora;
 }
 
-function alertarCompany(idMsj, indicePub) {
-    document.getElementById(idMsj).innerHTML = "";
-    document.getElementById(idMsj).innerHTML +=
-        `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Are you sure to DELETE this publication?</strong>
-            <div class="row">
-                <button type="button" class="btn btn-success" data-dismiss="alert" aria-label="Close"></button>
-                <button type="button" class="btn btn-danger" onclick="erasePub(${indicePub})" data-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>`;
-}
-
-function erasePub(indicePub) {
-    for (let i = 0; i < clientes.length; i++) {
-        for (let j = 0; j < clientes[i].publicacionesFav.length; j++) {
-            if (clientes[i].publicacionesFav[j].nombreGan == empresaSeleccionada.publicaciones[indicePub].nombreGanga) {
-                clientes[i].publicacionesFav.splice(j, 1);
-                break;
-            }
-        }
-    }
-
-    document.getElementById(idMsj).innerHTML = "";
-    empresaSeleccionada.publicaciones.splice(indicePub, 1);
-    localStorage.setItem('empresas', JSON.stringify(empresas));
-    localStorage.setItem('clientes', JSON.stringify(clientes));
-    top.location.reload();
-}
-
-function savePub() {
-    if (document.getElementById('imaGanga').value != "") {
-        var frm = $('#form4');
-        let formData = new FormData(frm[0]);
-        console.log(frm[0]);
-
-        axios.post('../../proyecto-front-end/sube.php', formData)
-            .then(res => {
-                console.log(res.data);
-                var nuevaPub = {
-                    nombreEmpresa: empresaSeleccionada.nombreUsuario,
-                    imagenGanga: '../' + res.data,
-                    nombreGanga: document.getElementById("gangaNameCard").value,
-                    descripcionGanga: document.getElementById("pubDescripAdd").value,
-                    fechaMax: document.getElementById("pubMaxDat").value,
-                    horaMax: document.getElementById("pubMaxHour").value,
-                    ofertasDisponibles: document.getElementById("oferDisp").value,
-                    horaInicio: horaAct(),
-                    fechaInicio: fechaActual(),
-                    porcentDesc: document.getElementById("porcent").value,
-                    precio: document.getElementById("pubPrecio").value,
-                    venta: [],
-                    comentarios: [],
-                    pubFavoritaDe: [],
-                    calificacionPublicacionDe: []
-                }
-                empresaSeleccionada.publicaciones.push(nuevaPub);
-                empresaSeleccionada.registroAcciones.push(msjParaRegistro('nuevaPub', empresaSeleccionada.nombreUsuario, nuevaPub.nombreGanga));
-                if (actualizarEmpresa() == 'actualizado') {
-                    generarPublicaciones();
-                }
-            }).catch(err => {
-                console.error(err);
-            });
-
-    } else if (document.getElementById("gangaNameCard").value.length != 0 && document.getElementById("pubDescripAdd").value.length != 0) {
-        var nuevaPub = {
-            nombreEmpresa: empresaSeleccionada.nombreUsuario,
-            imagenGanga: '../img/logo.png',
-            nombreGanga: document.getElementById("gangaNameCard").value,
-            descripcionGanga: document.getElementById("pubDescripAdd").value,
-            fechaMax: document.getElementById("pubMaxDat").value,
-            horaMax: document.getElementById("pubMaxHour").value,
-            ofertasDisponibles: document.getElementById("oferDisp").value,
-            horaInicio: horaAct(),
-            fechaInicio: fechaActual(),
-            porcentDesc: document.getElementById("porcent").value,
-            precio: document.getElementById("pubPrecio").value,
-            venta: [],
-            comentarios: [],
-            pubFavoritaDe: [],
-            calificacionPublicacionDe: []
-        }
-        empresaSeleccionada.publicaciones.push(nuevaPub);
-        empresaSeleccionada.registroAcciones.push(msjParaRegistro('nuevaPub', empresaSeleccionada.nombreUsuario, nuevaPub.nombreGanga));
-        actualizarEmpresa();
-    } else if (document.getElementById("gangaNameCard").value.length == 0 || document.getElementById("pubDescripAdd").value.length == 0) {
+function valid(id, cont) {
+    document.getElementById("alertPubNueva").innerHTML = "";
+    var elem = document.getElementById(id);
+    if (id == 'pubMaxDat' + cont) {
         document.getElementById("alertPubNueva").innerHTML = "";
-        document.getElementById("alertPubNueva").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Incomplete or wrong information! , </strong>Please check all the fields.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
+        if (elem.checkValidity()) {
+            document.getElementById("pubMaxHour" + cont).value = validarTiempos(id);
+            document.getElementById("pubMaxHour" + cont).min = validarTiempos(id);
+            elem.style.borderColor = "green";
+            elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
+        }
     }
+
 }
 
 function validacion(id) {
@@ -1521,6 +1569,9 @@ function validacion(id) {
             document.getElementById("pubMaxHour").min = validarTiempos(id);
             elem.style.borderColor = "green";
             elem.style.color = "green";
+        } else {
+            elem.style.borderColor = "red";
+            elem.style.color = "red";
         }
     } else if (id == 'newPasswordComp') {
         document.getElementById('confirmNewPassComp').value = "";
@@ -1542,6 +1593,217 @@ function validacion(id) {
         }
     }
 
+}
+
+function alertarCompany(idMsj, indicePub) {
+    document.getElementById(idMsj).innerHTML = "";
+    document.getElementById(idMsj).innerHTML +=
+        `<div class="alert px-3 alert-warning alert-dismissible fade show" role="alert">
+            <strong>Are you sure to DELETE this publication?</strong>
+            <div class="row ">
+                <button type="button" class="btn btn-success mr-auto" data-dismiss="alert" aria-label="Close">CANCEL</button>
+                <button type="button" class="btn btn-danger ml-auto" onclick="erasePub(${indicePub})" data-dismiss="alert" aria-label="Close">DELETE</button>
+            </div>
+        </div>`;
+}
+
+function erasePub(indicePub) {
+    del = {
+        indice: indicePub,
+        nombreEmpresa: empresaSeleccionada.nombreEmpresa,
+        tipo: "pub"
+    }
+    axios({
+            url: '../../proyecto-back-end/API/empresas.php',
+            method: 'DELETE',
+            responseType: 'json',
+            data: del
+        })
+        .then(res => {
+            empresaSeleccionada = res.data;
+            empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
+            actualizarEmpresa();
+            document.getElementById("modalInfo").innerHTML = "";
+            document.getElementById("modalInfo").innerHTML +=
+                `<div id="tarjeta" class="modal fade" data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Successful!, </strong> Your publication has been erased.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-footer py-2"
+                                <button class="btn btn-info " data-dismiss="modal" aria-label="Close">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+}
+
+function eraseEmp() {
+    del = {
+        indice: indicePub,
+        nombreEmpresa: empresaSeleccionada.nombreEmpresa,
+        tipo: "pub"
+    }
+    axios({
+            url: '../../proyecto-back-end/API/empresas.php',
+            method: 'DELETE',
+            responseType: 'json',
+            data: indicePub
+        })
+        .then(res => {
+            empresaSeleccionada = res.data;
+            empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
+            actualizarEmpresa();
+            document.getElementById("modalInfo").innerHTML = "";
+            document.getElementById("modalInfo").innerHTML +=
+                `<div id="tarjeta" class="modal fade" data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Successful!, </strong> Your publication has been erased.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="modal-footer py-2"
+                                <button class="btn btn-info " data-dismiss="modal" aria-label="Close">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+}
+
+function savePub() {
+    if (verifPassHora == null) {
+        document.getElementById("alertPubNueva").innerHTML = "";
+        document.getElementById("alertPubNueva").innerHTML +=
+            `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>The time or the date are not corrects!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    } else if (document.getElementById('imaGanga').value != "" && verifPassHora == true) {
+        var frm = $('#form4');
+        let formData = new FormData(frm[0]);
+
+        axios.post('../../proyecto-front-end/sube.php', formData)
+            .then(res => {
+                var nuevaPub = {
+                    tipo: "pub",
+                    nombreEmpresa: empresaSeleccionada.nombreUsuario,
+                    imagenGanga: '../' + res.data,
+                    nombreGanga: document.getElementById("gangaNameCard").value,
+                    descripcionGanga: document.getElementById("pubDescripAdd").value,
+                    fechaMax: document.getElementById("pubMaxDat").value,
+                    horaMax: document.getElementById("pubMaxHour").value,
+                    ofertasDisponibles: document.getElementById("oferDisp").value,
+                    horaInicio: horaAct(),
+                    fechaInicio: fechaActual(),
+                    porcentDesc: document.getElementById("porcent").value,
+                    precio: document.getElementById("pubPrecio").value,
+                    venta: [],
+                    pubFavoritaDe: [],
+                    calificacionPublicacionDe: []
+                }
+                axios({
+                        url: '../../proyecto-back-end/API/empresas.php',
+                        method: 'POST',
+                        responseType: 'json',
+                        data: nuevaPub
+                    })
+                    .then(resul => {
+                        empresaSeleccionada = resul.data;
+                        empresaSeleccionada.registroAcciones.push(msjParaRegistro('nuevaPub', empresaSeleccionada.nombreUsuario, nuevaPub.nombreGanga));
+                        actualizarEmpresa();
+                        generarPublicaciones();
+                        document.getElementById("alertPubNueva").innerHTML = "";
+                        document.getElementById("alertPubNueva").innerHTML +=
+                            `
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Successful!, </strong> Your publication has been saved.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`;
+
+                    }).catch(err => {
+                        console.error(err);
+                    })
+
+            }).catch(errr => {
+                console.error(errr);
+            });
+
+    } else if (document.getElementById("gangaNameCard").value.length != 0 && document.getElementById("pubDescripAdd").value.length != 0) {
+        var nuevaPub = {
+            tipo: "pub",
+            nombreEmpresa: empresaSeleccionada.nombreUsuario,
+            imagenGanga: '../img/logo.png',
+            nombreGanga: document.getElementById("gangaNameCard").value,
+            descripcionGanga: document.getElementById("pubDescripAdd").value,
+            fechaMax: document.getElementById("pubMaxDat").value,
+            horaMax: document.getElementById("pubMaxHour").value,
+            ofertasDisponibles: document.getElementById("oferDisp").value,
+            horaInicio: horaAct(),
+            fechaInicio: fechaActual(),
+            porcentDesc: document.getElementById("porcent").value,
+            precio: document.getElementById("pubPrecio").value,
+            venta: [],
+            pubFavoritaDe: [],
+            calificacionPublicacionDe: []
+        }
+        axios.post('../../proyecto-back-end/API/empresas', nuevaPub)
+            .then(resul => {
+                empresaSeleccionada = resul.data;
+                empresaSeleccionada.registroAcciones.push(msjParaRegistro('nuevaPub', empresaSeleccionada.nombreUsuario, nuevaPub.nombreGanga));
+                actualizarEmpresa();
+                generarPublicaciones();
+                document.getElementById("alertPubNueva").innerHTML = "";
+                document.getElementById("alertPubNueva").innerHTML +=
+                    `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Successful!, </strong> Your publication has been saved.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+
+            }).catch(err => {
+                console.error(err);
+            })
+
+    } else if (document.getElementById("gangaNameCard").value.length == 0 || document.getElementById("pubDescripAdd").value.length == 0) {
+        document.getElementById("alertPubNueva").innerHTML = "";
+        document.getElementById("alertPubNueva").innerHTML +=
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Incomplete or wrong information! , </strong>Please check all the fields.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+    }
 }
 
 function limpiarAlertas(id) {
@@ -1637,27 +1899,27 @@ function validarUser(id, descripcion) {
         });
 }
 
-function alertar(id1, id2) {
+function alertar(id1, idCom) {
     var elem1 = document.getElementById(id1);
-    var elem2 = document.getElementById(id2);
-    if (elem1.value == elem2.value == "") {
-        elem2.style.borderColor = "none";
-        elem2.style.color = "black";
+    var elemCom = document.getElementById(idCom);
+    if (elem1.value == elemCom.value == "") {
+        elemCom.style.borderColor = "none";
+        elemCom.style.color = "black";
         elem1.style.borderColor = "none";
         elem1.style.color = "black";
-    } else if (elem1.value == elem2.value) {
-        if (elem2.checkValidity()) {
-            elem2.style.borderColor = "green";
-            elem2.style.color = "green";
+    } else if (elem1.value == elemCom.value) {
+        if (elemCom.checkValidity()) {
+            elemCom.style.borderColor = "green";
+            elemCom.style.color = "green";
             verifPass = true;
         } else {
-            elem2.style.borderColor = "red";
-            elem2.style.color = "red";
+            elemCom.style.borderColor = "red";
+            elemCom.style.color = "red";
             verifPass = false;
         }
     } else {
-        elem2.style.borderColor = "red";
-        elem2.style.color = "red";
+        elemCom.style.borderColor = "red";
+        elemCom.style.color = "red";
         verifPass = false;
     }
 
@@ -1737,19 +1999,20 @@ function comentCalif(idDiv, id, indiceCalif, tipo) {
 
 function logOut() {
     empresaSeleccionada.actual = false;
-    localStorage.setItem("empresas", JSON.stringify(empresas));
+    empresaSeleccionada.registroAcciones.push(msjParaRegistro('cierreSesion', empresaSeleccionada.nombreUsuario, "nada"));
+    actualizarEmpresa();
 }
 
 function msjParaRegistro(descripcion, nombre, nombrePub) {
     let f = new Date();
     let msj;
-    if (descripcion == "actualizar") {
+    if (descripcion == "actualizarEmp" && nombrePub != "nada") {
         msj = {
-            registro: "The user " + nombre + " was updated with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            actualizacionEmp: "The user " + nombre + " was updated to " + nombrePub + " with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
-    } else if (descripcion == "logOut") {
+    } else if (descripcion == "actualizarEmp" && nombrePub == "nada") {
         msj = {
-            cierreSesion: "The user " + nombre + " closed session with session closing date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            actualizacionEmp: "The user " + nombre + " was updated with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "nuevaPub") {
         msj = {
@@ -1759,9 +2022,17 @@ function msjParaRegistro(descripcion, nombre, nombrePub) {
         msj = {
             actualizarPub: "The user " + nombre + " updated the publication with the name " + nombrePub + " with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
-    } else if (descripcion == "actualizarEmp") {
+    } else if (descripcion == "eliminarPub") {
         msj = {
-            actualizarPub: "The user " + nombre + " updated the information with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            eliminarPub: "The user " + nombre + " updated the information with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "eliminarEmp") {
+        msj = {
+            eliminarEmp: "The user " + nombre + " updated the information with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+        }
+    } else if (descripcion == "logOut") {
+        msj = {
+            cierreSesion: "The user " + nombre + " closed session with session closing date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     }
     return msj;

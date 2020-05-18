@@ -45,8 +45,8 @@ class Empresa
         $this->publicaciones = $publicaciones;
         $this->calificacionEmpresaDe = $calificacionEmpresaDe;
         $this->tipo = $tipo;
-        $this->fechaSignIn=$fechaSignIn;
-        $this->registroAcciones=$registroAcciones;
+        $this->fechaSignIn = $fechaSignIn;
+        $this->registroAcciones = $registroAcciones;
     }
 
     public function guardarEmpresa()
@@ -74,8 +74,8 @@ class Empresa
             "publicaciones" => $this->publicaciones,
             "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
-            "fechaSignIn"=> $this-> fechaSignIn,
-            "registroAcciones"=> $this-> registroAcciones
+            "fechaSignIn" => $this->fechaSignIn,
+            "registroAcciones" => $this->registroAcciones,
         );
         $archivo = fopen('../data/usuariosEmpresas.json', 'w');
         fwrite($archivo, json_encode($usuariosEmpresas));
@@ -91,22 +91,22 @@ class Empresa
 
     public static function obtenerEmpresa($nombEmpresa)
     {
-        $verif=false;
+        $verif = false;
         //retornar la empresa con nombre de empresa 'nombEmpresa'
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
                 echo json_encode($empresas[$i]);
-                $verif=false;
+                $verif = false;
                 break;
             } else {
-                $verif=true;
+                $verif = true;
             }
         }
         if ($verif) {
-                $resultado["nombreUsuario"] = "no se encontro";
-                echo json_encode($resultado);
+            $resultado["nombreUsuario"] = "no se encontro";
+            echo json_encode($resultado);
         }
     }
 
@@ -133,18 +133,42 @@ class Empresa
             "publicaciones" => $this->publicaciones,
             "calificacionEmpresaDe" => $this->calificacionEmpresaDe,
             "tipo" => $this->tipo,
-            "fechaSignIn"=> $this-> fechaSignIn,
-            "registroAcciones"=> $this-> registroAcciones
+            "fechaSignIn" => $this->fechaSignIn,
+            "registroAcciones" => $this->registroAcciones,
         );
+
+        $verif=false;
+        $contenidoArchivoRegistro = file_get_contents('../data/registroEmpresas.json');
+        $registro = json_decode($contenidoArchivoRegistro, true);
 
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
                 $empresas[$i] = $empresaModif;
+                
+                for ($k=0; $k < sizeof($registro); $k++) { 
+                    if(in_array($registro[$k]['nombreEmpresa'], $empresaModif['nombreEmpresa'])){
+                        $registro[$k]['registroAcciones']=$empresas[$i]['registroAcciones'];
+                        $verif=true;
+                    break;
+                    }
+                }
+                if($verif==false){
+                    $registro[]=array(
+                        "nombreEmpresa" => $empresaModif['nombreEmpresa'],
+                        "registroAcciones" => $empresas[$i]['registroAcciones']
+                    );
+                }
+
+                $archivoReg = fopen('../data/registroEmpresas.json', 'w');
+                fwrite($archivoReg, json_encode($registro));
+                fclose($archivoReg);
+
                 $archivo = fopen('../data/usuariosEmpresas.json', 'w');
                 fwrite($archivo, json_encode($empresas));
                 fclose($archivo);
+                echo json_encode($empresas[$i]);
                 break;
             }
         }
@@ -175,16 +199,16 @@ class Empresa
 
         for ($i = 0; $i < sizeof($empresas); $i++) {
             for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
-                $empresas[$i]['publicaciones'][$j]['logoEmpresa']= $empresas[$i]['logoEmpresa'];
-                $empresas[$i]['publicaciones'][$j]['tipoEmpresa']= $empresas[$i]['tipoEmpresa'];
-                $empresas[$i]['publicaciones'][$j]['pais']= $empresas[$i]['pais'];
-                $empresas[$i]['publicaciones'][$j]['direccion']= $empresas[$i]['direccion'];
-                $empresas[$i]['publicaciones'][$j]['publicaciones']= $empresas[$i]['publicaciones'];
-                $empresas[$i]['publicaciones'][$j]['facebook']= $empresas[$i]['facebook'];
-                $empresas[$i]['publicaciones'][$j]['instagram']= $empresas[$i]['instagram'];
-                $empresas[$i]['publicaciones'][$j]['twitter']= $empresas[$i]['twitter'];
-                $empresas[$i]['publicaciones'][$j]['twitch']= $empresas[$i]['twitch'];
-                $empresas[$i]['publicaciones'][$j]['email']= $empresas[$i]['email'];
+                $empresas[$i]['publicaciones'][$j]['logoEmpresa'] = $empresas[$i]['logoEmpresa'];
+                $empresas[$i]['publicaciones'][$j]['tipoEmpresa'] = $empresas[$i]['tipoEmpresa'];
+                $empresas[$i]['publicaciones'][$j]['pais'] = $empresas[$i]['pais'];
+                $empresas[$i]['publicaciones'][$j]['direccion'] = $empresas[$i]['direccion'];
+                $empresas[$i]['publicaciones'][$j]['publicaciones'] = $empresas[$i]['publicaciones'];
+                $empresas[$i]['publicaciones'][$j]['facebook'] = $empresas[$i]['facebook'];
+                $empresas[$i]['publicaciones'][$j]['instagram'] = $empresas[$i]['instagram'];
+                $empresas[$i]['publicaciones'][$j]['twitter'] = $empresas[$i]['twitter'];
+                $empresas[$i]['publicaciones'][$j]['twitch'] = $empresas[$i]['twitch'];
+                $empresas[$i]['publicaciones'][$j]['email'] = $empresas[$i]['email'];
                 $publicaciones[] = $empresas[$i]['publicaciones'][$j];
             }
 
@@ -194,35 +218,35 @@ class Empresa
 
     public static function obtenerEmpresaActual()
     {
-        $verif=false;
+        $verif = false;
         //retornar la empresa con el atributo actual igual que true
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['actual'] == true) {
                 echo json_encode($empresas[$i]);
-                $verif=false;
+                $verif = false;
                 break;
             } else {
-                $verif=true;
+                $verif = true;
             }
         }
         if ($verif) {
-                $resultado["actual"] = "no se encontro";
-                echo json_encode($resultado);
+            $resultado["actual"] = "no se encontro";
+            echo json_encode($resultado);
         }
     }
 
-    public static function actualizarPub($pub) {
-        $verif=false;
-        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
-        $empresas = json_decode($contenidoArchivo, true);
+    public static function actualizarPub($pub)
+    {
+        $contenidoArchivoEmpresas = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivoEmpresas, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
-            if ($empresas[$i]['nombreUsuario'] == $pub['empresa']) {
-                for ($j=0; $j < sizeof($empresas[$i]['publicaciones']); $j++) { 
-                    if ($empresas[$i]['publicaciones'][$j]==$pub['indice']) {
+            if ($empresas[$i]['nombreUsuario'] == $pub['nombreEmpresa']) {
+                for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
+                    if ($j == $pub['indice']) {
                         $modifPub = array(
-                            "nombreEmpresa"=>$pub['nombreEmpresa'],
+                            "nombreEmpresa" => $pub['nombreEmpresa'],
                             "imagenGanga" => $pub['imagenGanga'],
                             "nombreGanga" => $pub['nombreGanga'],
                             "descripcionGanga" => $pub['descripcionGanga'],
@@ -234,35 +258,29 @@ class Empresa
                             "porcentDesc" => $pub['porcentDesc'],
                             "precio" => $pub['precio'],
                             "venta" => $pub['venta'],
-                            "comentarios" => $pub['comentarios'],
                             "pubFavoritaDe" => $pub['pubFavoritaDe'],
-                            "calificacionPublicacionDe"=>$pub['calificacionPublicacionDe']
+                            "calificacionPublicacionDe" => $pub['calificacionPublicacionDe'],
                         );
                         $empresas[$i]['publicaciones'][$j] = $modifPub;
-                        $archivo = fopen('../data/usuariosEmpresas.json', 'w');
-                        fwrite($archivo, json_encode($empresas));
-                        fclose($archivo);
-                        $verif=true;
-                        $resultado['resultado'] = "actualizado";
-                        echo json_encode($resultado);
+                        $archivoEmp = fopen('../data/usuariosEmpresas.json', 'w');
+                        fwrite($archivoEmp, json_encode($empresas));
+                        fclose($archivoEmp);
+                        echo json_encode($empresas[$i]);
+                        break;
                     }
                 }
-                break;
             }
-        }
-        if ($verif==false) {
-            $resultado["resultado"] = "desactualizado";
-            echo json_encode($resultado);
         }
     }
 
-    public static function nuevaPub($pub) {
+    public static function nuevaPub($pub)
+    {
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
-            if ($empresas[$i]['nombreUsuario'] == $pub['empresa']) {
+            if ($empresas[$i]['nombreUsuario'] == $pub['nombreEmpresa']) {
                 $nuevaPub = array(
-                    "nombreEmpresa"=>$pub['nombreEmpresa'],
+                    "nombreEmpresa" => $pub['nombreEmpresa'],
                     "imagenGanga" => $pub['imagenGanga'],
                     "nombreGanga" => $pub['nombreGanga'],
                     "descripcionGanga" => $pub['descripcionGanga'],
@@ -274,14 +292,14 @@ class Empresa
                     "porcentDesc" => $pub['porcentDesc'],
                     "precio" => $pub['precio'],
                     "venta" => $pub['venta'],
-                    "comentarios" => $pub['comentarios'],
                     "pubFavoritaDe" => $pub['pubFavoritaDe'],
-                    "calificacionPublicacionDe"=>$pub['calificacionPublicacionDe']
+                    "calificacionPublicacionDe" => $pub['calificacionPublicacionDe'],
                 );
-                $empresas[$i]['publicaciones'][]=$nuevaPub;
+                $empresas[$i]['publicaciones'][] = $nuevaPub;
                 $archivo = fopen('../data/usuariosEmpresas.json', 'w');
                 fwrite($archivo, json_encode($empresas));
                 fclose($archivo);
+                echo json_encode($empresas[$i]);
                 break;
             }
         }
@@ -290,10 +308,33 @@ class Empresa
     public static function eliminarEmpresa($nombEmpresa)
     {
         //eliminar la empresa con nombre de empresa 'nombEmpresa'
+
+        $verif=false;
+        $contenidoArchivoRegistro = file_get_contents('../data/registroEmpresas.json');
+        $registro = json_decode($contenidoArchivoRegistro, true);
+
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
+                for ($k=0; $k < sizeof($registro); $k++) { 
+                    if(in_array($registro[$k]['nombreEmpresa'], $nombEmpresa['nombreEmpresa'])){
+                        $registro[$k]['registroAcciones']=$empresas[$i]['registroAcciones'];
+                        $verif=true;
+                    break;
+                    }
+                }
+                if($verif==false){
+                    $registro[]=array(
+                        "nombreEmpresa" => $nombEmpresa['nombreEmpresa'],
+                        "registroAcciones" => $empresas[$i]['registroAcciones']
+                    );
+                }
+
+                $archivoReg = fopen('../data/registroEmpresas.json', 'w');
+                fwrite($archivoReg, json_encode($registro));
+                fclose($archivoReg);
+
                 array_splice($empresas, $i, 1);
                 $archivo = fopen('../data/usuariosEmpresas.json', 'w');
                 fwrite($archivo, json_encode($empresas));
@@ -306,12 +347,35 @@ class Empresa
     public static function eliminarPub($nombEmpresa, $indicePub)
     {
         //eliminar la publicacion con indice 'indicePub'
+        
+        $verif=false;
+        $contenidoArchivoRegistro = file_get_contents('../data/registroEmpresas.json');
+        $registro = json_decode($contenidoArchivoRegistro, true);
+
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nombEmpresa) {
-                for ($j=0; $j < sizeof($empresas[$i]['publicaciones']); $j++) { 
-                    if ($empresas[$i]['publicaciones'][$j]==$indicePub) {
+                for ($j = 0; $j < sizeof($empresas[$i]['publicaciones']); $j++) {
+                    if ($empresas[$i]['publicaciones'][$j] == $indicePub) {
+                    for ($k=0; $k < sizeof($registro); $k++) { 
+                        if(in_array($registro[$k]['nombreEmpresa'], $nombEmpresa['nombreEmpresa'])){
+                            $registro[$k]['registroAcciones']=$empresas[$i]['registroAcciones'];
+                            $verif=true;
+                        break;
+                        }
+                    }
+                    if($verif==false){
+                        $registro[]=array(
+                            "nombreEmpresa" => $nombEmpresa['nombreEmpresa'],
+                            "registroAcciones" => $empresas[$i]['registroAcciones']
+                        );
+                    }
+
+                    $archivoReg = fopen('../data/registroEmpresas.json', 'w');
+                    fwrite($archivoReg, json_encode($registro));
+                    fclose($archivoReg);
+
                         array_splice($empresas[$i]['publicaciones'], $j, 1);
                         $archivo = fopen('../data/usuariosEmpresas.json', 'w');
                         fwrite($archivo, json_encode($empresas));
@@ -323,20 +387,21 @@ class Empresa
         }
     }
 
-    public static function buscarIdUser($nomb){
-        $verif=false;
+    public static function buscarIdUser($nomb)
+    {
+        $verif = false;
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
-        for ($i=0; $i < sizeof($empresas); $i++) { 
+        for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nomb) {
                 $resultado["resultado"] = "encontrado";
                 $resultado["nomb"] = $empresas[$i]['nombreUsuario'];
                 echo json_encode($resultado);
-                $verif=true;
-            break;
+                $verif = true;
+                break;
             }
         }
-        if($verif==false){
+        if ($verif == false) {
             $resultado["resultado"] = "noEncontrado";
             $resultado["nomb"] = $empresas[$i]['nombreUsuario'];
             echo json_encode($resultado);
@@ -570,7 +635,7 @@ class Empresa
 
         return $this;
     }
-    
+
     public function getFechaSignIn()
     {
         return $this->fechaSignIn;

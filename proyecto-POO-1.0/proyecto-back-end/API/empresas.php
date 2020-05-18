@@ -87,8 +87,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['registroAcciones']
                 );
                 $empresa->actualizarEmpresa($_PUT['nombreUsuarioModif']);
-                $resultado["mensaje"] = "ELa empresa se actualizo exitosamente";
-                echo json_encode($resultado);
             }
         }else if($_PUT['tipo'] == 'pub') {
             if(isset($_PUT['indice'])) {
