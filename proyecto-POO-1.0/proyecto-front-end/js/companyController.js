@@ -195,7 +195,7 @@ function generarPublicaciones() {
                                 <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
                                     <i class="fa fa-eye"> See more</i>
                                 </button>
-                                <button class="btn btn-sm btn-info"  id="delPub${cont}" type="button" onclick="alertarCompany('alertDePub${cont}', ${i})">
+                                <button class="btn btn-sm btn-danger"  id="delPub${cont}" type="button" onclick="generarModalEliminarPub('${empresaSeleccionada.publicaciones[i].nombreGanga}', '${i}')" data-toggle="modal" data-target="#erasedPub">
                                     <i class="fa fa-trash"> Delete</i>
                                 </button>
                                 <div class="collapse" id="contCard${cont}">
@@ -440,7 +440,7 @@ function modifPub(cont, indicePub) {
                                 <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
                                     <i class="fa fa-eye"> See more</i>
                                 </button>
-                                <button class="btn btn-sm btn-info"  id="delPub${cont}" type="button" onclick="alertarCompany('alertDePub${cont}', ${indicePub})">
+                                <button class="btn btn-sm btn-danger"  id="delPub${cont}" type="button" onclick="generarModalEliminarPub('${empresaSeleccionada.publicaciones[indicePub].nombreGanga}', '${indicePub}')" data-toggle="modal" data-target="#erasedPub">
                                     <i class="fa fa-trash"> Delete</i>
                                 </button>
                                 <div class="collapse" id="contCard${cont}">
@@ -582,7 +582,7 @@ function modifPub(cont, indicePub) {
                         <button class="btn btn-sm btn-info" id="verMas${cont}" type="button" data-toggle="collapse" data-target="#contCard${cont}" aria-expanded="false" aria-controls="contCard">
                             <i class="fa fa-eye"> See more</i>
                         </button>
-                        <button class="btn btn-sm btn-info"  id="delPub${cont}" type="button" onclick="alertarCompany('alertDePub${cont}', ${indicePub})">
+                        <button class="btn btn-sm btn-danger"  id="delPub${cont}" type="button" onclick="generarModalEliminarPub('${empresaSeleccionada.publicaciones[indicePub].nombreGanga}', '${indicePub}')" data-toggle="modal" data-target="#erasedPub">
                             <i class="fa fa-trash"> Delete</i>
                         </button>
                         <div class="collapse" id="contCard${cont}">
@@ -751,6 +751,9 @@ function generarPerfil() {
                 <div class="card-footer">
                     <button class="btn btn-info ml-4" id="verComentars" type="button" data-toggle="collapse" data-target="#comentars" aria-expanded="false" aria-controls="contCard">
                         <i class="fa fa-eye"> View Ratings</i>
+                    </button>
+                    <button class="btn btn-danger ml-4" id="eliminarEmp" onclick="generarModalEliminarEmp();" type="button" data-toggle="modal" data-target="#erased">
+                        <i class="fa fa-trash"> Erase Account</i>
                     </button>
                     <div class="collapse" id="comentars">
                         <div class="card-body m-0">
@@ -1595,54 +1598,20 @@ function validacion(id) {
 
 }
 
-function alertarCompany(idMsj, indicePub) {
-    document.getElementById(idMsj).innerHTML = "";
-    document.getElementById(idMsj).innerHTML +=
-        `<div class="alert px-3 alert-warning alert-dismissible fade show" role="alert">
-            <strong>Are you sure to DELETE this publication?</strong>
-            <div class="row ">
-                <button type="button" class="btn btn-success mr-auto" data-dismiss="alert" aria-label="Close">CANCEL</button>
-                <button type="button" class="btn btn-danger ml-auto" onclick="erasePub(${indicePub})" data-dismiss="alert" aria-label="Close">DELETE</button>
-            </div>
-        </div>`;
-}
-
-function erasePub(indicePub) {
-    del = {
-        indice: indicePub,
-        nombreEmpresa: empresaSeleccionada.nombreEmpresa,
-        tipo: "pub"
-    }
-    axios({
-            url: '../../proyecto-back-end/API/empresas.php',
-            method: 'DELETE',
-            responseType: 'json',
-            data: del
-        })
+function erasePub(nombGan, indicePub) {
+    axios.delete('../../proyecto-back-end/API/empresas.php' + `?indice=${indicePub}&nombreUsuario=${empresaSeleccionada.nombreUsuario}&tipo=pub`)
         .then(res => {
             empresaSeleccionada = res.data;
-            empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
+            empresaSeleccionada.registroAcciones.push(msjParaRegistro('eliminarPub', empresaSeleccionada.nombreUsuario, nombGan));
             actualizarEmpresa();
-            document.getElementById("modalInfo").innerHTML = "";
-            document.getElementById("modalInfo").innerHTML +=
-                `<div id="tarjeta" class="modal fade" data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Successful!, </strong> Your publication has been erased.
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="modal-footer py-2"
-                                <button class="btn btn-info " data-dismiss="modal" aria-label="Close">
-                                    Close
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            generarPublicaciones();
+            document.getElementById("alertElimPub").innerHTML = "";
+            document.getElementById("alertElimPub").innerHTML +=
+                `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Successful!, </strong> Your information has been updated.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>`;
         })
         .catch(function(error) {
@@ -1650,18 +1619,62 @@ function erasePub(indicePub) {
         });
 }
 
+
+function generarModalEliminarEmp() {
+    document.getElementById("modalInfo").innerHTML = "";
+    document.getElementById("modalInfo").innerHTML +=
+        `
+        <div class="modal fade" id="erased" tabindex="-1" role="dialog" aria-labelledby="erasedTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="erasedLongTitle">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    If you delete your account, this process cannot be re-established.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger"><i class="fa fa-trash-o"> Delete</i></button>
+                </div>
+                </div>
+            </div>
+        </div>`;
+}
+
+function generarModalEliminarPub(nombGan, ind) {
+    document.getElementById("modalInfo").innerHTML = "";
+    document.getElementById("modalInfo").innerHTML +=
+        `
+        <div class="modal fade" id="erasedPub" tabindex="-1" role="dialog" aria-labelledby="erasedPubTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="erasedPubLongTitle">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        If you delete this publication, this process cannot be re-established.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success mr-auto" data-dismiss="alert" aria-label="Close">CANCEL</button>
+                        <button type="button" class="btn btn-danger ml-auto" onclick="erasePub('${nombGan}', '${ind}')"><i class="fa fa-trash-o"> DELETE</i></button>
+                    </div>
+                    <div id="alertElimPub">
+                    
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
+
 function eraseEmp() {
-    del = {
-        indice: indicePub,
-        nombreEmpresa: empresaSeleccionada.nombreEmpresa,
-        tipo: "pub"
-    }
-    axios({
-            url: '../../proyecto-back-end/API/empresas.php',
-            method: 'DELETE',
-            responseType: 'json',
-            data: indicePub
-        })
+    axios.delete('../../proyecto-back-end/API/empresas.php' + `?indice=${indicePub}&nombreUsuario=${empresaSeleccionada.nombreUsuario}&tipo=pub`)
         .then(res => {
             empresaSeleccionada = res.data;
             empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
@@ -2024,7 +2037,7 @@ function msjParaRegistro(descripcion, nombre, nombrePub) {
         }
     } else if (descripcion == "eliminarPub") {
         msj = {
-            eliminarPub: "The user " + nombre + " updated the information with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            eliminarPub: "The user " + nombre + " erased the publication with the name " + nombrePub + " with an erased date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "eliminarEmp") {
         msj = {

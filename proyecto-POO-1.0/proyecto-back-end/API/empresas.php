@@ -96,17 +96,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 
     case 'DELETE':
-        $_GET=json_decode(file_get_contents('php://input'), true);
         if ($_GET['tipo'] == 'empresa'){
             if (isset($_GET['nombreUsuario'])) {
                 Empresa::eliminarEmpresa($_GET['nombreUsuario']);
-                $resultado["mensaje"] = "La empresa se elimino exitosamente";
-                echo json_encode($resultado);
             }
         }else if($_GET['tipo'] == 'pub') {
             if(isset($_GET['indice'])) {
-                Empresa::eliminarPub($_GET['nombreEmpresa'], $_GET['indice']);
+                if(isset($_GET['nombreUsuario'])) {
+                    Empresa::eliminarPub($_GET['nombreUsuario'], $_GET['indice']);
+                }else{
+                    echo "nada";
+                }
+            }else{
+                echo "nada indice";
             }
+        }else{
+            echo "nada pub";
         }
         break;
 
