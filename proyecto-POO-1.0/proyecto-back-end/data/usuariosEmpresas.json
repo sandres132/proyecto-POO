@@ -14,7 +14,7 @@
         "twitter": "diunsatwitter@yahoo.com",
         "twitch": "diunsatwitch@yahoo.com",
         "email": "diunsa@gmail.hn",
-        "actual": true,
+        "actual": false,
         "publicaciones": [{
                 "nombreEmpresa": "diunsahn",
                 "imagenGanga": "..\/img\/diunsa3.jpg",
@@ -123,6 +123,9 @@
             },
             {
                 "eliminarPub": "The user diunsahn erased the publication with the name Figuras de Goku with an erased date: 2020-06-02 0:46:23"
+            },
+            {
+                "cierreSesion": "The user diunsahn closed session with session closing date: 2020-06-02 7:33:41"
             }
         ]
     },
@@ -322,7 +325,17 @@
         "tipo": "empresa",
         "fechaSignIn": "2020-05-03",
         "registroAcciones": [{
-            "registro": "The user gangas was registered with the date and time of registration: 2020-05-03 20:31:10"
-        }]
+                "registro": "The user gangas was registered with the date and time of registration: 2020-05-03 20:31:10"
+            },
+            {
+                "inicioSesion": "User gangas login with login date: 2020-06-02 8:30:7"
+            },
+            {
+                "cierreSesion": "The user gangass closed session with session closing date: 2020-06-02 13:41:0"
+            },
+            {
+                "inicioSesion": "User gangass login with login date: 2020-06-02 13:52:30"
+            }
+        ]
     }
 ]

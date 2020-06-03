@@ -92,6 +92,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if(isset($_PUT['indice'])) {
                 Empresa::actualizarPub($_PUT);
             }
+        }else if($_PUT['tipo'] == 'comentario') {
+            Empresa::registroEliminacion($_PUT);
+        }else{
+            echo "nada";
         }
         break;
 

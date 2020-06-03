@@ -22,52 +22,51 @@
         </div>
     </header>
 
-    <div class="container-fluid mt-5 mb-5">
-        <div class="row">
-            <div class="card col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-0 ml-auto trans">
-                <div class="card-body my-2 py-2 trans">
-                    <div>
-                        <h3>We are sad that you leave us!</h3>
-                        <h3>We already miss you!</h3>
-                        <h3>Would you like to tell us the reason why you are leaving us?</h3>
-                        <img src="../img/mano.jpg">
-
-                    </div>
-                </div>
-            </div>
-            <div class="card col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-0 ml-auto rad">
-                <div class="card-body my-2 py-2">
-                    <form class="form-control py-0">
-                        <div>
-                            <fieldset>
+    <div class="container-fluid mt-0 p-0">
+        <div class="card col-lg-6 col-md-6 col-sm-12 col-xs-12 mr-auto pb-4 mt-0" style="background-color: red;">
+            <div class="card-body mt-4 m-0 pb-1">
+                <div class="card-body mb-0 pb-2">
+                    <div class="mt-1">
+                        <h3 class="text-center">Thanks for being with us all this time.</h3>
+                        <h3 class="text-center">We already miss you!</h3>
+                        <h3 class="text-center">Would you like to tell us the reason why you are leaving us?</h3>
+                        <div class="form-control py-0" style="background-color: whitesmoke;">
+                            <div>
+                                <div class="form-row py-1">
+                                    <label for="nombre"><b><i class="fa fa-user"> Name</i></b></label>
+                                    <input type="text" id="nombre" class="form-control" oninput="verif();" required>
+                                </div>
                                 <div class="form py-1 ">
-                                    <label for="experience"><b> Option</b></label>
-                                    <select class="form-control" id="experience" onchange="verifSelect('experience', 'post');">
+                                    <label for="experience"> Option</label>
+                                    <select class="form-control" id="experience" onchange="verif();" required>
                                         <option selected="true" value="nada" id="otro">Choose an option</i></option>
                                         <option value="buscar" id="buscar">I can't find what I'm looking for</i></option>
-                                        <option value="unlike" id="unlike">I don't like the page</></option>
-                                        <option value="know" id="know">I did not understand how to use the page</></option>
+                                        <option value="unlike" id="unlike">I don't like the web site</></option>
+                                        <option value="know" id="know">I did not understand how to use the web site</></option>
                                         <option value="Other" id="otro">Other</i></option>
                                     </select>
-                                    <div class="form-row py-1 disabled" id="post">
-                                        <label for="text"><b><i class="fa fa-comment"> Post your Reason</i></b></label>
-                                        <textarea id="text" class="form-control" rows="5" oninput="send('text')" require></textarea>
-                                    </div>
-                                    <div class="form-row">
-                                        <button class="btn btn-info ml-auto my-2" onclick="save()">Submit</button>
-                                    </div>
                                 </div>
-                            </fieldset>
-
+                                <div class="form-row py-1">
+                                    <label for="text"><b><i class="fa fa-comment"> Post your Reason</i></b></label>
+                                    <textarea id="text" class="form-control" rows="5" oninput="verif();" required></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <button id="submit" class="btn btn-danger ml-auto my-2 disabled" onclick="subirComentario()">Submit</button>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="../js/jquery.slim.js "></script>
-    <script src="../js/bootstrap.min.js "></script>
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/axios.min.js"></script>
+    <script src="../js/swiper.min.js"></script>
+    <script src="../js/jquery.slim.js"></script>
+    <script src="../js/popper.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script src="../js/deleteController.js"></script>
 </body>
 

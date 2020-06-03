@@ -403,6 +403,7 @@ class Empresa
                 $archivo = fopen('../data/usuariosEmpresas.json', 'w');
                 fwrite($archivo, json_encode($empresas));
                 fclose($archivo);
+                echo "Se Elimino";
                 break;
             }
         }
@@ -483,6 +484,38 @@ class Empresa
             $resultado["nomb"] = $empresas[$i]['nombreUsuario'];
             echo json_encode($resultado);
         }
+    }
+
+    public static function registroEliminacion($com) {
+        $verif=false;
+        $contenidoArchivocomentarios = file_get_contents('../data/comentarioFinal.json');
+        $comentarios = json_decode($contenidoArchivocomentarios, true);
+
+        for ($k=0; $k < sizeof($comentarios); $k++) {
+            if ($comentarios[$k]['nombreUsuario']==$com['nombre']) {
+                $comentarios[$k]['registroAcciones'][]=array(
+                    "Razon"=>$com['titulo'],
+                    "comentario"=>$com['text']
+                );
+                $verif=true;
+                break;
+            }
+        }
+        if ($verif==false) {
+            $comentarios[]=array(
+                "nombreUsuario" => $com['nombre'],
+                "registroAcciones" => array(
+                    "Razon"=>$com['titulo'],
+                    "comentario"=>$com['text']
+                )
+            );
+        }
+
+        $archivo = fopen('../data/comentarioFinal.json', 'w');
+        fwrite($archivo, json_encode($comentarios));
+        fclose($archivo);
+        echo json_encode($com);
+        break;
     }
 
     public function getNombreEmpresa()

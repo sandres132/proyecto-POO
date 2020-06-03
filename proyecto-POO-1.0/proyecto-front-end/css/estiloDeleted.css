@@ -22,16 +22,8 @@
     max-height: 70px;
 }
 
-.bg-dark.scrolled {
-    background: rgba(36, 35, 33, 0.718) !important;
-}
-
 .rad {
     border-radius: 20px !important;
-}
-
-.card {
-    background-color: rgba(255, 255, 255, 0.8);
 }
 
 .mt-5,
@@ -39,11 +31,11 @@
     margin-top: 7rem !important;
 }
 
-.form-control {
-    background-color: transparent !important;
-    border: 1.5px solid #ced4da;
+.mt-4,
+.my-4 {
+    margin-top: 5rem !important;
 }
 
-.trans {
-    background-color: transparent !important;
+.form-control {
+    border: 1.5px solid #ced4da;
 }

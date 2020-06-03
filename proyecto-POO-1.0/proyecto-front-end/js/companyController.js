@@ -1619,7 +1619,6 @@ function erasePub(nombGan, indicePub) {
         });
 }
 
-
 function generarModalEliminarEmp() {
     document.getElementById("modalInfo").innerHTML = "";
     document.getElementById("modalInfo").innerHTML +=
@@ -1638,7 +1637,7 @@ function generarModalEliminarEmp() {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger"><i class="fa fa-trash-o"> Delete</i></button>
+                    <a onclick="eraseEmp();" class="btn btn-danger text-white"><i class="fa fa-trash-o"> Delete</i></a>
                 </div>
                 </div>
             </div>
@@ -1674,36 +1673,20 @@ function generarModalEliminarPub(nombGan, ind) {
 }
 
 function eraseEmp() {
-    axios.delete('../../proyecto-back-end/API/empresas.php' + `?indice=${indicePub}&nombreUsuario=${empresaSeleccionada.nombreUsuario}&tipo=pub`)
+    empresaSeleccionada.registroAcciones.push(msjParaRegistro('eliminarEmp', empresaSeleccionada.nombreUsuario, "nada"));
+    actualizarEmpresa();
+    axios.delete('../../proyecto-back-end/API/empresas.php' + `?nombreUsuario=${empresaSeleccionada.nombreUsuario}&tipo=empresa`)
         .then(res => {
-            empresaSeleccionada = res.data;
-            empresaSeleccionada.registroAcciones.push(msjParaRegistro('actualizarPub', empresaSeleccionada.nombreUsuario, modifPub.nombreGanga));
-            actualizarEmpresa();
-            document.getElementById("modalInfo").innerHTML = "";
-            document.getElementById("modalInfo").innerHTML +=
-                `<div id="tarjeta" class="modal fade" data-backdrop="position-static" tabindex="-1" role="dialog" aria-labelledby="contentForm" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <strong>Successful!, </strong> Your publication has been erased.
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="modal-footer py-2"
-                                <button class="btn btn-info " data-dismiss="modal" aria-label="Close">
-                                    Close
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+            console.log(res);
+            redireccionar();
         })
         .catch(function(error) {
             console.error(error);
         });
+}
+
+function redireccionar() {
+    top.location.href = "../html/ganguitasEliminarCuenta.html";
 }
 
 function savePub() {
@@ -2012,7 +1995,7 @@ function comentCalif(idDiv, id, indiceCalif, tipo) {
 
 function logOut() {
     empresaSeleccionada.actual = false;
-    empresaSeleccionada.registroAcciones.push(msjParaRegistro('cierreSesion', empresaSeleccionada.nombreUsuario, "nada"));
+    empresaSeleccionada.registroAcciones.push(msjParaRegistro('logOut', empresaSeleccionada.nombreUsuario, "nada"));
     actualizarEmpresa();
 }
 
@@ -2041,7 +2024,7 @@ function msjParaRegistro(descripcion, nombre, nombrePub) {
         }
     } else if (descripcion == "eliminarEmp") {
         msj = {
-            eliminarEmp: "The user " + nombre + " updated the information with an update date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
+            eliminarEmp: "The user " + nombre + " erased the account with an erased date: " + fechaActual() + " " + f.getHours() + ":" + f.getMinutes() + ":" + f.getSeconds()
         }
     } else if (descripcion == "logOut") {
         msj = {
