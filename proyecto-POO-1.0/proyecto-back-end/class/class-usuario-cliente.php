@@ -98,6 +98,27 @@ class Cliente
         }
     }
 
+    public static function obtenerClienteActual()
+    {
+        $verif = false;
+        //retornar la empresa con el atributo actual igual que true
+        $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
+        $clientes = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($clientes); $i++) {
+            if ($clientes[$i]['actual'] == true) {
+                echo json_encode($clientes[$i]);
+                $verif = false;
+                break;
+            } else {
+                $verif = true;
+            }
+        }
+        if ($verif) {
+            $resultado["actual"] = "no se encontro";
+            echo json_encode($resultado);
+        }
+    }
+
     public function actualizarCliente($nombCliente)
     {
         //actualizar el cliente con nombre de cliente 'nombCliente'
@@ -155,7 +176,7 @@ class Cliente
         $contenidoArchivo = file_get_contents('../data/usuariosClientes.json');
         $clientes = json_decode($contenidoArchivo, true);
         for ($i=0; $i < sizeof($clientes); $i++) { 
-            if ($clientes[$i]['nombreUsuario'] == $nomb) {
+            if ($clientes[$i]['usuarioCliente'] == $nomb) {
                 $resultado["resultado"] = "encontrado";
                 $resultado["nomb"] = $clientes[$i]['usuarioCliente'];
                 echo json_encode($resultado);
@@ -165,7 +186,7 @@ class Cliente
         }
         if($verif==false){
             $resultado["resultado"] = "noEncontrado";
-            $resultado["nomb"] = $clientes[$i]['nombreUsuario'];
+            $resultado["nomb"] = $nomb;
             echo json_encode($resultado);
         }
     }

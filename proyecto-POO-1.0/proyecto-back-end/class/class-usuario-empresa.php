@@ -19,6 +19,7 @@ class Empresa
     private $email;
     private $actual;
     private $publicaciones;
+    private $empFavoritaDe;
     private $calificacionEmpresaDe;
     private $tipo;
     private $fechaSignIn;
@@ -226,12 +227,13 @@ class Empresa
                 $empresas[$i]['publicaciones'][$j]['tipoEmpresa'] = $empresas[$i]['tipoEmpresa'];
                 $empresas[$i]['publicaciones'][$j]['pais'] = $empresas[$i]['pais'];
                 $empresas[$i]['publicaciones'][$j]['direccion'] = $empresas[$i]['direccion'];
-                $empresas[$i]['publicaciones'][$j]['publicaciones'] = $empresas[$i]['publicaciones'];
+                $empresas[$i]['publicaciones'][$j]['cantPubs'] = sizeof($empresas[$i]['publicaciones']);
                 $empresas[$i]['publicaciones'][$j]['facebook'] = $empresas[$i]['facebook'];
                 $empresas[$i]['publicaciones'][$j]['instagram'] = $empresas[$i]['instagram'];
                 $empresas[$i]['publicaciones'][$j]['twitter'] = $empresas[$i]['twitter'];
                 $empresas[$i]['publicaciones'][$j]['twitch'] = $empresas[$i]['twitch'];
                 $empresas[$i]['publicaciones'][$j]['email'] = $empresas[$i]['email'];
+                $empresas[$i]['publicaciones'][$j]['empFavoritaDe'] = $empresas[$i]['empFavoritaDe'];
                 $publicaciones[] = $empresas[$i]['publicaciones'][$j];
             }
 
@@ -257,6 +259,96 @@ class Empresa
         if ($verif) {
             $resultado["actual"] = "no se encontro";
             echo json_encode($resultado);
+        }
+    }
+
+    public static function guardarPubFav($pub)
+    {
+        //retornar la empresa con el atributo actual igual que true
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            for ($j=0; $j < sizeof($empresas[$i]['publicaciones']); $j++) { 
+                if ($empresas[$i]['publicaciones'][$j]['id']==$pub['indiceDePub']) {
+                    $empresas[$i]['publicaciones'][$j]['pubFavoritaDe'][]=array(
+                        "empresa"=>$pub['empresa'],
+                        "cliente"=>$pub['cliente'],
+                        "fechaSelecFav"=>$pub['fechaSelecFav'],
+                        "indiceDePub"=>$pub['indiceDePub']
+                    );
+                    $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                    fwrite($archivo, json_encode($empresas));
+                    fclose($archivo);
+                break;
+                }
+            }
+        }
+    }
+
+    public static function borrarPubFav($pub)
+    {
+        //retornar la empresa con el atributo actual igual que true
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            for ($j=0; $j < sizeof($empresas[$i]['publicaciones']); $j++) { 
+                if ($empresas[$i]['publicaciones'][$j]['id']==$pub['indiceDePub']) {
+                    for ($k=0; $k < $empresas[$i]['publicaciones'][$j]['pubFavoritaDe']; $k++) { 
+                        if ($empresas[$i]['publicaciones'][$j]['pubFavoritaDe'][$k]['indiceDePub']==$pub['indiceDePub']) {
+                            if ($empresas[$i]['publicaciones'][$j]['pubFavoritaDe'][$k]['nomPub']==$pub['nomPub']) {
+                                array_splice($empresas[$i]['publicaciones'][$j]['pubFavoritaDe'], $k, 1);
+                            }
+                        }
+                    }
+                    
+                    $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                    fwrite($archivo, json_encode($empresas));
+                    fclose($archivo);
+                break;
+                }
+            }
+        }
+    }
+
+    
+    public static function guardarEmpFav($pub)
+    {
+        //retornar la empresa con el atributo actual igual que true
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            if ($empresas[$i]['nombreUsuario']==$pub['empresa']) {
+                $empresas[$i]['empFavoritaDe'][]=array(
+                    "empresa"=>$pub['empresa'],
+                    "cliente"=>$pub['cliente'],
+                    "fechaSelecFav"=>$pub['fechaSelecFav']
+                );
+                $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                fwrite($archivo, json_encode($empresas));
+                fclose($archivo);
+            break;
+            }
+        }
+    }
+
+    public static function borrarEmpFav($pub)
+    {
+        //retornar la empresa con el atributo actual igual que true
+        $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
+        $empresas = json_decode($contenidoArchivo, true);
+        for ($i = 0; $i < sizeof($empresas); $i++) {
+            for ($j=0; $j < sizeof($empresas[$i]['empFavoritaDe']); $j++) { 
+                if ($empresas[$i]['empFavoritaDe'][$j]['empresa']==$pub['empresa']) {
+                    if ($empresas[$i]['empFavoritaDe'][$j]['cliente']==$pub['cliente']) {
+                        array_splice($empresas[$i]['empFavoritaDe'][$j], $j, 1);
+                    }
+                    
+                    $archivo = fopen('../data/usuariosEmpresas.json', 'w');
+                    fwrite($archivo, json_encode($empresas));
+                    fclose($archivo);
+                break;
+                }
+            }
         }
     }
 
@@ -470,6 +562,7 @@ class Empresa
         $verif = false;
         $contenidoArchivo = file_get_contents('../data/usuariosEmpresas.json');
         $empresas = json_decode($contenidoArchivo, true);
+        $resultado=array();
         for ($i = 0; $i < sizeof($empresas); $i++) {
             if ($empresas[$i]['nombreUsuario'] == $nomb) {
                 $resultado["resultado"] = "encontrado";
@@ -479,43 +572,12 @@ class Empresa
                 break;
             }
         }
+                
         if ($verif == false) {
             $resultado["resultado"] = "noEncontrado";
-            $resultado["nomb"] = $empresas[$i]['nombreUsuario'];
+            $resultado["nomb"] = $nomb;
             echo json_encode($resultado);
         }
-    }
-
-    public static function registroEliminacion($com) {
-        $verif=false;
-        $contenidoArchivocomentarios = file_get_contents('../data/comentarioFinal.json');
-        $comentarios = json_decode($contenidoArchivocomentarios, true);
-
-        for ($k=0; $k < sizeof($comentarios); $k++) {
-            if ($comentarios[$k]['nombreUsuario']==$com['nombre']) {
-                $comentarios[$k]['registroAcciones'][]=array(
-                    "Razon"=>$com['titulo'],
-                    "comentario"=>$com['text']
-                );
-                $verif=true;
-                break;
-            }
-        }
-        if ($verif==false) {
-            $comentarios[]=array(
-                "nombreUsuario" => $com['nombre'],
-                "registroAcciones" => array(
-                    "Razon"=>$com['titulo'],
-                    "comentario"=>$com['text']
-                )
-            );
-        }
-
-        $archivo = fopen('../data/comentarioFinal.json', 'w');
-        fwrite($archivo, json_encode($comentarios));
-        fclose($archivo);
-        echo json_encode($com);
-        break;
     }
 
     public function getNombreEmpresa()
@@ -769,6 +831,15 @@ class Empresa
 
         return $this;
     }
+
+    function getEmpFavoritaDe() { 
+        return $this->empFavoritaDe; 
+   } 
+
+   function setEmpFavoritaDe($empFavoritaDe) {  
+       $this->empFavoritaDe = $empFavoritaDe; 
+       return $this;
+   } 
 }
 
 ?>

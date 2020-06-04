@@ -35,6 +35,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 Cliente::buscarIdUser($_GET['nombUs']);
             }else if (isset($_GET['usuarioCliente'])) {
                 Cliente::obtenerCliente($_GET['usuarioCliente']);
+            }else if(isset($_GET['actual'])){
+                Cliente::obtenerClienteActual();
             } else {
                 Cliente::obtenerclientes();
             }

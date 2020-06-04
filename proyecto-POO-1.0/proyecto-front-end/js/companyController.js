@@ -1598,6 +1598,32 @@ function validacion(id) {
 
 }
 
+function alertar(id1, idCom) {
+    var elem1 = document.getElementById(id1);
+    var elemCom = document.getElementById(idCom);
+    if (elem1.value == elemCom.value == "") {
+        elemCom.style.borderColor = "none";
+        elemCom.style.color = "black";
+        elem1.style.borderColor = "none";
+        elem1.style.color = "black";
+    } else if (elem1.value == elemCom.value) {
+        if (elemCom.checkValidity()) {
+            elemCom.style.borderColor = "green";
+            elemCom.style.color = "green";
+            verifPass = true;
+        } else {
+            elemCom.style.borderColor = "red";
+            elemCom.style.color = "red";
+            verifPass = false;
+        }
+    } else {
+        elemCom.style.borderColor = "red";
+        elemCom.style.color = "red";
+        verifPass = false;
+    }
+
+}
+
 function erasePub(nombGan, indicePub) {
     axios.delete('../../proyecto-back-end/API/empresas.php' + `?indice=${indicePub}&nombreUsuario=${empresaSeleccionada.nombreUsuario}&tipo=pub`)
         .then(res => {
@@ -1708,6 +1734,7 @@ function savePub() {
             .then(res => {
                 var nuevaPub = {
                     tipo: "pub",
+                    id: empresaSeleccionada.publicaciones.length + 1,
                     nombreEmpresa: empresaSeleccionada.nombreUsuario,
                     imagenGanga: '../' + res.data,
                     nombreGanga: document.getElementById("gangaNameCard").value,
@@ -1755,6 +1782,7 @@ function savePub() {
     } else if (document.getElementById("gangaNameCard").value.length != 0 && document.getElementById("pubDescripAdd").value.length != 0) {
         var nuevaPub = {
             tipo: "pub",
+            id: empresaSeleccionada.publicaciones.length + 1,
             nombreEmpresa: empresaSeleccionada.nombreUsuario,
             imagenGanga: '../img/logo.png',
             nombreGanga: document.getElementById("gangaNameCard").value,
@@ -1893,32 +1921,6 @@ function validarUser(id, descripcion) {
         .catch(function(err) {
             console.log(err);
         });
-}
-
-function alertar(id1, idCom) {
-    var elem1 = document.getElementById(id1);
-    var elemCom = document.getElementById(idCom);
-    if (elem1.value == elemCom.value == "") {
-        elemCom.style.borderColor = "none";
-        elemCom.style.color = "black";
-        elem1.style.borderColor = "none";
-        elem1.style.color = "black";
-    } else if (elem1.value == elemCom.value) {
-        if (elemCom.checkValidity()) {
-            elemCom.style.borderColor = "green";
-            elemCom.style.color = "green";
-            verifPass = true;
-        } else {
-            elemCom.style.borderColor = "red";
-            elemCom.style.color = "red";
-            verifPass = false;
-        }
-    } else {
-        elemCom.style.borderColor = "red";
-        elemCom.style.color = "red";
-        verifPass = false;
-    }
-
 }
 
 function verifPassEmp(id) {

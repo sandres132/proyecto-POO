@@ -16,6 +16,7 @@
         "email": "diunsa@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "id": 1,
                 "nombreEmpresa": "diunsahn",
                 "imagenGanga": "..\/img\/diunsa3.jpg",
                 "nombreGanga": "Camisa Deportiva",
@@ -47,6 +48,7 @@
                 }]
             },
             {
+                "id": 2,
                 "nombreEmpresa": "diunsahn",
                 "imagenGanga": "..\/img\/diunsa2.jpg",
                 "nombreGanga": "\u00a1Hyper Mega Oferta!",
@@ -63,6 +65,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "id": 3,
                 "nombreEmpresa": "diunsahn",
                 "imagenGanga": "..\/img\/descarga.webp",
                 "nombreGanga": "Figuras de Goku",
@@ -79,6 +82,7 @@
                 "calificacionPublicacionDe": []
             }
         ],
+        "empFavoritaDe": [],
         "calificacionEmpresaDe": [{
             "nomCliente": "ache",
             "imagen": "..\/img\/user-logo-png-4.png",
@@ -147,6 +151,7 @@
         "email": "samsunghn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "id": 1,
                 "nombreEmpresa": "samsunghn",
                 "imagenGanga": "..\/img\/samsung.png",
                 "nombreGanga": "Samsung A30 O A30s",
@@ -166,6 +171,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "id": 2,
                 "nombreEmpresa": "samsumghn",
                 "imagenGanga": "..\/img\/samsung2.png",
                 "nombreGanga": "\u00bfAburrido de tu celular?",
@@ -182,6 +188,7 @@
                 "calificacionPublicacionDe": []
             }
         ],
+        "empFavoritaDe": [],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
         "fechaSignIn": "2020-05-03",
@@ -207,6 +214,7 @@
         "email": "ladyleehn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "id": 1,
                 "nombreEmpresa": "ladyleehn",
                 "imagenGanga": "..\/img\/ladylee1.jpg",
                 "nombreGanga": "Televisor Samsung",
@@ -223,6 +231,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "id": 2,
                 "nombreEmpresa": "ladyleehn",
                 "imagenGanga": "..\/img\/ladylee3.jpg",
                 "nombreGanga": "Juego de Sala",
@@ -239,6 +248,7 @@
                 "calificacionPublicacionDe": []
             }
         ],
+        "empFavoritaDe": [],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
         "fechaSignIn": "2020-05-03",
@@ -264,6 +274,7 @@
         "email": "burgerkinghn@gmail.hn",
         "actual": false,
         "publicaciones": [{
+                "id": 1,
                 "nombreEmpresa": "burguerkinghn",
                 "imagenGanga": "..\/img\/comboHamburger2.jpg",
                 "nombreGanga": "Combo #2",
@@ -280,6 +291,7 @@
                 "calificacionPublicacionDe": []
             },
             {
+                "id": 2,
                 "nombreEmpresa": "burguerkinghn",
                 "imagenGanga": "..\/img\/comboHamburger.jpg",
                 "nombreGanga": "\u00a1Se vino el Econo Combo!",
@@ -296,6 +308,7 @@
                 "calificacionPublicacionDe": []
             }
         ],
+        "empFavoritaDe": [],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
         "fechaSignIn": "2020-05-03",
@@ -321,6 +334,7 @@
         "email": "ganguitas@gmail.com",
         "actual": false,
         "publicaciones": [],
+        "empFavoritaDe": [],
         "calificacionEmpresaDe": [],
         "tipo": "empresa",
         "fechaSignIn": "2020-05-03",

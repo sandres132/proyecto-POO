@@ -14,7 +14,7 @@ function subirComentario() {
     let variableSelect = document.getElementById("experience").value;
     let variableText = document.getElementById("text").value;
     var com = {
-        tipo: "comentario",
+        tipo: "empresa",
         nombre: variableNombre,
         titulo: variableSelect,
         text: variableText

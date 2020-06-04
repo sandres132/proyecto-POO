@@ -87,15 +87,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $_PUT['registroAcciones']
                 );
                 $empresa->actualizarEmpresa($_PUT['nombreUsuarioModif']);
+            }else if (isset($_PUT['accion'])){
+                if ($_PUT['accion']=="guardar"){
+                    Empresa::guardarEmpFav($_PUT);
+                }else if ($_PUT['accion']=="borrar"){
+                    Empresa::borrarEmpFav($_PUT);
+                }
             }
         }else if($_PUT['tipo'] == 'pub') {
             if(isset($_PUT['indice'])) {
                 Empresa::actualizarPub($_PUT);
+            }else if (isset($_PUT['accion'])){
+                if ($_PUT['accion']=="guardar"){
+                    Empresa::guardarPubFav($_PUT);
+                }else if ($_PUT['accion']=="borrar"){
+                    Empresa::borrarPubFav($_PUT);
+                }
             }
-        }else if($_PUT['tipo'] == 'comentario') {
-            Empresa::registroEliminacion($_PUT);
-        }else{
-            echo "nada";
         }
         break;
 
@@ -108,14 +116,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
             if(isset($_GET['indice'])) {
                 if(isset($_GET['nombreUsuario'])) {
                     Empresa::eliminarPub($_GET['nombreUsuario'], $_GET['indice']);
-                }else{
-                    echo "nada";
                 }
-            }else{
-                echo "nada indice";
             }
-        }else{
-            echo "nada pub";
         }
         break;
 

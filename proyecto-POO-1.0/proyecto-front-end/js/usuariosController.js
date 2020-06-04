@@ -4,39 +4,22 @@ var verifUser = true;
 var verifPass = null;
 var verifPassUser = false;
 
-function obtenerCliente() {
+function obtenerClienteActual() {
     console.log("entro a obtener cliente");
-
-    axios({
-            url: '../../proyecto-back-end/API/usuarios.php',
-            method: 'GET',
-            responseType: 'json',
-            params: {
-                tipo: "cliente"
-            }
+    axios.get('../../proyecto-back-end/API/usuarios', {
+            params: { tipo: "cliente", actual: "actual" }
         })
         .then(function(res) {
-            var clientes;
-            var cont = 0;
-            clientes = res.data;
-            clientes.map(item => {
-                cont++;
-            });
-            console.log(cont);
-            for (let i = 0; i < cont; i++) {
-                if (clientes[i].actual == true) {
-                    clienteSeleccionado = clientes[i];
-                    generarNombre();
-                    generarModalCompras(clienteSeleccionado);
-                    generarModalPerfil(clienteSeleccionado);
-                }
-            }
+            clienteSeleccionado = res.data;
+            generarNombre();
+            generarModalCompras(clienteSeleccionado);
+            generarModalPerfil(clienteSeleccionado);
         })
         .catch(function(err) {
-            console.log(err);
+            console.error(err);
         });
 }
-obtenerCliente();
+obtenerClienteActual();
 //
 function generarNombre() {
     document.getElementById("nombreDeUsuario").innerHTML = "";
@@ -45,43 +28,69 @@ function generarNombre() {
 }
 //
 function ObtenerPublicaciones() {
-    axios({
-            url: '../../proyecto-back-end/API/usuarios.php',
-            method: 'GET',
-            responseType: 'json',
-            params: {
-                tipo: "empresa",
-            }
+    axios.get('../../proyecto-back-end/API/empresas', {
+            params: { tipo: "empresa", pubs: "pubs" }
         })
         .then(function(res) {
-            var empresas;
-            empresas = res.data;
-            generarPublicaciones(empresas);
+            var publicaciones;
+            publicaciones = res.data;
+            generarPublicaciones(publicaciones);
         })
         .catch(function(err) {
-            console.log(err);
+            console.error(err);
         });
 }
 ObtenerPublicaciones();
 //
-function generarPublicaciones(empresas) {
-    var cont = 0;
-    var empresasLenght = 0;
-    empresas.map(item => {
-        empresasLenght++;
-    });
+function generarPublicaciones(publicaciones) {
     document.getElementById("publicaciones").innerHTML = '';
-    for (let i = 0; i < empresasLenght; i++) {
-        for (let j = 0; j < empresas[i].publicaciones.length; j++) {
-            imprimirPublicaciones(empresas[i].publicaciones[j], empresas[i], cont);
-            cont++;
-        }
+    for (let i = 0; i < publicaciones.length; i++) {
+        imprimirPublicaciones(publicaciones[i], i);
+
     }
 }
 //
-function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
+function imprimirPublicaciones(publicacion, contadorPubs) {
+    var pubFavboton = "";
+    var empFavboton = "";
+    if (publicacion.pubFavoritaDe.length > 1) {
+        for (let i = 0; i < publicacion.pubFavoritaDe.length; i++) {
+            if (publicacion.pubFavoritaDe[i].cliente == clienteSeleccionado.usuarioCliente) {
+                pubFavboton +=
+                    `<a href="#" id="pubFav${contadorPubs}" class="btn btn-sm btn-info text-white fav" onclick="pubFavorita('${contadorPubs}', '${publicacion.nombreEmpresa}', '${publicacion.id}', '${publicacion.nombreGanga}')"><i class="fa fa-1x fa-heart"></i></a>`;
+                break;
+            } else {
+                pubFavboton +=
+                    `<a href="#" id="pubFav${contadorPubs}" class="btn btn-sm btn-info text-white fav" onclick="pubFavorita('${contadorPubs}', '${publicacion.nombreEmpresa}', '${publicacion.id}', '${publicacion.nombreGanga}')"><i class="fa fa-heart fa-1x"></i></a>`;
+            }
+
+        }
+    } else {
+        pubFavboton +=
+            `<a href="#" id="pubFav${contadorPubs}" class="btn btn-sm btn-info text-white fav" onclick="pubFavorita('${contadorPubs}', '${publicacion.nombreEmpresa}', '${publicacion.id}', '${publicacion.nombreGanga}')"><i class="fa fa-heart fa-1x"></i></a>`;
+    }
+
+    if (publicacion.empFavoritaDe.length > 1) {
+        for (let i = 0; i < publicacion.empFavoritaDe.length; i++) {
+            for (let j = 0; j < clienteSeleccionado.companiasFav.length; j++) {
+                const element = clienteSeleccionado.companiasFav[j];
+                if (publicacion.empFavoritaDe[i].cliente == element.nombreEmp) {
+                    empFavboton +=
+                        `<a href="#" id="empFav${contadorPubs}" class="btn btn-sm btn-info text-white fav" onclick="pubFavorita('${contadorPubs}', '${publicacion.nombreEmpresa}')"><i class="fa fa-heart fa-1x"></i></a>`;
+                    break;
+                } else {
+                    empFavboton +=
+                        `<a href="#" id="empFav${contadorPubs}" class="btn btn-sm btn-info text-white" onclick="pubFavorita('${contadorPubs}', '${publicacion.nombreEmpresa}')"><i class="fa fa-heart fa-1x"></i></a>`;
+                }
+            }
+        }
+    } else {
+        empFavboton +=
+            `<a href="#" id="empFav${contadorPubs}" class="btn btn-sm btn-info text-white" onclick="pubFavorita('${contadorPubs}', '${publicacion.nombreEmpresa}')"><i class="fa fa-heart fa-1x"></i></a>`;
+    }
+
     document.getElementById("publicaciones").innerHTML +=
-        `<div class="col-lg-4 col-md-6 col-sm-12 col-12">
+        `<div class="col-lg-6 col-md-6 col-sm-12 col-12">
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -106,11 +115,28 @@ function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
                             <p>${publicacion.descripcionGanga}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-heart fa-1x"></i></a>
-                            <a href="#" class="btn btn-sm btn-info text-white" data-toggle="modal" data-target="#logIn"><i class="fa fa-cart-plus fa-1x"></i></a>
+                            ${pubFavboton}
+                            <button class="btn btn-sm btn-info text-white" id="carrito${contadorPubs}" type="button" data-toggle="collapse" data-target="#comprarCard${contadorPubs}" aria-expanded="false" aria-controls="carrito">
+                                <i class="fa fa-cart-plus fa-1x"></i>
+                            </button>
                             <button class="btn btn-sm btn-info" id="verMas${contadorPubs}" type="button" data-toggle="collapse" data-target="#contCard${contadorPubs}" aria-expanded="false" aria-controls="contCard">
                                 <i class="fa fa-eye">See more</i>
                             </button>
+                            <div class="collapse" id="comprarCard${contadorPubs}">
+                                <div class="card-body">
+                                    <div class="form-group m-0">
+                                        <label for="cantProduct${contadorPubs}"><b> Quantity</b></label>
+                                        <input type="number" min="1" steps="1" value="1" id="cantProduct${contadorPubs}" class="form-control">
+                                        <button class="btn btn-sm btn-info text-white float-left my-3" onclick="crearPedido('${contadorPubs}', '${publicacion.nombreEmpresa}', '${publicacion.id}', '${publicacion.nombreGanga}', '${publicacion.precio}')" id="cart${contadorPubs}" type="button">
+                                            <i class="fa fa-cart-arrow-down fa-1x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div id="alertCompras${contadorPubs}">
+                                
+                                </div>
+                            </div>
                             <div class="collapse" id="contCard${contadorPubs}">
                                 <div class="card-body m-0">
                                     <h4 class="form-control "><b>Max date:</b> ${publicacion.fechaMax}</h4>
@@ -140,26 +166,25 @@ function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
                     </div>
                     <div class="tab-pane" role="tabpanel" id="empresa${contadorPubs}">
                         <div class="inner">
-                            <img class="card-img-top" src="${empresa.logoEmpresa}" alt="">
+                            <img class="card-img-top" src="${publicacion.logoEmpresa}" alt="">
                         </div>
                         <div class="card-body">
                             <div class="form-control">
-                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${empresa.nombreEmpresa}</h4>
-                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${empresa.tipoEmpresa}</h4>
-                                <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${empresa.pais}</h4>
-                                <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${empresa.direccion}</h4>
-                                <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${empresa.publicaciones.length}</h4>
-                                <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${empresa.facebook}</h4>
-                                <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${empresa.instagram}</h4>
-                                <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${empresa.twitter}</h4>
-                                <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${empresa.twitch}</h4>
-                                <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${empresa.email}</h4>
-                            <div class="form-control">
-                        </div>
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Name:</b> ${publicacion.nombreEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-institution"></i><b>Description:</b> ${publicacion.tipoEmpresa}</h4>
+                                <h4 class="form-control"><i class="fa fa-flag"></i><b>Country:</b> ${publicacion.pais}</h4>
+                                <h4 class="form-control"><i class="fa fa-map-marker"></i><b>Address:</b> ${publicacion.direccion}</h4>
+                                <h4 class="form-control"><i class="fa fa-handshake-o"></i><b>Publications:</b> ${publicacion.cantPubs}</h4>
+                                <h4 class="form-control"><i class="fa fa-facebook"></i><b>Facebook:</b> ${publicacion.facebook}</h4>
+                                <h4 class="form-control"><i class="fa fa-instagram"></i><b>Instagram:</b> ${publicacion.instagram}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitter"></i><b>Twitter:</b> ${publicacion.twitter}</h4>
+                                <h4 class="form-control"><i class="fa fa-twitch"></i><b>Twitch:</b> ${publicacion.twitch}</h4>
+                                <h4 class="form-control"><i class="fa fa-envelop"></i><b>Email:</b> ${publicacion.email}</h4>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a href="#" class="log form-control" data-toggle="modal" data-target="#logIn"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
+                            ${empFavboton}
+                            <a href="#" class="log form-control" data-toggle="modal" data-target="#"><i class="fa fa-map-marker fa-2x"></i> Nearby Premises</a>
                         </div>
                     </div>
                 </div>
@@ -167,24 +192,23 @@ function imprimirPublicaciones(publicacion, empresa, contadorPubs) {
         </div>`;
 }
 //
+
 function generarModalCompras(cliente) {
     let lista = "";
-    let contador = 0;
     let montoTot = 0;
     for (let i = 0; i < cliente.comprar.length; i++) {
         montoTot += cliente.comprar[i].monto;
         lista +=
             `
-            <div class="container">
-                <div class="form-control ">
+            <div class="container" id="compraId${i}">
+                <div class="form-control">
                     <h5><b>Article Name: </b>${cliente.comprar[i].aComprar}</h5>
                     <h5><b>Quantity of items: </b>${cliente.comprar[i].cant}</h5>
-                    <h5><b>Price item: </b>${cliente.comprar[i].precioArt.toFixed(2)}</h5>
-                    <h5><b>Amount of items: </b>${cliente.comprar[i].monto.toFixed(2)}</h5>
-                    <button class="btn btn-info" onclick="borrarCompra('${contador}');"><i class="fa fa-trash-o"> Delete</i></button>
+                    <h5><b>Price item: </b>${cliente.comprar[i].precioArt}</h5>
+                    <h5><b>Amount of items: </b>${cliente.comprar[i].monto}</h5>
+                    <button class="btn btn-info" onclick="borrarCompra('${i}');"><i class="fa fa-trash-o"> Delete</i></button>
                 </div>
             </div>`;
-        contador++;
     }
 
     document.getElementById("modalCompras").innerHTML = "";
@@ -211,7 +235,7 @@ function generarModalCompras(cliente) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="buy" class="btn btn-info" onclick="comprarPub(${cliente});"><i class="fa fa-credit-card"> Make the purchase</i></button>
+                        <button id="buy" class="btn btn-info" onclick="comprarPub();"><i class="fa fa-credit-card"> Make the purchase</i></button>
                     </div>
                 </div>
             </div>
@@ -352,65 +376,70 @@ function generarModalPerfil(cliente) {
                             </div>
                             <div class="tab-pane" role="tabpanel" id="edit">
                                 <div class="card-body mb-0 pb-0">
-                                    <form class="form-control py-0">
-                                        <fieldset>
-                                            <div class="form-row py-1">
-                                                <label for="firstName"><b><i class="fa fa-edit"> First Name</i></b></label>
-                                                <input type="text" id="firstName" value="${cliente.nombreCliente}" class="form-control" aria-describedby="firstNameHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
-                                                <small id="firstNameHelp" class="text-muted"> Julian Andres</small>
-                                            </div>
-                                            <div class="form-row py-1">
-                                                <label for="lastName"><b><i class="fa fa-edit"> Last Name</i></b></label>
-                                                <input type="text" id="lastName" value="${cliente.apellidoCliente}" class="form-control" aria-describedby="lastNameHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
-                                                <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
-                                            </div>
-                                            <div class="form-row py-1">
-                                                <label for="emailUser"><b><i class=" fa fa-envelope"> Email</i></b></label>
-                                                <input type="email" id="emailUser" value="${cliente.emailCliente}" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
-                                                <small id="emailHelp" class="text-muted ">andresjulian@yahoo.es</small>
-                                            </div>
-                                            <div class="form-row py-1 ">
-                                                <label for="dateUser"><b><i class="fa fa-calendar"> Birthdate</i></b></label>
-                                                <input type="date" min="1920-01-01" max="2008-12-31" value="${cliente.fechaNacimiento}" id="dateUser" class="form-control " aria-describedby="datelHelp" onfocus="validacion('dateUser')" required>
-                                                <small id="dateHelp" class="text-muted">Put your birth date here</small>
-                                            </div>
-                                            <div class="form-row py-1 ">
-                                                <label for="genero"><b><i class="fa fa-transgender-alt"> Gender</i></b></label>
-                                                <select class="form-control" id="genero" value="${cliente.genero}" onfocus="limpiarAlertas('alertModifUser')" onchange="cambiar('genero');">
-                                                    <option value="Male" id="male">Male</i></option>
-                                                    <option value="Female" id="female">Female</></option>
-                                                    <option selected="true" value="Other" id="otro">I prefer not to specify</i></option>
-                                                </select>
-                                            </div>
-                                            <div class="form-row py-1">
-                                                <label for="usName"><b><i class="fa fa-user"> User Name</i></b></label>
-                                                <input type="text" id="usName" value="${cliente.usuarioCliente}" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validarUser('usName', ${cliente.usuarioCliente})" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
-                                                <small id="userHelp" class="text-muted">Put the name you want as a user</small>
-                                            </div>
-                                            <div class="form-row py-1 ">
-                                                <label for="newPasswordUser"><b><i class="fa fa-lock ">New Password</i></b> (If you want to change else let the two field above in blanc)</label>
-                                                <input type="password" id="newPasswordUser" class="form-control" aria-describedby="newPasswordHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('newPasswordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                                <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
-                                            </div>
-                                            <div class="form-row py-1 ">
-                                                <label for="confirmNewPassUser"><b><i class="fa fa-lock "> Confirm your new password</i></b></label>
-                                                <input type="password" id="confirmNewPassUser" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="alertar('passwordUser','confirmPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                                <small id="confirmHelp" class="text-muted ">Repeat your new password.</small>
-                                            </div>
-                                            <hr>
-                                            <div class="form-row py-1 ">
-                                                <label for="passwordUser"><b><i class="fa fa-lock ">Actual Password</i></b></label>
-                                                <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="verifPassCliente(${cliente}, 'passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
-                                                <small id="passwordHelp" class="text-muted">You most privide your actual password to confirm the changes.</small>
-                                            </div>
-                                        </fieldset>
-                                    </form>
+                                    <div class="form-control py-0">
+                                        <div class="form-row py-1">
+                                            <label for="formCli"><b><i class="fa fa-file-photo-o"> Photo User</i></b></label>
+                                            <form id="formCli" name="formCli" method="post" enctype="multipart/form-data" aria-describedby="formCliHelp">
+                                                <input type="file" name="imagen" id="imagenCli" accept="image/*" class="form-control">
+                                            </form>
+                                            <small id="formCliHelp" class="text-muted"> Here goes your user photo</small>
+                                        </div>
+                                        <div class="form-row py-1">
+                                            <label for="firstName"><b><i class="fa fa-edit"> First Name</i></b></label>
+                                            <input type="text" id="firstName" value="${cliente.nombreCliente}" style="border-color: green; color: green;" class="form-control" aria-describedby="firstNameHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('firstName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,30}" required>
+                                            <small id="firstNameHelp" class="text-muted"> Julian Andres</small>
+                                        </div>
+                                        <div class="form-row py-1">
+                                            <label for="lastName"><b><i class="fa fa-edit"> Last Name</i></b></label>
+                                            <input type="text" id="lastName" value="${cliente.apellidoCliente}" style="border-color: green; color: green;" class="form-control" aria-describedby="lastNameHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('lastName')" pattern="[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,20}" required>
+                                            <small id="lastNameHelp" class="text-muted">Alvarez Mendoza</small>
+                                        </div>
+                                        <div class="form-row py-1">
+                                            <label for="emailUser"><b><i class=" fa fa-envelope"> Email</i></b></label>
+                                            <input type="email" id="emailUser" value="${cliente.emailCliente}" style="border-color: green; color: green;" class="form-control" aria-describedby="emailHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('emailUser')" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$" required>
+                                            <small id="emailHelp" class="text-muted ">andresjulian@yahoo.es</small>
+                                        </div>
+                                        <div class="form-row py-1 ">
+                                            <label for="dateUser"><b><i class="fa fa-calendar"> Birthdate</i></b></label>
+                                            <input type="date" min="1920-01-01" max="2008-12-31" value="${cliente.fechaNacimiento}" style="border-color: green; color: green;" id="dateUser" class="form-control " aria-describedby="datelHelp" onfocus="validacion('dateUser')" required>
+                                            <small id="dateHelp" class="text-muted">Put your birth date here</small>
+                                        </div>
+                                        <div class="form-row py-1 ">
+                                            <label for="genero"><b><i class="fa fa-transgender-alt"> Gender</i></b></label>
+                                            <select class="form-control" id="genero" value="${cliente.genero}" style="border-color: green; color: green;" onfocus="limpiarAlertas('alertModifUser')" onchange="cambiar('genero');">
+                                                <option value="Male" id="male">Male</i></option>
+                                                <option value="Female" id="female">Female</></option>
+                                                <option selected="true" value="Other" id="otro">I prefer not to specify</i></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-row py-1">
+                                            <label for="usName"><b><i class="fa fa-user"> User Name</i></b></label>
+                                            <input type="text" id="usName" value="${cliente.usuarioCliente}" style="border-color: green; color: green;" class="form-control" aria-describedby="userHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validarUser('usName')" pattern="^([a-z]+[0-9]{0,4}){3,12}$" required>
+                                            <small id="userHelp" class="text-muted">Put the name you want as a user</small>
+                                        </div>
+                                        <div class="form-row py-1 ">
+                                            <label for="newPasswordUser"><b><i class="fa fa-lock ">New Password</i></b> (If you want to change else let the two field above in blanc)</label>
+                                            <input type="password" id="newPasswordUser" class="form-control" aria-describedby="newPasswordHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="validacion('newPasswordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                            <small id="newPasswordHelp" class="text-muted">Must be 8-20 characters long, choose a password with at least one capital letter and a number at the end as example Ganguitas1.</small>
+                                        </div>
+                                        <div class="form-row py-1 ">
+                                            <label for="confirmNewPassUser"><b><i class="fa fa-lock "> Confirm your new password</i></b></label>
+                                            <input type="password" id="confirmNewPassUser" class="form-control" aria-describedby="confirmHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="alertar('newPasswordUser','confirmNewPassUser');" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                            <small id="confirmHelp" class="text-muted ">Repeat your new password.</small>
+                                        </div>
+                                        <hr>
+                                        <div class="form-row py-1 ">
+                                            <label for="passwordUser"><b><i class="fa fa-lock ">Actual Password</i></b></label>
+                                            <input type="password" id="passwordUser" class="form-control" aria-describedby="passwordHelp" onfocus="limpiarAlertas('alertModifUser')" oninput="verifPassCliente('passwordUser')" pattern="[A-Za-z0-9!?-]{8,20}" required autocomplete="on">
+                                            <small id="passwordHelp" class="text-muted">You most privide your actual password to confirm the changes.</small>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div id="alertModifUser">
 
                                 </div>
                                 <div class="card-footer">
-                                    <button type="submit" onclick="modifUser(${cliente});" class="btn btn-info">Saves Changes</button>
+                                    <button type="submit" onclick="modifUser();" class="btn btn-info">Saves Changes</button>
                                 </div>
                             </div>
                         </div>
@@ -420,7 +449,7 @@ function generarModalPerfil(cliente) {
         </div>`;
 }
 
-function modifUser(cliente) {
+function modifUser() {
     if (verifPassUser == false) {
         document.getElementById("alertModifUser").innerHTML = "";
         document.getElementById("alertModifUser").innerHTML +=
@@ -430,121 +459,260 @@ function modifUser(cliente) {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`;
-    } else if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && document.getElementById("newPasswordUser").value.length == 0 && document.getElementById("confirmNewPassUser").value.length == 0) {
-        cliente.registroAcciones.push(msjParaRegistro("modifUser", cliente.usuarioCliente, document.getElementById("usName")));
-        let clienteModif = {
-            usuarioClienteModif: cliente.usuarioCliente,
-            nombreCliente: document.getElementById("firstName").value,
-            apellidoCliente: document.getElementById("lastName").value,
-            usuarioCliente: document.getElementById("usName").value,
-            emailCliente: document.getElementById("emailUser").value,
-            passwordCliente: cliente.passwordCliente,
-            actual: cliente.actual,
-            fechaNacimiento: document.getElementById("dateUser").value,
-            fotoCliente: cliente.fotoCliente,
-            genero: document.getElementById("genero").value,
-            pais: cliente.pais,
-            companiasFav: cliente.companiasFav,
-            publicacionesFav: cliente.publicacionesFav,
-            comprasHechas: cliente.comprasHechas,
-            comprar: cliente.comprar,
-            tipo: cliente.tipo,
-            fechaSignIn: cliente.fechaSignIn,
-            registroAcciones: cliente.registroAcciones
-        }
+    } else if (document.getElementById('imagenCli').value != "") {
+        var frm = $('#formCli');
+        let formData = new FormData(frm[0]);
+        axios.post('../../proyecto-front-end/sube', formData)
+            .then(res => {
+                if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && document.getElementById("newPasswordUser").value.length == 0 && document.getElementById("confirmNewPassUser").value.length == 0) {
+                    clienteSeleccionado.registroAcciones.push(msjParaRegistro("modifUser", clienteSeleccionado.usuarioCliente, document.getElementById("usName")));
+                    let clienteModif = {
+                        usuarioClienteModif: clienteSeleccionado.usuarioCliente,
+                        nombreCliente: document.getElementById("firstName").value,
+                        apellidoCliente: document.getElementById("lastName").value,
+                        usuarioCliente: document.getElementById("usName").value,
+                        emailCliente: document.getElementById("emailUser").value,
+                        passwordCliente: clienteSeleccionado.passwordCliente,
+                        actual: clienteSeleccionado.actual,
+                        fechaNacimiento: document.getElementById("dateUser").value,
+                        fotoCliente: "../" + res.data,
+                        genero: document.getElementById("genero").value,
+                        pais: clienteSeleccionado.pais,
+                        companiasFav: clienteSeleccionado.companiasFav,
+                        publicacionesFav: clienteSeleccionado.publicacionesFav,
+                        comprasHechas: clienteSeleccionado.comprasHechas,
+                        comprar: clienteSeleccionado.comprar,
+                        tipo: clienteSeleccionado.tipo,
+                        fechaSignIn: clienteSeleccionado.fechaSignIn,
+                        registroAcciones: clienteSeleccionado.registroAcciones
+                    }
 
-        axios({
-                url: '../../proyecto-back-end/API/usuarios.php',
-                method: 'PUT',
-                responseType: 'json',
-                data: clienteModif
-            })
-            .then(function(res) {
-                console.log(res)
-            })
-            .catch(function(error) {
-                console.error(error);
+                    axios({
+                            url: '../../proyecto-back-end/API/usuarios.php',
+                            method: 'PUT',
+                            responseType: 'json',
+                            data: clienteModif
+                        })
+                        .then(function(res) {
+                            console.log(res);
+                            clienteSeleccionado = res.data;
+                            generarNombre();
+                            generarModalPerfil(clienteSeleccionado);
+                        })
+                        .catch(function(error) {
+                            console.error(error);
+                        });
+                } else if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && verifPass) {
+                    clienteSeleccionado.registroAcciones.push(msjParaRegistro("modifUser", clienteSeleccionado.usuarioCliente, document.getElementById("usName")));
+                    let clienteModif = {
+                        usuarioClienteModif: clienteSeleccionado.usuarioCliente,
+                        nombreCliente: document.getElementById("firstName").value,
+                        apellidoCliente: document.getElementById("lastName").value,
+                        usuarioCliente: document.getElementById("usName").value,
+                        emailCliente: document.getElementById("emailUser").value,
+                        passwordCliente: document.getElementById("newPasswordUser").value,
+                        actual: clienteSeleccionado.actual,
+                        fechaNacimiento: document.getElementById("dateUser").value,
+                        fotoCliente: clienteSeleccionado.fotoCliente,
+                        genero: document.getElementById("genero").value,
+                        pais: clienteSeleccionado.pais,
+                        companiasFav: clienteSeleccionado.companiasFav,
+                        publicacionesFav: clienteSeleccionado.publicacionesFav,
+                        comprasHechas: clienteSeleccionado.comprasHechas,
+                        comprar: clienteSeleccionado.comprar,
+                        tipo: clienteSeleccionado.tipo,
+                        fechaSignIn: clienteSeleccionado.fechaSignIn,
+                        registroAcciones: clienteSeleccionado.registroAcciones
+                    }
+
+                    axios({
+                            url: '../../proyecto-back-end/API/usuarios.php',
+                            method: 'PUT',
+                            responseType: 'json',
+                            data: clienteModif
+                        })
+                        .then(function(res) {
+                            console.log(res);
+                            clienteSeleccionado = res.data;
+                            generarNombre();
+                            generarModalPerfil(clienteSeleccionado);
+                        })
+                        .catch(function(error) {
+                            console.error(error);
+                        });
+
+                } else if (verifUser == false && document.getElementById("usName").value.length >= 3) {
+                    document.getElementById("alertModifUser").innerHTML = "";
+                    document.getElementById("alertModifUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>User is already in use!, </strong>Please try with another user name.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                } else if (verifPass == false && document.getElementById("passwordUser").value.length >= 8) {
+                    document.getElementById("alertModifUser").innerHTML = "";
+                    document.getElementById("alertModifUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Passwords do not match!, </strong>Please check the passwords.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+
+                } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser")) {
+                    document.getElementById("alertModifUser").innerHTML = "";
+                    document.getElementById("alertModifUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
+                    document.getElementById("alertModifUser").innerHTML = "";
+                    document.getElementById("alertModifUser").innerHTML +=
+                        `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Form incomplete!, </strong>Please fill all the fields.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`;
+                } else if (document.getElementById("newPasswordUser").value.length == 0 || document.getElementById("confirmNewPassUser").value.length == 0) {
+
+                }
+            }).catch(err => {
+                console.error(err);
             });
-    } else if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && verifPass) {
-        cliente.registroAcciones.push(msjParaRegistro("modifUser", cliente.usuarioCliente, document.getElementById("usName")));
-        let clienteModif = {
-            usuarioClienteModif: cliente.usuarioCliente,
-            nombreCliente: document.getElementById("firstName").value,
-            apellidoCliente: document.getElementById("lastName").value,
-            usuarioCliente: document.getElementById("usName").value,
-            emailCliente: document.getElementById("emailUser").value,
-            passwordCliente: document.getElementById("newPasswordUser").value,
-            actual: cliente.actual,
-            fechaNacimiento: document.getElementById("dateUser").value,
-            fotoCliente: cliente.fotoCliente,
-            genero: document.getElementById("genero").value,
-            pais: cliente.pais,
-            companiasFav: cliente.companiasFav,
-            publicacionesFav: cliente.publicacionesFav,
-            comprasHechas: cliente.comprasHechas,
-            comprar: cliente.comprar,
-            tipo: cliente.tipo,
-            fechaSignIn: cliente.fechaSignIn,
-            registroAcciones: cliente.registroAcciones
+    } else {
+        if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && document.getElementById("newPasswordUser").value.length == 0 && document.getElementById("confirmNewPassUser").value.length == 0) {
+            clienteSeleccionado.registroAcciones.push(msjParaRegistro("modifUser", clienteSeleccionado.usuarioCliente, document.getElementById("usName")));
+            let clienteModif = {
+                usuarioClienteModif: clienteSeleccionado.usuarioCliente,
+                nombreCliente: document.getElementById("firstName").value,
+                apellidoCliente: document.getElementById("lastName").value,
+                usuarioCliente: document.getElementById("usName").value,
+                emailCliente: document.getElementById("emailUser").value,
+                passwordCliente: clienteSeleccionado.passwordCliente,
+                actual: clienteSeleccionado.actual,
+                fechaNacimiento: document.getElementById("dateUser").value,
+                fotoCliente: clienteSeleccionado.fotoCliente,
+                genero: document.getElementById("genero").value,
+                pais: clienteSeleccionado.pais,
+                companiasFav: clienteSeleccionado.companiasFav,
+                publicacionesFav: clienteSeleccionado.publicacionesFav,
+                comprasHechas: clienteSeleccionado.comprasHechas,
+                comprar: clienteSeleccionado.comprar,
+                tipo: clienteSeleccionado.tipo,
+                fechaSignIn: clienteSeleccionado.fechaSignIn,
+                registroAcciones: clienteSeleccionado.registroAcciones
+            }
+
+            axios({
+                    url: '../../proyecto-back-end/API/usuarios.php',
+                    method: 'PUT',
+                    responseType: 'json',
+                    data: clienteModif
+                })
+                .then(function(res) {
+                    console.log(res);
+                    clienteSeleccionado = res.data;
+                    generarNombre();
+                    generarModalPerfil(clienteSeleccionado);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        } else if (document.getElementById("firstName").style.color == "green" && document.getElementById("lastName").style.color == "green" && document.getElementById("emailUser").style.color == "green" && verifUser && verifPassUser && verifPass) {
+            clienteSeleccionado.registroAcciones.push(msjParaRegistro("modifUser", clienteSeleccionado.usuarioCliente, document.getElementById("usName")));
+            let clienteModif = {
+                usuarioClienteModif: clienteSeleccionado.usuarioCliente,
+                nombreCliente: document.getElementById("firstName").value,
+                apellidoCliente: document.getElementById("lastName").value,
+                usuarioCliente: document.getElementById("usName").value,
+                emailCliente: document.getElementById("emailUser").value,
+                passwordCliente: document.getElementById("newPasswordUser").value,
+                actual: clienteSeleccionado.actual,
+                fechaNacimiento: document.getElementById("dateUser").value,
+                fotoCliente: clienteSeleccionado.fotoCliente,
+                genero: document.getElementById("genero").value,
+                pais: clienteSeleccionado.pais,
+                companiasFav: clienteSeleccionado.companiasFav,
+                publicacionesFav: clienteSeleccionado.publicacionesFav,
+                comprasHechas: clienteSeleccionado.comprasHechas,
+                comprar: clienteSeleccionado.comprar,
+                tipo: clienteSeleccionado.tipo,
+                fechaSignIn: clienteSeleccionado.fechaSignIn,
+                registroAcciones: clienteSeleccionado.registroAcciones
+            }
+
+            axios({
+                    url: '../../proyecto-back-end/API/usuarios.php',
+                    method: 'PUT',
+                    responseType: 'json',
+                    data: clienteModif
+                })
+                .then(function(res) {
+                    console.log(res);
+                    clienteSeleccionado = res.data;
+                    generarNombre();
+                    generarModalPerfil(clienteSeleccionado);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+
+        } else if (verifUser == false && document.getElementById("usName").value.length >= 3) {
+            document.getElementById("alertModifUser").innerHTML = "";
+            document.getElementById("alertModifUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>User is already in use!, </strong>Please try with another user name.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+        } else if (verifPass == false && document.getElementById("passwordUser").value.length >= 8) {
+            document.getElementById("alertModifUser").innerHTML = "";
+            document.getElementById("alertModifUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Passwords do not match!, </strong>Please check the passwords.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+
+        } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser")) {
+            document.getElementById("alertModifUser").innerHTML = "";
+            document.getElementById("alertModifUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+        } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
+            document.getElementById("alertModifUser").innerHTML = "";
+            document.getElementById("alertModifUser").innerHTML +=
+                `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Form incomplete!, </strong>Please fill all the fields.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`;
+        } else if (document.getElementById("newPasswordUser").value.length == 0 || document.getElementById("confirmNewPassUser").value.length == 0) {
+
         }
-
-        axios({
-                url: '../../proyecto-back-end/API/usuarios.php',
-                method: 'PUT',
-                responseType: 'json',
-                data: clienteModif
-            })
-            .then(function(res) {
-                console.log(res)
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
-
-    } else if (verifUser == false && document.getElementById("usName").value.length >= 3) {
-        document.getElementById("alertModifUser").innerHTML = "";
-        document.getElementById("alertModifUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>User is already in use!, </strong>Please try with another user name.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (verifPass == false && document.getElementById("passwordUser").value.length >= 8) {
-        document.getElementById("alertModifUser").innerHTML = "";
-        document.getElementById("alertModifUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Passwords do not match!, </strong>Please check the passwords.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-
-    } else if (document.getElementById("firstName").style.color == "red" || document.getElementById("lastName").style.color == "red" || document.getElementById("emailUser").style.color == "red" || document.getElementById("usName").style.color == "red" || document.getElementById("passwordUser")) {
-        document.getElementById("alertModifUser").innerHTML = "";
-        document.getElementById("alertModifUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Incorrect information or fields are incomplete!, </strong>Please check the fields with red border color.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (document.getElementById("firstName").value.length == 0 || document.getElementById("lastName").value.length == 0 || document.getElementById("emailUser").value.length == 0 || document.getElementById("usName").value.length == 0 || document.getElementById("passwordUser").value.length == 0 || document.getElementById("confirmPassUser").value.length == 0) {
-        document.getElementById("alertModifUser").innerHTML = "";
-        document.getElementById("alertModifUser").innerHTML +=
-            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Form incomplete!, </strong>Please fill all the fields.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>`;
-    } else if (document.getElementById("newPasswordUser").value.length == 0 || document.getElementById("confirmNewPassUser").value.length == 0) {
-
     }
 }
 
-function verifPassCliente(cliente, id) {
-    if (cliente.passwordCliente == document.getElementById(id).value) {
+function cambiar(id) {
+    var elem = document.getElementById(id);
+    elem.style.borderColor = "green";
+    elem.style.color = "green";
+}
+
+function verifPassCliente(id) {
+    if (clienteSeleccionado.passwordCliente == document.getElementById(id).value) {
         verifPassUser = true;
     } else {
         verifPassUser = false;
@@ -607,47 +775,73 @@ function alertar(id1, id2) {
 
 }
 
-function validarUser(id, usCliente) {
+function validarUser(id) {
     var elem = document.getElementById(id);
-    axios({
-            url: '../../proyecto-back-end/API/usuarios',
-            method: 'GET',
-            responseType: 'json',
+    axios.get('../../proyecto-back-end/API/empresas', {
             params: {
-                tipo: "cliente",
+                tipo: 'empresa',
+                nombUs: elem.value
             }
         })
-        .then(function(res) {
-            var clientes = res.data;
-            var clientesLength = 0;
-            clientes.map(item => {
-                clientesLength++;
-            });
-            for (let i = 0; i < clientesLength; i++) {
-                if (clientes[i].usuarioCliente == elem.value && clientes[i].usuarioCliente == usCliente) {
+        .then(res => {
+            if (res.data.resultado == "encontrado") {
+                if (empresaSeleccionada.nombreUsuario == res.data.nom) {
                     elem.style.borderColor = "green";
                     elem.style.color = "green";
                     verifUser = true;
-                    break;
                 }
-                if (clientes[i].usuarioCliente == elem.value) {
+                if (empresaSeleccionada.nombreUsuario != res.data.nom) {
                     elem.style.borderColor = "red";
                     elem.style.color = "red";
                     verifUser = false;
-                    break;
-                } else {
-                    if (elem.checkValidity()) {
-                        elem.style.borderColor = "green";
-                        elem.style.color = "green";
-                        verifUser = true;
-
-                    } else {
-                        elem.style.borderColor = "red";
-                        elem.style.color = "red";
-                        verifUser = false;
-                    }
                 }
+            } else if (res.data.resultado == "noEncontrado") {
+                if (elem.checkValidity()) {
+                    elem.style.borderColor = "green";
+                    elem.style.color = "green";
+                    verifUser = false;
 
+                } else {
+                    elem.style.borderColor = "red";
+                    elem.style.color = "red";
+                    verifUser = false;
+                }
+            }
+            if (verifUser == false) {
+                axios.get('../../proyecto-back-end/API/usuarios', {
+                        params: {
+                            tipo: 'cliente',
+                            nombUs: elem.value
+                        }
+                    })
+                    .then(resi => {
+                        if (resi.resultado == "encontrado") {
+                            if (empresaSeleccionada.nombreUsuario == elem.value) {
+                                elem.style.borderColor = "green";
+                                elem.style.color = "green";
+                                verifUser = true;
+                            }
+                            if (empresaSeleccionada.nombreUsuario != elem.value) {
+                                elem.style.borderColor = "red";
+                                elem.style.color = "red";
+                                verifUser = false;
+                            }
+                        } else if (resi.data.resultado == "noEncontrado") {
+                            if (elem.checkValidity()) {
+                                elem.style.borderColor = "green";
+                                elem.style.color = "green";
+                                verifUser = true;
+
+                            } else {
+                                elem.style.borderColor = "red";
+                                elem.style.color = "red";
+                                verifUser = false;
+                            }
+                        }
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
             }
         })
         .catch(function(err) {
@@ -655,12 +849,7 @@ function validarUser(id, usCliente) {
         });
 }
 
-function logOut() {
-    for (let j = 0; j < clienteSeleccionado.comprar.length; j++) {
-        clienteSeleccionado.comprar.splice(j, 1);
-    }
-
-    clienteSeleccionado.registroAcciones.push(msjParaRegistro("logOut", clienteSeleccionado.usuarioCliente, "nada"));
+function actualizarCliente() {
     let clienteModif = {
         usuarioClienteModif: clienteSeleccionado.usuarioCliente,
         nombreCliente: clienteSeleccionado.nombreCliente,
@@ -668,7 +857,7 @@ function logOut() {
         usuarioCliente: clienteSeleccionado.usuarioCliente,
         emailCliente: clienteSeleccionado.emailCliente,
         passwordCliente: clienteSeleccionado.passwordCliente,
-        actual: false,
+        actual: clienteSeleccionado.actual,
         fechaNacimiento: clienteSeleccionado.fechaNacimiento,
         fotoCliente: clienteSeleccionado.fotoCliente,
         genero: clienteSeleccionado.genero,
@@ -689,19 +878,26 @@ function logOut() {
             data: clienteModif
         })
         .then(function(res) {
-            top.location.href = "../index.html";
+            console.log(res.data);
+            clienteSeleccionado = res.data;
         })
         .catch(function(error) {
             console.error(error);
         });
 }
 
-/*function pubFavorita(conta, indiceEmp, indicePub) {
+function logOut() {
+    clienteSeleccionado.actual = false;
+    clienteSeleccionado.registroAcciones.push(msjParaRegistro("logOut", clienteSeleccionado.usuarioCliente, "nada"));
+    actualizarCliente();
+}
+
+function pubFavorita(conta, nombEmp, idPub, nombPub) {
     var verif = false;
     var indiceEncontrado;
 
     for (let i = 0; i < clienteSeleccionado.publicacionesFav.length; i++) {
-        if (clienteSeleccionado.publicacionesFav[i].nombreGan == empresas[indiceEmp].publicaciones[indicePub].nombreGanga) {
+        if (clienteSeleccionado.publicacionesFav[i].nombreGan == nombPub) {
             verif = true;
             indiceEncontrado = i;
             break;
@@ -710,48 +906,70 @@ function logOut() {
 
     if (verif == false) {
         let añadir = {
-            nombreGan: empresas[indiceEmp].publicaciones[indicePub].nombreGanga,
+            tipo: "cliente",
+            accion: "guardar",
+            nombreGan: nombPub,
         }
         let nuevaPubFavD = {
+            tipo: "pub",
+            accion: "guardar",
+            empresa: nombEmp,
             cliente: clienteSeleccionado.usuarioCliente,
             fechaSelecFav: fechaActual(),
-            indiceDePub: indicePub
+            indiceDePub: idPub
         }
 
-        empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe.push(nuevaPubFavD);
-        clienteSeleccionado.publicacionesFav.push(añadir);
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        localStorage.setItem("empresas", JSON.stringify(empresas));
-        document.getElementById("verPubFav").innerHTML +=
-            `
-            <form class="form-control">
-                <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Ganga:</b> ${clienteSeleccionado.publicacionesFav[clienteSeleccionado.publicacionesFav.length-1].nombreGan}</h4>
-                </div>
-            </form>`;
+        axios.put('../../proyecto-back-end/API/empresas.php', {
+                data: nuevaPubFavD
+            })
+            .then(resul => {
+                clienteSeleccionado.publicacionesFav.push(añadir);
+                actualizarCliente();
+                document.getElementById("verPubFav").innerHTML +=
+                    `
+                    <form class="form-control">
+                        <div class="form-group">
+                            <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Ganga:</b> ${clienteSeleccionado.publicacionesFav[clienteSeleccionado.publicacionesFav.length-1].nombreGan}</h4>
+                        </div>
+                    </form>`;
 
-        document.getElementById(`pubFav${conta}`).classList.add("fav");
+                document.getElementById(`pubFav${conta}`).classList.add("fav");
+            }).catch(err => {
+                console.error(err);
+            });
     } else {
+        let borrarPubFavD = {
+            tipo: "pub",
+            accion: "borrar",
+            indiceDePub: idPub,
+            nomPub: nombPub
+        }
+        axios.put('../../proyecto-back-end/API/empresas.php', {
+                data: borrarPubFavD
+            })
+            .then(resul => {
+                clienteSeleccionado.publicacionesFav.splice(indiceEncontrado, 1);
+                actualizarCliente();
+                generarModalPerfil(clienteSeleccionado);
+                document.getElementById(`pubFav${conta}`).classList.remove("fav");
+            }).catch(err => {
+                console.error(err);
+            });
         for (let k = 0; k < empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe.length; k++) {
             if (empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe[k].indiceDePub == indicePub) {
                 empresas[indiceEmp].publicaciones[indicePub].pubFavoritaDe.splice(k, 1);
                 break;
             }
         }
-        clienteSeleccionado.publicacionesFav.splice(indiceEncontrado, 1);
-        document.getElementById(`pubFav${conta}`).classList.remove("fav");
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        localStorage.setItem("empresas", JSON.stringify(empresas));
-        top.location.reload();
     }
 }
 
-function empFavorita(cont, indiceEmp) {
+function empFavorita(cont, nombEmp) {
     var verif = false;
     var indiceEncontrado;
 
     for (let i = 0; i < clienteSeleccionado.companiasFav.length; i++) {
-        if (clienteSeleccionado.companiasFav[i].nombreEmp == empresas[indiceEmp].nombreEmpresa) {
+        if (clienteSeleccionado.companiasFav[i].nombreEmp == nombEmp) {
             verif = true;
             indiceEncontrado = i;
             break;
@@ -760,49 +978,75 @@ function empFavorita(cont, indiceEmp) {
 
     if (verif == false) {
         let añadir = {
-            nombreEmp: empresas[indiceEmp].nombreEmpresa,
+            nombre: nombEmp
         }
-        clienteSeleccionado.companiasFav.push(añadir);
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        document.getElementById("verEmpFav").innerHTML +=
-            `
-            <form class="form-control">
-                <div class="form-group">
-                    <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Company:</b> ${clienteSeleccionado.companiasFav[clienteSeleccionado.companiasFav.length-1].nombreEmp}</h4>
-                </div>
-            </form>`;
+        let nuevaEmpFavD = {
+            tipo: "empresa",
+            accion: "guardar",
+            empresa: nombEmp,
+            cliente: clienteSeleccionado.usuarioCliente,
+            fechaSelecFav: fechaActual(),
+        }
 
-        document.getElementById(`empFav${cont}`).classList.add("fav");
-        top.location.reload();
+        axios.post('../../proyecto-back-end/API/empresas.php', {
+                data: nuevaEmpFavD
+            })
+            .then(resul => {
+                clienteSeleccionado.companiasFav.push(añadir);
+                actualizarCliente();
+                document.getElementById("verEmpFav").innerHTML +=
+                    `
+                    <form class="form-control">
+                        <div class="form-group">
+                            <h4 class="form-control"><i class="fa fa-thumbs-up"></i><b> Company:</b> ${clienteSeleccionado.companiasFav[clienteSeleccionado.companiasFav.length-1].nombreEmp}</h4>
+                        </div>
+                    </form>`;
+
+                document.getElementById(`empFav${cont}`).classList.add("fav");
+            }).catch(err => {
+                console.error(err);
+            });
     } else {
-        clienteSeleccionado.companiasFav.splice(indiceEncontrado, 1);
-        document.getElementById(`empFav${cont}`).classList.remove("fav");
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        top.location.reload();
+        let borrarPubFavD = {
+            tipo: "empresa",
+            accion: "borrar",
+            empresa: nombEmp,
+            cliente: clienteSeleccionado.usuarioCliente
+        }
+        axios.post('../../proyecto-back-end/API/empresas.php', {
+                data: borrarPubFavD
+            })
+            .then(resul => {
+                clienteSeleccionado.companiasFav.splice(indiceEncontrado, 1);
+                actualizarCliente();
+                generarModalPerfil(clienteSeleccionado);
+                document.getElementById(`empFav${cont}`).classList.remove("fav");
+            }).catch(err => {
+                console.error(err);
+            });
     }
 }
 
 //llama a generarModalCompras
-function aComprar(idInput, idAlert, indiceEmp, indicePub) {
-    let elem = document.getElementById(idInput).value;
-    let pub = empresas[indiceEmp].publicaciones[indicePub];
+function crearPedido(cont, nombEmp, indicePub, nomGan, precio) {
+    let elem = document.getElementById("cantProduct" + cont).value;
     if (elem != 0) {
         let porComprar = {
-            aComprar: pub.nombreGanga,
+            aComprar: nomGan,
             fechaCompra: fechaActual(),
             cant: elem,
-            precioArt: pub.precio,
-            monto: pub.precio * elem,
-            indEmp: indiceEmp,
-            indPub: indicePub
+            precioArt: precio,
+            monto: precio * elem,
+            nombrEmp: nombEmp,
+            idPub: indicePub
         }
         clienteSeleccionado.comprar.push(porComprar);
-        localStorage.setItem('clientes', JSON.stringify(clientes));
-        document.getElementById(idInput).value = 0;
-        generarModalCompras();
+        actualizarCliente();
+        document.getElementById("cantProduct" + cont).value = 0;
+        generarModalCompras(clienteSeleccionado);
     } else {
-        document.getElementById(idAlert).innerHTML = "";
-        document.getElementById(idAlert).innerHTML +=
+        document.getElementById("alertCompras" + cont).innerHTML = "";
+        document.getElementById("alertCompras" + cont).innerHTML +=
             `<div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Choose another quantity!</strong> You should check the field above.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -814,51 +1058,60 @@ function aComprar(idInput, idAlert, indiceEmp, indicePub) {
 
 function borrarCompra(indiceCompra) {
     clienteSeleccionado.comprar.splice(indiceCompra, 1);
-    localStorage.setItem("clientes", JSON.stringify(clientes));
-    document.getElementById("mostrarProd").innerHTML = "";
-    document.getElementById("alerModalComp").innerHTML = "";
-    document.getElementById("alerModalComp").innerHTML +=
-        `<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Delete successfull!</strong> go and look for more offers!.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>`;
+    actualizarCliente();
+    document.getElementById("compraId" + indiceCompra).innerHTML = "";
+
 }
 
-function comprarPub(cliente) {
-    if (cliente.comprar.length >= 1) {
-        for (let i = 0; i < cliente.comprar.length; i++) {
+function comprarPub() {
+    if (clienteSeleccionado.comprar.length >= 1) {
+        for (let i = 0; i < clienteSeleccionado.comprar.length; i++) {
             let nuevaVenta = {
-                cantidad: cliente.comprar[i].cant,
+                tipo: "pub",
+                accion: "guardar",
+                cantidad: clienteSeleccionado.comprar[i].cant,
                 fechaCompra: fechaActual()
             }
             let nuevaCompra = {
-                nomCompra: cliente.comprar[i].aComprar,
+                nomCompra: clienteSeleccionado.comprar[i].aComprar,
                 fechaCompra: fechaActual(),
-                cant: cliente.comprar[i].cant,
-                precioArticulo: cliente.comprar[i].precioArt,
-                montoComprado: cliente.comprar[i].monto
+                cant: clienteSeleccionado.comprar[i].cant,
+                precioArticulo: clienteSeleccionado.comprar[i].precioArt,
+                montoComprado: clienteSeleccionado.comprar[i].monto
             }
-            empresas[cliente.comprar[i].indEmp].publicaciones[cliente.comprar[i].indPub].venta.push(nuevaVenta);
-            cliente.comprasHechas.push(nuevaCompra);
+            axios.post('../../proyecto-back-end/API/empresas.php', {
+                    data: nuevaVenta
+                })
+                .then(resul => {
+                    console.log(JSON.stringify(clienteSeleccionado));
 
-            for (let j = 0; j < cliente.comprar.length; j++) {
-                cliente.comprar.splice(j, 1);
-            }
+                    clienteSeleccionado.comprasHechas.push(nuevaCompra);
+                    for (let i = 0; i < clienteSeleccionado.compras.length; i++) {
+                        clienteSeleccionado.compras.splice(i, 1);
 
-            localStorage.setItem('clientes', JSON.stringify(clientes));
-            localStorage.setItem('empresas', JSON.stringify(empresas));
-            document.getElementById("mostrarProd").innerHTML = "";
-            document.getElementById("alerModalComp").innerHTML = "";
-            document.getElementById("alerModalComp").innerHTML +=
-                `<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Thanks for your purchase!</strong>  go and look for more offers!.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>`;
+                    }
+                    actualizarCliente();
+                    document.getElementById('mostrarProd').innerHTML = "";
+
+                }).catch(err => {
+                    console.error(err);
+                });
+
         }
+        for (let j = 0; j < clienteSeleccionado.comprar.length; j++) {
+            clienteSeleccionado.comprar.splice(j, 1);
+        }
+        actualizarCliente();
+        document.getElementById("alerModalComp").innerHTML = "";
+        document.getElementById("alerModalComp").innerHTML +=
+            `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Thanks for your purchase!</strong>  go and look for more offers!.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>`;
+        generarModalPerfil(clienteSeleccionado);
+
     } else {
         document.getElementById("alerModalComp").innerHTML = "";
         document.getElementById("alerModalComp").innerHTML +=
@@ -950,7 +1203,7 @@ function generarModalTarjeta(indiceEmp, indicePub) {
 
 function guardarTarjeta() {
     alert("I Keep Lying Card");
-}*/
+}
 
 function fechaActual() {
     var f = new Date();
